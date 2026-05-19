@@ -85,11 +85,11 @@ export default function Home() {
             <div className="p-8">
 
               <h3 className="text-3xl font-black">
-                PVC Windows
+                Windows
               </h3>
 
               <p className="mt-4 text-blue-100/60 leading-relaxed">
-                High efficiency Salamander and Rehau systems with modern German engineering.
+                Modern premium window systems for contemporary homes and architecture.
               </p>
 
               <div className="flex items-center justify-between mt-8">
@@ -99,10 +99,10 @@ export default function Home() {
                 </span>
 
                 <Link
-                  href="/configurator"
+                  href="/windows"
                   className="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 transition-all font-semibold"
                 >
-                  Configure
+                  Explore
                 </Link>
 
               </div>
@@ -119,11 +119,11 @@ export default function Home() {
             <div className="p-8">
 
               <h3 className="text-3xl font-black">
-                Aluminium
+                Doors
               </h3>
 
               <p className="mt-4 text-blue-100/60 leading-relaxed">
-                Minimalist premium aluminium systems for luxury architecture.
+                Premium entrance and balcony door systems with modern German engineering.
               </p>
 
               <div className="flex items-center justify-between mt-8">
@@ -133,10 +133,10 @@ export default function Home() {
                 </span>
 
                 <Link
-                  href="/configurator"
+                  href="/doors"
                   className="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 transition-all font-semibold"
                 >
-                  Configure
+                  Explore
                 </Link>
 
               </div>
@@ -145,40 +145,38 @@ export default function Home() {
 
           </div>
 
-          {/* WOOD */}
-          <div className="group rounded-[32px] overflow-hidden border border-white/10 bg-white/5 hover:bg-white/[0.07] transition-all">
+          
+{/* ENTRANCE */}
 
-            <div className="h-72 bg-gradient-to-br from-amber-700/30 to-yellow-900/30" />
+<div className="group rounded-[32px] overflow-hidden border border-white/10 bg-white/5 hover:bg-white/[0.07] transition-all">
 
-            <div className="p-8">
+  <div className="h-72 bg-gradient-to-br from-blue-900/40 to-black/40" />
 
-              <h3 className="text-3xl font-black">
-                Wood Systems
-              </h3>
+  <div className="p-8">
 
-              <p className="mt-4 text-blue-100/60 leading-relaxed">
-                Warm premium wood solutions with outstanding acoustic insulation.
-              </p>
+    <h3 className="text-3xl font-black">
+      Entrance Doors
+    </h3>
 
-              <div className="flex items-center justify-between mt-8">
+    <p className="mt-4 text-blue-100/60 leading-relaxed">
+      Secure and elegant entrance solutions with premium German hardware.
+    </p>
 
-                <span className="text-blue-400 font-bold">
-                  from €799
-                </span>
+    <div className="mt-8">
 
-                <Link
-                  href="/configurator"
-                  className="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 transition-all font-semibold"
-                >
-                  Configure
-                </Link>
+      <Link
+  href="/configurator"
+  className="inline-flex px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 transition-all font-semibold"
+>
+  Configure
+</Link>
 
-              </div>
+    </div>
 
-            </div>
+  </div>
 
-          </div>
-
+</div>          
+          
           {/* BALCONY */}
 
 <div className="group rounded-[32px] overflow-hidden border border-white/10 bg-white/5 hover:bg-white/[0.07] transition-all">
@@ -210,6 +208,7 @@ export default function Home() {
 
 </div>
 
+
 {/* SLIDING */}
 
 <div className="group rounded-[32px] overflow-hidden border border-white/10 bg-white/5 hover:bg-white/[0.07] transition-all">
@@ -223,13 +222,13 @@ export default function Home() {
     </h3>
 
     <p className="mt-4 text-blue-100/60 leading-relaxed">
-      Lift and slide premium systems for panoramic openings and luxury spaces.
+      Panoramic lift and slide systems designed for luxury interiors.
     </p>
 
     <div className="mt-8">
 
       <Link
-  href="/configurator"
+  href="/sliding"
   className="inline-flex px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 transition-all font-semibold"
 >
   Configure
@@ -241,36 +240,7 @@ export default function Home() {
 
 </div>
 
-{/* ENTRANCE */}
 
-<div className="group rounded-[32px] overflow-hidden border border-white/10 bg-white/5 hover:bg-white/[0.07] transition-all">
-
-  <div className="h-72 bg-gradient-to-br from-blue-900/40 to-black/40" />
-
-  <div className="p-8">
-
-    <h3 className="text-3xl font-black">
-      Entrance Doors
-    </h3>
-
-    <p className="mt-4 text-blue-100/60 leading-relaxed">
-      Secure and elegant entrance solutions with premium German hardware.
-    </p>
-
-    <div className="mt-8">
-
-      <Link
-  href="/configurator"
-  className="inline-flex px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 transition-all font-semibold"
->
-  Configure
-</Link>
-
-    </div>
-
-  </div>
-
-</div>
 
 {/* PERGOLAS */}
 
