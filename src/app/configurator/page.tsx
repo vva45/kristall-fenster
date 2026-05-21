@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar"
 import Configurator from "@/components/Configurator"
+import CategoriesShowcase from "@/components/CategoriesShowcase"
 
 export default function ConfiguratorPage() {
 
