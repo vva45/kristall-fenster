@@ -6,51 +6,51 @@ export default function WindowsPage() {
   const categories = [
 
     {
-      title: "PVC Windows",
+      title: "PVC WINDOWS",
       description:
-        "Energy efficient PVC systems with modern German engineering.",
-      color:
-        "from-blue-500/20 to-blue-900/30",
+        "Energy-efficient multi-chamber PVC systems with exceptional thermal performance.",
+      image:
+        "/categories/windows-pvc.jpg",
       href:
         "/windows/pvc"
     },
 
     {
-      title: "Aluminium Windows",
+      title: "ALUMINIUM WINDOWS",
       description:
-        "Minimalist aluminium systems for luxury architecture.",
-      color:
-        "from-slate-400/20 to-slate-900/40",
+        "Slim profiles and panoramic glazing for contemporary architecture.",
+      image:
+        "/categories/windows-aluminium.jpg",
       href:
         "/windows/aluminium"
     },
 
     {
-      title: "Wood Windows",
+      title: "WOOD WINDOWS",
       description:
-        "Premium natural wood systems with elegant aesthetics.",
-      color:
-        "from-amber-500/20 to-orange-900/30",
+        "Natural timber craftsmanship combined with modern insulation technology.",
+      image:
+        "/categories/windows-wood.jpg",
       href:
         "/windows/wood"
     },
 
     {
-      title: "Steel Windows",
+      title: "STEEL WINDOWS",
       description:
-        "Industrial steel systems with ultra modern appearance.",
-      color:
-        "from-zinc-500/20 to-zinc-900/40",
+        "Industrial elegance with ultra-slim sightlines and premium durability.",
+      image:
+        "/categories/windows-steel.jpg",
       href:
         "/windows/steel"
     },
 
     {
-      title: "Wood-Aluminium",
+      title: "WOOD-ALUMINIUM",
       description:
-        "Combined premium systems with warmth and durability.",
-      color:
-        "from-orange-500/20 to-neutral-900/40",
+        "Warm natural interiors with weather-resistant aluminium protection.",
+      image:
+        "/categories/windows-wood-alu.jpg",
       href:
         "/windows/wood-alu"
     },
@@ -59,105 +59,183 @@ export default function WindowsPage() {
 
   return (
 
-    <main className="min-h-screen bg-[#020b1d] text-white">
+    <main className="min-h-screen bg-[#020817] text-white">
 
       <Navbar />
 
       {/* HERO */}
 
-      <section className="border-b border-white/10">
+      <section className="relative overflow-hidden border-b border-white/10">
 
-        <div className="max-w-7xl mx-auto px-6 py-24">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#020817] via-[#031225] to-[#041a38]" />
 
-          <p className="text-blue-400 font-semibold mb-6">
-            WINDOW COLLECTION
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(37,99,235,0.25),transparent_55%)]" />
+
+        <div className="relative max-w-[1700px] mx-auto px-8 py-24">
+
+          <p className="text-blue-400 font-semibold tracking-widest uppercase mb-5">
+
+            Window Collection
+
           </p>
 
-          <h1 className="text-6xl md:text-7xl font-black leading-none">
+          <h1 className="text-7xl md:text-8xl font-black leading-[0.95]">
 
-            Explore our
-            <span className="text-blue-400">
-              {" "}window systems.
+            German Engineered
+
+            <span className="block text-blue-400">
+
+              Window Systems
+
             </span>
 
           </h1>
 
-          <p className="mt-8 text-xl text-blue-100/60 max-w-3xl leading-relaxed">
+          <p className="mt-8 text-xl text-white/60 max-w-3xl leading-relaxed">
 
-            Discover premium German-engineered systems designed
-            for modern homes and architectural projects.
+            Explore premium German-engineered window solutions designed
+            for luxury homes, modern architecture and energy-efficient projects.
 
           </p>
+
+          {/* METRICS */}
+
+          <div className="grid md:grid-cols-3 gap-10 mt-14 max-w-5xl">
+
+            <div>
+
+              <div className="text-4xl font-black text-blue-400">
+
+                German Engineered
+
+              </div>
+
+              <div className="mt-2 text-white/60">
+
+                Window Systems
+
+              </div>
+
+            </div>
+
+            <div>
+
+              <div className="text-4xl font-black text-blue-400">
+
+                  Made in EU
+
+              </div>
+
+              <div className="mt-2 text-white/60">
+
+                Premium Manufacturing
+
+              </div>
+
+            </div>
+
+            <div>
+
+              <div className="text-4xl font-black text-blue-400">
+
+                Uw 0.75
+              </div>
+
+              <div className="mt-2 text-white/60">
+
+                High Peromance
+
+              </div>
+
+            </div>
+
+          </div>
 
         </div>
 
       </section>
 
-      {/* GRID */}
+      {/* MATERIALS */}
 
-      <section className="max-w-7xl mx-auto px-6 py-20">
+      <section className="max-w-[1700px] mx-auto px-8 py-20">
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+        <div className="flex flex-wrap justify-center gap-8">
 
-          {categories.map((item, index) => (
+          {categories.map((item) => (
 
-            <div
-              key={index}
-              className="group rounded-[32px] overflow-hidden border border-white/10 bg-white/5 hover:bg-white/[0.07] transition-all duration-500"
+            <Link
+              key={item.title}
+              href={item.href}
+              className="
+                group
+                relative
+                w-full
+                max-w-[370px]
+                h-[520px]
+                rounded-[32px]
+                overflow-hidden
+                border
+                border-white/10
+                bg-[#041226]
+                transition-all
+                duration-500
+                hover:border-blue-500/40
+                hover:shadow-[0_0_40px_rgba(37,99,235,0.15)]
+              "
             >
 
               {/* IMAGE */}
 
               <div
-                className={`h-72 bg-gradient-to-br ${item.color} relative overflow-hidden`}
-              >
+                className="
+                  absolute
+                  inset-0
+                  bg-cover
+                  bg-center
+                  transition-transform
+                  duration-700
+                  group-hover:scale-105
+                "
+                style={{
+                  backgroundImage: `url(${item.image})`,
+                }}
+              />
 
-                <div className="absolute inset-0 flex items-center justify-center">
+              {/* OVERLAY */}
 
-                  <div className="w-44 h-56 rounded-[30px] border-[14px] border-white/90 bg-blue-50/90 shadow-2xl relative">
+              <div className="absolute inset-0 bg-gradient-to-t from-[#020817] via-[#020817]/55 to-transparent" />
 
-                    <div className="absolute inset-4 rounded-[12px] bg-gradient-to-br from-blue-100 to-blue-200" />
+              {/* BLUE GLOW */}
 
-                    <div className="absolute top-4 bottom-4 left-1/2 w-[4px] -translate-x-1/2 bg-black/10" />
-
-                  </div>
-
-                </div>
-
-              </div>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-blue-500/10 transition-all duration-500" />
 
               {/* CONTENT */}
 
-              <div className="p-8">
+              <div className="absolute bottom-0 left-0 right-0 p-8">
 
-                <h2 className="text-3xl font-black">
+                <div className="w-12 h-[3px] bg-blue-500 mb-6" />
+
+                <h2 className="text-[34px] leading-none font-black mb-5">
+
                   {item.title}
+
                 </h2>
 
-                <p className="mt-4 text-blue-100/60 leading-relaxed">
+                <p className="text-white/70 text-[17px] leading-relaxed mb-8">
 
                   {item.description}
 
                 </p>
 
-                <div className="mt-10 flex items-center justify-between">
+                <span className="text-blue-400 font-semibold text-lg">
 
-                  <span className="text-blue-400 font-semibold">
-                    Premium Systems
-                  </span>
+                  View Systems →
 
-                  <Link
-                    href={item.href}
-                    className="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 transition-all font-semibold"
-                  >
-                    View Models
-                  </Link>
-
-                </div>
+                </span>
 
               </div>
 
-            </div>
+            </Link>
 
           ))}
 
