@@ -1,7 +1,9 @@
+import { div } from "motion/react-client";
 import "./configurator.css";
 import Script from "next/script";
 export default function Page() 
-{ return ( <> 
+{ return ( 
+<div className="vp-configurator"> 
 <header className="topbar"> 
   <a className="brand" href="#" aria-label="Inicio"> 
   <span className="brand-mark" aria-hidden="true"> VP </span> 
@@ -225,4 +227,7 @@ export default function Page()
                                                 </div> 
                                                 <p>Precios de ejemplo con IVA incluido. Catálogo demostrativo.</p> 
                                        </footer> 
-<Script src="/simulator.js" strategy="afterInteractive" /> </> ); }
+<Script src="/simulator.js" strategy="afterInteractive" /> 
+</div> )
+; 
+}

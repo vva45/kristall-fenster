@@ -1,4 +1,5 @@
-:root {
+.vp-configurator {
+.vp-configurator {
   color-scheme: light;
   --bg: #f6f7f4;
   --surface: #ffffff;
@@ -895,4 +896,5 @@ textarea:focus {
   .quote-band {
     padding: 0;
   }
+}
 }
