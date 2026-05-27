@@ -44,7 +44,7 @@ export const catalog = {
           glazing: "24-51 mm",
           uw: "0.79 W/m²K",
         },
-      },
+      },   
     ],
   },
 }

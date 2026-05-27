@@ -52,54 +52,67 @@ export default function Navbar() {
 
           {/* NAVIGATION */}
 
-          <nav className="hidden xl:flex items-center h-full relative">
+          <nav
+  className="hidden xl:flex items-center h-full relative"
+  onMouseLeave={() => {
+    setActiveMenu(null)
+    setActiveSubmenu(null)
+  }}
+>
 
             {[
               {
-                id: "windows",
-                label: "WINDOWS",
-                width: "90px",
-              },
-              {
-                id: "doors",
-                label: "DOORS",
-                width: "90px",
-              },
-              {
-                id: "patio",
-                label: "PATIO DOORS",
-                width: "120px",
-              },
-              {
-                id: "garage",
-                label: "GARAGE DOORS",
-                width: "140px",
-              },
-              {
-                id: "accessories",
-                label: "ACCESSORIES",
-                width: "130px",
-              },
-              {
-                id: "contact",
-                label: "CONTACT",
-                width: "90px",
-              },
+  id: "windows",
+  label: "WINDOWS",
+  href: "/windows",
+  width: "90px",
+},
+{
+  id: "doors",
+  label: "DOORS",
+  href: "/doors",
+  width: "90px",
+},
+{
+  id: "patio",
+  label: "PATIO DOORS",
+  href: "/patio-doors",
+  width: "120px",
+},
+{
+  id: "garage",
+  label: "GARAGE DOORS",
+  href: "/garage-doors",
+  width: "140px",
+},
+{
+  id: "accessories",
+  label: "ACCESSORIES",
+  href: "/accessories",
+  width: "130px",
+},
+{
+  id: "contact",
+  label: "CONTACT",
+  href: "/contact",
+  width: "90px",
+},
             ].map((item) => (
 
               <div
-                key={item.id}
-                className="relative h-full flex items-center"
-                onMouseEnter={() =>
-                  setActiveMenu(item.id)
-                }
-              >
+  key={item.id}
+  className="relative h-full flex items-center"
+  onMouseEnter={() => setActiveMenu(item.id)}
+>
 
-                <button className={`relative h-full px-8 flex items-center text-[15px] font-semibold tracking-wide transition-all ${
-                  activeMenu === item.id
-                    ? "text-blue-400"
-                    : "text-white/70 hover:text-white"
-                }`}>
+                <Link
+                href={item.href}
+  className={`relative h-full px-8 flex items-center text-[15px] font-semibold tracking-wide transition-all ${
+    activeMenu === item.id
+      ? "text-blue-400"
+      : "text-white/70 hover:text-white"
+  }`}
+>
 
                   {item.label}
 
@@ -118,7 +131,7 @@ export default function Navbar() {
 
                   )}
 
-                </button>
+                </Link>
 
               </div>
 
@@ -132,7 +145,7 @@ export default function Navbar() {
 
       {/* MEGA MENU */}
 
-      {activeMenu && (
+{activeMenu && (
 
         <div
           className="border-t border-blue-500/10 bg-[#041022]/98 backdrop-blur-3xl shadow-[0_15px_60px_rgba(0,0,0,0.6)]"
@@ -161,22 +174,33 @@ export default function Navbar() {
 
                 <div className="space-y-5 pt-2">
 
-                  {[
-                    "PVC Windows",
-                    "Aluminium Windows",
-                    "Steel Windows",
-                    "Wood Windows",
-                  ].map((item) => (
+                  <Link
+                    href="/windows/pvc"
+                    className="block text-[17px] text-white/75 hover:text-blue-400 transition-all"
+                  >
+                    PVC Windows
+                  </Link>
 
-                    <Link
-                      key={item}
-                      href="/products"
-                      className="block text-[17px] text-white/75 hover:text-blue-400 transition-all"
-                    >
-                      {item}
-                    </Link>
+                  <Link
+                    href="/windows/aluminium"
+                    className="block text-[17px] text-white/75 hover:text-blue-400 transition-all"
+                  >
+                    Aluminium Windows
+                  </Link>
 
-                  ))}
+                  <Link
+                    href="/windows/steel"
+                    className="block text-[17px] text-white/75 hover:text-blue-400 transition-all"
+                  >
+                    Steel Windows
+                  </Link>
+
+                  <Link
+                    href="/windows/wood"
+                    className="block text-[17px] text-white/75 hover:text-blue-400 transition-all"
+                  >
+                    Wood Windows
+                  </Link>
 
                 </div>
 
@@ -197,82 +221,86 @@ export default function Navbar() {
                 <div className="space-y-5 pt-2">
 
                   <Link
-                    href="/products"
-                    className="block text-[17px] text-white/75 hover:text-blue-400 transition-all"
-                  >
-                    Front Doors
-                  </Link>
+  href="/doors"
+  className="block text-[17px] text-white/75 hover:text-blue-400 transition-all"
+>
+  Front Doors
+</Link>
 
                   <Link
-                    href="/products"
-                    className="block text-[17px] text-white/75 hover:text-blue-400 transition-all"
-                  >
-                    Garage Doors
-                  </Link>
+  href="/garage-doors"
+  className="block text-[17px] text-white/75 hover:text-blue-400 transition-all"
+>
+  Garage Doors
+</Link>
 
                   {/* SIDE ENTRANCE */}
 
-                  <div
-                    className="relative"
-                    onMouseEnter={() =>
-                      setActiveSubmenu("side")
-                    }
-                  >
+                  {/* SIDE ENTRANCE */}
 
-                    <div className="flex items-center justify-between text-[17px] text-white/75 hover:text-blue-400 transition-all cursor-pointer">
+<div
+  className="relative"
+  onMouseEnter={() => setActiveSubmenu("side")}
+  onMouseLeave={() => setActiveSubmenu(null)}
+>
 
-                      <span>
-                        Side Entrance Doors
-                      </span>
+  <div className="flex items-center justify-between text-[17px] text-white/75 hover:text-blue-400 transition-all cursor-pointer">
 
-                      <span className="text-blue-400">
-                        ›
-                      </span>
+    <span>
+      Side Entrance Doors
+    </span>
 
-                    </div>
+    <span className="text-blue-400">
+      ›
+    </span>
 
-                    {activeSubmenu === "side" && (
+  </div>
 
-                      <div
-                        className="absolute left-full top-0 ml-5 z-50"
-                        onMouseEnter={() =>
-                          setActiveSubmenu("side")
-                        }
-                        onMouseLeave={() =>
-                          setActiveSubmenu(null)
-                        }
-                      >
+  {activeSubmenu === "side" && (
 
-                        <div className="w-[240px] rounded-[24px] border border-white/5 bg-[#071827]/98 backdrop-blur-2xl p-6 shadow-[0_10px_45px_rgba(0,0,0,0.45)]">
+    <div className="absolute left-full top-0 ml-5 z-[999]">
 
-                          <div className="space-y-5">
+      <div className="w-[240px] rounded-[24px] border border-white/5 bg-[#071827]/98 backdrop-blur-2xl p-6 shadow-[0_10px_45px_rgba(0,0,0,0.45)]">
 
-                            {[
-                              "PVC",
-                              "Aluminium",
-                              "Steel",
-                              "Wood",
-                            ].map((item) => (
+        <div className="space-y-5">
 
-                              <Link
-                                key={item}
-                                href="/products"
-                                className="block text-[16px] text-white/70 hover:text-blue-400 transition-all"
-                              >
-                                › {item}
-                              </Link>
+          <Link
+            href="/doors/pvc"
+            className="block text-[16px] text-white/70 hover:text-blue-400 transition-all"
+          >
+            › PVC
+          </Link>
 
-                            ))}
+          <Link
+            href="/doors/aluminium"
+            className="block text-[16px] text-white/70 hover:text-blue-400 transition-all"
+          >
+            › Aluminium
+          </Link>
 
-                          </div>
+          <Link
+            href="/doors/steel"
+            className="block text-[16px] text-white/70 hover:text-blue-400 transition-all"
+          >
+            › Steel
+          </Link>
 
-                        </div>
+          <Link
+            href="/doors/wood"
+            className="block text-[16px] text-white/70 hover:text-blue-400 transition-all"
+          >
+            › Wood
+          </Link>
 
-                      </div>
+        </div>
 
-                    )}
+      </div>
 
-                  </div>
+    </div>
+
+  )}
+
+</div>
 
                 </div>
 
@@ -344,7 +372,7 @@ export default function Navbar() {
 
                                 <Link
                                   key={material}
-                                  href="/products"
+                                 href="/patio-doors"
                                   className="block text-[16px] text-white/70 hover:text-blue-400 transition-all"
                                 >
                                   › {material}
@@ -392,7 +420,7 @@ export default function Navbar() {
 
                     <Link
                       key={item}
-                      href="/products"
+                      href="/garage-doors"
                       className="block text-[17px] text-white/75 hover:text-blue-400 transition-all"
                     >
                       {item}
@@ -435,7 +463,7 @@ export default function Navbar() {
 
                     <Link
                       key={item}
-                      href="/products"
+                      href="/accessories"
                       className="block text-[17px] text-white/75 hover:text-blue-400 transition-all"
                     >
                       {item}

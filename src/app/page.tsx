@@ -1,5 +1,5 @@
 import Link from "next/link"
-import Navbar from "@/components/Navbar"
+
 
 const categories = [
   {
@@ -49,7 +49,6 @@ export default function Home() {
 
     <main className="min-h-screen bg-[#020817] text-white overflow-hidden">
 
-      <Navbar />
 
       {/* HERO */}
 

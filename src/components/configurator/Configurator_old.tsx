@@ -5,6 +5,7 @@ import QuotePanel from "./QuotePanel"
 import StepTabs from "./StepTabs"
 
 export default function Configurator() {
+  const config = {} as any
 
   return (
 
@@ -18,9 +19,9 @@ export default function Configurator() {
 
       <div className="space-y-6">
 
-        <WindowPreview />
+        <WindowPreview config={config} />
 
-        <QuotePanel />
+        <QuotePanel config={config} />
 
       </div>
 

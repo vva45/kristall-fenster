@@ -1,6 +1,4 @@
 import Link from "next/link"
-import Navbar from "@/components/Navbar"
-
 export default function WindowsPage() {
 
   const categories = [
@@ -60,8 +58,6 @@ export default function WindowsPage() {
   return (
 
     <main className="min-h-screen bg-[#020817] text-white">
-
-      <Navbar />
 
       {/* HERO */}
 

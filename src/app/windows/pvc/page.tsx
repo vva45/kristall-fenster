@@ -1,5 +1,4 @@
 import Link from "next/link"
-import Navbar from "@/components/Navbar"
 import { catalog } from "@/data/catalog"
 
 export default function PVCWindowsPage() {
@@ -9,8 +8,6 @@ export default function PVCWindowsPage() {
   return (
 
     <main className="min-h-screen bg-[#020817] text-white">
-
-      <Navbar />
 
       {/* HERO */}
 
