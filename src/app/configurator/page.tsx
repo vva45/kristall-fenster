@@ -1,4 +1,3 @@
-import { div } from "motion/react-client";
 import "./configurator.css";
 import Script from "next/script";
 export default function Page() 
