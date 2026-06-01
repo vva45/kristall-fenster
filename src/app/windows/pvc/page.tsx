@@ -218,7 +218,7 @@ export default function PVCWindowsPage() {
                   </div>
 
                   <Link
-                    href={`/windows/pvc/${model.slug}`}
+                    href={`/windows/pvc/${model.brandSlug}/${model.slug}`}
                     className="
                       px-6
                       py-3

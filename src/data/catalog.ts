@@ -5,6 +5,7 @@ export const catalog = {
         slug: "ideal-4000",
         name: "Ideal 4000",
         manufacturer: "Aluplast",
+        brandSlug: "aluplast",
         description: "Reliable PVC system with excellent thermal performance.",
         minPrice: 299,
 
@@ -20,6 +21,7 @@ export const catalog = {
         slug: "ideal-5000",
         name: "Ideal 5000",
         manufacturer: "Aluplast",
+        brandSlug: "aluplast",
         description: "Enhanced thermal insulation profile system.",
         minPrice: 349,
 
@@ -35,6 +37,7 @@ export const catalog = {
         slug: "ideal-7000",
         name: "Ideal 7000",
         manufacturer: "Aluplast",
+        brandSlug: "aluplast",
         description: "Premium energy efficient PVC system.",
         minPrice: 449,
 

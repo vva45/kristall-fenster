@@ -27,7 +27,7 @@ export default function Page()
               </div> 
               <div className="live-total" aria-live="polite"> 
                 <span>Total</span> 
-                <strong id="liveTotal">0,00 €</strong> 
+                <strong id="liveTotal"></strong> 
                 </div> 
                 </div> 
                 <div className="visual-stage">
@@ -194,7 +194,10 @@ export default function Page()
                                               <div className="summary-head"> 
                                                 <h2>Precio estimado</h2> 
                                               <strong id="summaryTotal">0,00 €</strong> 
-                                              </div> <dl className="price-breakdown" id="priceBreakdown" /> <div className="actions"> 
+                                              </div> 
+                                              <dl className="price-breakdown" id="priceBreakdown" /> 
+                                              
+                                              <div className="actions"> 
                                                 <button className="primary-action" id="addToQuote" type="button"> Añadir al presupuesto </button> 
                                                 <button className="secondary-action" id="copySummary" type="button"> Copiar resumen </button> 
                                              </div> 
@@ -225,8 +228,16 @@ export default function Page()
                                                 <span>info@ventanapro.local</span> 
                                                 </div> 
                                                 <p>Precios de ejemplo con IVA incluido. Catálogo demostrativo.</p> 
-                                       </footer> 
-<Script src="/simulator.js" strategy="afterInteractive" /> 
+                                       
+</footer> 
+
+
+<Script
+  src="/configurator.js"
+  strategy="afterInteractive"
+/>
+
+
 </div> )
 ; 
 }

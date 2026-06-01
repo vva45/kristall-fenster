@@ -1,3 +1,9 @@
+console.log("SIMULATOR LOADED");
+
+window.addEventListener("load", () => {
+  console.log("WINDOW LOADED");
+  init();
+});
 const catalog = {
   materials: {
     pvc: { label: "PVC / Kunststoff", multiplier: 1, note: "Base eficiente" },
@@ -1098,7 +1104,7 @@ function renderLeafOpening(panel) {
   const yTop = panel.y + 12;
   const yMid = panel.y + panel.h / 2;
   const yBottom = panel.y + panel.h - 12;
-  const tiltPath = `<path d="M ${panel.x + 12} ${yTop} L ${panel.x + panel.w / 2} ${yBottom} L ${panel.x + panel.w - 12} ${yTop}" fill="none" stroke="${stroke}" stroke-width="3" opacity="0.82" />`;
+  const tiltPath = `<path d="M ${panel.x + 12} ${yBottom} L ${panel.x + panel.w / 2} ${yTop} L ${panel.x + panel.w - 12} ${yBottom}" fill="none" stroke="${stroke}" stroke-width="3" opacity="0.82" />`;
   const turnPath = `<path d="M ${hingeX} ${yTop} L ${handleX} ${yMid} L ${hingeX} ${yBottom}" fill="none" stroke="${stroke}" stroke-width="3" opacity="0.92" />`;
 
   if (panel.opening === "tilt") return tiltPath;
@@ -1287,3 +1293,4 @@ function shadeColor(hex, percent) {
 function clampColor(value) {
   return Math.max(0, Math.min(255, value));
 }
+console.log("SIMULATOR FINISHED");
