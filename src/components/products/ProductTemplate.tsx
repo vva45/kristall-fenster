@@ -1,20 +1,32 @@
 import Link from "next/link"
 
 type Props = {
+  slug: string
   title: string
   manufacturer: string
   description: string
   image: string
-  slug: string
+
+  features: string[]
+
+  technical: {
+    installationDepth: string
+    chambers: string
+    glazing: string
+    uw: string
+  }
 }
 
 export default function ProductTemplate({
+  slug,
   title,
   manufacturer,
   description,
   image,
-  slug,
-}: Props) 
+  features,
+  technical,
+}: Props)
+
 {
   return (
     <main className="min-h-screen bg-[#020817] text-white">
@@ -96,103 +108,49 @@ export default function ProductTemplate({
 
         </h2>
 
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2">
 
-          {[
-            "Premium Thermal Insulation",
-            "High Security Hardware",
-            "Excellent Sound Reduction",
-            "German Engineering"
-          ].map((feature) => (
+  <div className="p-8 border-b border-r border-white/10">
+    <span className="block text-white/50 text-sm mb-2">
+      Installation Depth
+    </span>
 
-            <div
-              key={feature}
-              className="rounded-[24px] border border-white/10 bg-[#041226] p-8"
-            >
+    <strong className="text-3xl font-bold">
+      {technical.installationDepth}
+    </strong>
+  </div>
 
-              <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-6">
+  <div className="p-8 border-b border-white/10">
+    <span className="block text-white/50 text-sm mb-2">
+      Chambers
+    </span>
 
-                ✦
+    <strong className="text-3xl font-bold">
+      {technical.chambers}
+    </strong>
+  </div>
 
-              </div>
+  <div className="p-8 border-r border-white/10">
+    <span className="block text-white/50 text-sm mb-2">
+      Glazing
+    </span>
 
-              <h3 className="font-bold text-lg">
+    <strong className="text-3xl font-bold">
+      {technical.glazing}
+    </strong>
+  </div>
 
-                {feature}
+  <div className="p-8">
+    <span className="block text-white/50 text-sm mb-2">
+      Uw
+    </span>
 
-              </h3>
+    <strong className="text-3xl font-bold">
+      {technical.uw}
+    </strong>
+  </div>
 
-            </div>
-
-          ))}
-
-        </div>
-
-      </section>
-
-      <section className="max-w-[1600px] mx-auto px-8 pb-24">
-
-        <h2 className="text-5xl font-black mb-12">
-
-          Technical Specifications
-
-        </h2>
-
-        <div className="rounded-[32px] border border-white/10 bg-[#041226] overflow-hidden">
-
-          <div className="grid md:grid-cols-2">
-
-            <div className="p-8 border-b md:border-b-0 md:border-r border-white/10">
-
-              Installation Depth
-
-            </div>
-
-            <div className="p-8 text-blue-400">
-
-              70 mm
-
-            </div>
-
-            <div className="p-8 border-b md:border-r border-white/10">
-
-              Chambers
-
-            </div>
-
-            <div className="p-8 text-blue-400">
-
-              5
-
-            </div>
-
-            <div className="p-8 border-b md:border-r border-white/10">
-
-              Glazing
-
-            </div>
-
-            <div className="p-8 text-blue-400">
-
-              24-41 mm
-
-            </div>
-
-            <div className="p-8 md:border-r border-white/10">
-
-              Uw Value
-
-            </div>
-
-            <div className="p-8 text-blue-400">
-
-              0.96 W/m²K
-
-            </div>
-
-          </div>
-
-        </div>
+</div>
 
       </section>
 

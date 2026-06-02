@@ -423,14 +423,14 @@ function renderPresetOpeningLine(opening, x, y, w, h) {
   const handleX = left ? x + w - 4 : x + 4;
 
   if (opening === "tilt") {
-    return `<path d="M ${x + 5} ${y + 6} L ${midX} ${y + h - 6} L ${x + w - 5} ${y + 6}" fill="none" stroke="${stroke}" stroke-width="2" />`;
-  }
+  return `<path d="M ${x + 5} ${y + h - 6} L ${midX} ${y + 6} L ${x + w - 5} ${y + h - 6}" fill="none" stroke="${stroke}" stroke-width="2" />`;
+}
 
   if (opening === "tiltTurnLeft" || opening === "tiltTurnRight") {
     return `
       <path d="M ${hingeX} ${y + 6} L ${handleX} ${midY} L ${hingeX} ${y + h - 6}" fill="none" stroke="${stroke}" stroke-width="2" />
-      <path d="M ${x + 5} ${y + 6} L ${midX} ${y + h - 6} L ${x + w - 5} ${y + 6}" fill="none" stroke="${stroke}" stroke-width="1.6" opacity="0.75" />
-    `;
+      <path d="M ${x + 5} ${y + h - 6} L ${midX} ${y + 6} L ${x + w - 5} ${y + h - 6}" fill="none" stroke="${stroke}" stroke-width="1.6" opacity="0.75" />
+  `;
   }
 
   return `<path d="M ${hingeX} ${y + 6} L ${handleX} ${midY} L ${hingeX} ${y + h - 6}" fill="none" stroke="${stroke}" stroke-width="2" />`;
