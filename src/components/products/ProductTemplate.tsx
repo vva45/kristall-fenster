@@ -102,57 +102,90 @@ export default function ProductTemplate({
 
       <section className="max-w-[1600px] mx-auto px-8 py-20">
 
-        <h2 className="text-5xl font-black mb-12">
+  <h2 className="text-5xl font-black mb-12">
+    Key Features
+  </h2>
 
-          Key Features
+  <div className="grid md:grid-cols-4 gap-8">
 
-        </h2>
+    {features.map((feature) => (
 
-        <div className="grid md:grid-cols-2">
+      <div
+        key={feature}
+        className="rounded-[24px] border border-white/10 bg-[#041226] p-8"
+      >
 
-  <div className="p-8 border-b border-r border-white/10">
-    <span className="block text-white/50 text-sm mb-2">
-      Installation Depth
-    </span>
+        <div className="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-6">
+          ✦
+        </div>
 
-    <strong className="text-3xl font-bold">
-      {technical.installationDepth}
-    </strong>
+        <h3 className="font-bold text-lg">
+          {feature}
+        </h3>
+
+      </div>
+
+    ))}
+
   </div>
 
-  <div className="p-8 border-b border-white/10">
-    <span className="block text-white/50 text-sm mb-2">
-      Chambers
-    </span>
+</section>
 
-    <strong className="text-3xl font-bold">
-      {technical.chambers}
-    </strong>
+<section className="max-w-[1600px] mx-auto px-8 pb-24">
+
+  <h2 className="text-5xl font-black mb-12">
+    Technical Specifications
+  </h2>
+
+  <div className="rounded-[32px] border border-white/10 bg-[#041226] overflow-hidden">
+
+    <div className="grid md:grid-cols-2">
+
+      <div className="p-8 border-b border-r border-white/10">
+        <span className="block text-white/50 text-sm mb-2">
+          Installation Depth
+        </span>
+
+        <strong className="text-3xl font-bold">
+          {technical.installationDepth}
+        </strong>
+      </div>
+
+      <div className="p-8 border-b border-white/10">
+        <span className="block text-white/50 text-sm mb-2">
+          Chambers
+        </span>
+
+        <strong className="text-3xl font-bold">
+          {technical.chambers}
+        </strong>
+      </div>
+
+      <div className="p-8 border-r border-white/10">
+        <span className="block text-white/50 text-sm mb-2">
+          Glazing
+        </span>
+
+        <strong className="text-3xl font-bold">
+          {technical.glazing}
+        </strong>
+      </div>
+
+      <div className="p-8">
+        <span className="block text-white/50 text-sm mb-2">
+          Uw
+        </span>
+
+        <strong className="text-3xl font-bold">
+          {technical.uw}
+        </strong>
+      </div>
+
+    </div>
+
   </div>
 
-  <div className="p-8 border-r border-white/10">
-    <span className="block text-white/50 text-sm mb-2">
-      Glazing
-    </span>
-
-    <strong className="text-3xl font-bold">
-      {technical.glazing}
-    </strong>
-  </div>
-
-  <div className="p-8">
-    <span className="block text-white/50 text-sm mb-2">
-      Uw
-    </span>
-
-    <strong className="text-3xl font-bold">
-      {technical.uw}
-    </strong>
-  </div>
-
-</div>
-
-      </section>
+</section>
 
     </main>
   )
