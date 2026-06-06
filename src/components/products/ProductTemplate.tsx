@@ -1,33 +1,39 @@
 import Link from "next/link"
+import { catalog } from "@/data/catalog"
+
 
 type Props = {
   slug: string
-  title: string
-  manufacturer: string
-  description: string
-  image: string
-
-  features: string[]
-
-  technical: {
-    installationDepth: string
-    chambers: string
-    glazing: string
-    uw: string
-  }
 }
 
 export default function ProductTemplate({
   slug,
-  title,
-  manufacturer,
-  description,
-  image,
-  features,
-  technical,
 }: Props)
 
 {
+  const product = catalog.windows.pvc.find(
+    (p) => p.slug === slug
+  )
+
+  if (!product) {
+    return <div>Product not found</div>
+  }
+
+  const title = product.name
+  const manufacturer = product.manufacturer
+  const description = product.description
+
+  const image = `/products/${product.slug}.png`
+
+  const technical = product.technical
+
+  const features = [
+    `${technical.chambers} chamber system`,
+    technical.glazing,
+    `${technical.installationDepth} installation depth`,
+    "German engineering",
+  ]
+
   return (
     <main className="min-h-screen bg-[#020817] text-white">
 
@@ -87,7 +93,7 @@ export default function ProductTemplate({
                 <img
                   src={image}
                   alt={title}
-                  className="w-full h-[500px] object-cover"
+                  className="w-full h-[500px] object-contain scale-125"
                 />
 
               </div>

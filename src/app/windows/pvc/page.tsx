@@ -132,22 +132,21 @@ export default function PVCWindowsPage() {
 
               <div className="relative h-72 overflow-hidden">
 
-                <div
-                  className="
-                    absolute
-                    inset-0
-                    bg-cover
-                    bg-center
-                    transition-transform
-                    duration-700
-                    group-hover:scale-105
-                  "
-                  style={{
-                    backgroundImage: `url(/products/${model.slug}.jpg)`
-                  }}
-                />
+              <img
+  src={`/products/${model.slug}.png`}
+  alt={model.name}
+  className="
+    w-full
+    h-full
+    object-contain
+    p-6
+    transition-transform
+    duration-700
+    group-hover:scale-105
+  "
+/>  
 
-                <div className="absolute inset-0 bg-gradient-to-t from-[#020817] via-[#020817]/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#020817] via-[#020817]/30 to-transparent" />
 
               </div>
 
