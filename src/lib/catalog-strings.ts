@@ -6,6 +6,10 @@
 import type { Localized } from "../data/catalog/types";
 
 export const CS = {
+  // Navegación (se pintan en mayúsculas vía CSS)
+  navCatalogue: { en: "Catalogue", de: "Katalog", pl: "Katalog" },
+  navConfigurator: { en: "Configurator", de: "Konfigurator", pl: "Konfigurator" },
+
   // Índice del catálogo
   sortiment: { en: "Product range", de: "Sortiment", pl: "Oferta" },
   catalogue: { en: "Catalogue", de: "Katalog", pl: "Katalog" },

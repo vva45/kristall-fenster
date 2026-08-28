@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { categoriesOrdered } from "../../lib/catalog";
 import { pick, useLocale } from "../../lib/i18n";
+import { CS } from "../../lib/catalog-strings";
 import { LocaleSwitch } from "../LocaleSwitch";
 
 export default function Navbar() {
@@ -38,17 +39,17 @@ export default function Navbar() {
             <div className="relative flex h-full items-center" onMouseEnter={() => setOpen(true)}>
               <Link
                 href="/catalog"
-                className="relative flex h-full items-center px-3 text-[12px] font-bold tracking-[0.08em] text-kamika-ink/70 transition-colors hover:text-kamika-steel md:px-5"
+                className="relative flex h-full items-center px-3 text-[12px] font-bold tracking-[0.08em] uppercase text-kamika-ink/70 transition-colors hover:text-kamika-steel md:px-5"
               >
-                KATALOG
+                {pick(CS.navCatalogue, locale)}
                 {open && <span className="absolute inset-x-3 bottom-0 h-[3px] bg-kamika-steel md:inset-x-5" />}
               </Link>
             </div>
             <Link
               href="/configurator"
-              className="flex h-full items-center px-3 text-[12px] font-bold tracking-[0.08em] text-kamika-ink/70 transition-colors hover:text-kamika-steel md:px-5"
+              className="flex h-full items-center px-3 text-[12px] font-bold tracking-[0.08em] uppercase text-kamika-ink/70 transition-colors hover:text-kamika-steel md:px-5"
             >
-              KONFIGURATOR
+              {pick(CS.navConfigurator, locale)}
             </Link>
             <div className="ml-2 md:ml-4">
               <LocaleSwitch />
