@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* ──────────────────────────────────────────────────────────────
+   Tokens de marca Kamika — misma fuente de verdad que en la web
+   principal. Este repo es el laboratorio del configurador: cuando
+   se mude a kamika-bauelemente, estos tokens ya coinciden.
+   ────────────────────────────────────────────────────────────── */
 :root {
   --kamika-blue: #afc9ef;
   --kamika-blue-50: #f0f5fc;
@@ -14,30 +19,62 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --color-kamika-blue: var(--kamika-blue);
+  --color-kamika-blue-50: var(--kamika-blue-50);
+  --color-kamika-steel: var(--kamika-steel);
+  --color-kamika-ink: var(--kamika-ink);
+  --color-kamika-paper: var(--kamika-paper);
+  --color-kamika-mist: var(--kamika-mist);
+
+  /* Tres roles tipográficos, como en Kamika: display / texto / técnica.
+     Las variables las inyecta next/font desde el layout raíz. */
+  --font-display: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Radios pequeños: documentación técnica, no app de consumo. */
+  --radius-kamika: 4px;
+  --radius-frame: 6px;
+
+  /* Elevación de perfil: sombra corta y dura, nunca difusa. */
+  --shadow-profile: 4px 4px 0 0 var(--kamika-mist);
+  --shadow-profile-steel: 4px 4px 0 0 var(--kamika-steel);
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   background: var(--kamika-paper);
   color: var(--kamika-ink);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
-  line-height: 1.55;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
   overflow-x: hidden;
+}
+h1, h2, h3 {
+  font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
+h4, h5, h6 {
+  font-family: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
 }
 a { text-decoration: none; }
 button, input, select, textarea { font: inherit; }
 img { display: block; max-width: 100%; }
 ::selection { background: var(--kamika-blue); color: var(--kamika-ink); }
-:focus-visible { outline: 2px solid var(--kamika-steel); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--kamika-steel); outline-offset: 2px; border-radius: 2px; }
 
 .kamika-eyebrow {
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
   font-size: .68rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: .17em;
   line-height: 1.35;
   text-transform: uppercase;
@@ -55,4 +92,13 @@ img { display: block; max-width: 100%; }
 @media (max-width: 767px) {
   .kamika-grid-bg { background-size: 34px 34px; }
   .kamika-eyebrow { font-size: .62rem; letter-spacing: .145em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
