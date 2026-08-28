@@ -2,250 +2,50 @@ import Link from "next/link"
 import { catalog } from "@/data/catalog"
 
 export default function PVCWindowsPage() {
-
   const models = catalog.windows.pvc
 
   return (
-
-    <main className="min-h-screen bg-[#020817] text-white">
-
-      {/* HERO */}
-
-      <section className="relative overflow-hidden border-b border-white/10">
-
-        <div className="absolute inset-0 bg-gradient-to-r from-[#020817] via-[#031225] to-[#041a38]" />
-
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(37,99,235,0.25),transparent_55%)]" />
-
-        <div className="relative max-w-[1700px] mx-auto px-8 py-24">
-
-          <p className="text-blue-400 font-semibold tracking-widest uppercase mb-5">
-
-            WINDOWS / PVC
-
-          </p>
-
-          <h1 className="text-7xl md:text-8xl font-black leading-[0.95]">
-
-            German Engineered
-
-            <span className="block text-blue-400">
-
-              PVC Systems
-
-            </span>
-
-          </h1>
-
-          <p className="mt-8 text-xl text-white/60 max-w-3xl leading-relaxed">
-
-            Premium PVC window profiles engineered for thermal efficiency,
-            security and modern architectural design. Built for demanding
-            projects and contemporary Mediterranean living.
-
-          </p>
-
-          {/* METRICS */}
-
-          <div className="grid md:grid-cols-3 gap-10 mt-14 max-w-5xl">
-
-            <div>
-
-              <div className="text-4xl font-black text-blue-400">
-
-                Uw 0.75
-
-              </div>
-
-              <div className="mt-2 text-white/60">
-
-                High Performance
-
-              </div>
-
-            </div>
-
-            <div>
-
-              <div className="text-4xl font-black text-blue-400">
-
-                5-7
-
-              </div>
-
-              <div className="mt-2 text-white/60">
-
-                Chamber Systems
-
-              </div>
-
-            </div>
-
-            <div>
-
-              <div className="text-4xl font-black text-blue-400">
-
-                Made in EU
-
-              </div>
-
-              <div className="mt-2 text-white/60">
-
-                Premium Manufacturing
-
-              </div>
-
-            </div>
-
+    <main className="min-h-screen bg-white text-[#0f1114]">
+      <section className="kamika-grid-bg border-b border-[#e4e9f0]">
+        <div className="mx-auto max-w-[1440px] px-5 py-16 md:px-8 md:py-24">
+          <p className="kamika-eyebrow">Windows / PVC</p>
+          <h1 className="mt-5 max-w-5xl text-5xl font-semibold tracking-[-0.05em] md:text-7xl">German engineered <span className="block text-[#2f4c74]">PVC systems.</span></h1>
+          <p className="mt-7 max-w-3xl text-lg leading-relaxed text-[#0f1114]/60">Premium PVC profiles engineered for thermal efficiency, security and contemporary architectural design.</p>
+          <div className="mt-12 grid max-w-5xl gap-6 md:grid-cols-3">
+            {[['Uw 0.72','High performance'],['5–7','Chamber systems'],['Made in EU','Premium manufacturing']].map(([a,b]) => (
+              <div key={a} className="border-t border-[#2f4c74] pt-4"><strong className="block text-2xl font-semibold text-[#2f4c74]">{a}</strong><span className="mt-1 block text-sm text-[#0f1114]/55">{b}</span></div>
+            ))}
           </div>
-
         </div>
-
       </section>
 
-      {/* PRODUCTS */}
-
-      <section className="max-w-[1700px] mx-auto px-8 py-20">
-
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-
+      <section className="mx-auto max-w-[1440px] px-5 py-16 md:px-8 md:py-24">
+        <div className="grid gap-7 md:grid-cols-2 xl:grid-cols-3">
           {models.map((model) => (
-
-            <div
-              key={model.slug}
-              className="
-                group
-                overflow-hidden
-                rounded-[32px]
-                border
-                border-white/10
-                bg-white/5
-                hover:bg-white/[0.07]
-                hover:border-blue-500/40
-                hover:shadow-[0_0_40px_rgba(37,99,235,0.15)]
-                transition-all
-                duration-500
-              "
-            >
-
-              {/* IMAGE */}
-
-              <div className="relative h-72 overflow-hidden">
-
-              <img
-  src={`/products/${model.slug}.png`}
-  alt={model.name}
-  className="
-    w-full
-    h-full
-    object-contain
-    p-6
-    transition-transform
-    duration-700
-    group-hover:scale-105
-  "
-/>  
-
-              <div className="absolute inset-0 bg-gradient-to-t from-[#020817] via-[#020817]/30 to-transparent" />
-
+            <article key={model.slug} className="group overflow-hidden border border-[#d8e0e9] bg-white shadow-[4px_4px_0_#e4e9f0] transition-transform hover:-translate-y-1">
+              <div className="relative h-72 overflow-hidden bg-[#f0f5fc]">
+                <img src={`/products/${model.slug}.png`} alt={model.name} className="h-full w-full object-contain p-6 transition-transform duration-500 group-hover:scale-[1.04]" />
               </div>
+              <div className="p-7">
+                <p className="kamika-eyebrow">{model.manufacturer}</p>
+                <h2 className="mt-3 text-3xl font-semibold tracking-[-0.03em]">{model.name}</h2>
+                <p className="mt-4 min-h-[72px] text-[#0f1114]/60">{model.description}</p>
 
-              {/* CONTENT */}
-
-              <div className="p-8">
-
-                <div className="text-blue-400 text-sm font-semibold uppercase tracking-wide mb-2">
-
-                  {model.manufacturer}
-
+                <div className="mt-6 grid grid-cols-3 border-y border-[#e4e9f0] text-sm">
+                  <div className="py-4 pr-3"><span className="block text-[11px] uppercase tracking-wide text-[#0f1114]/45">Depth</span><strong className="mt-1 block font-medium">{model.technical.installationDepth}</strong></div>
+                  <div className="border-l border-[#e4e9f0] px-3 py-4"><span className="block text-[11px] uppercase tracking-wide text-[#0f1114]/45">Chambers</span><strong className="mt-1 block font-medium">{model.technical.chambers}</strong></div>
+                  <div className="border-l border-[#e4e9f0] pl-3 py-4"><span className="block text-[11px] uppercase tracking-wide text-[#0f1114]/45">Uw</span><strong className="mt-1 block font-medium">{model.technical.uw}</strong></div>
                 </div>
 
-                <h2 className="text-3xl font-black mb-4">
-
-                  {model.name}
-
-                </h2>
-
-                <p className="text-blue-100/60 leading-relaxed min-h-[90px]">
-
-                  {model.description}
-
-                </p>
-
-                {/* TECHNICAL */}
-
-                <div className="mt-6 space-y-2 text-sm text-white/70">
-
-                  <div>
-
-                    Depth: {model.technical.installationDepth}
-
-                  </div>
-
-                  <div>
-
-                    Chambers: {model.technical.chambers}
-
-                  </div>
-
-                  <div>
-
-                    Uw: {model.technical.uw}
-
-                  </div>
-
+                <div className="mt-7 flex items-end justify-between gap-4">
+                  <div><span className="text-xs text-[#0f1114]/45">Starting from</span><div className="mt-1 text-3xl font-semibold text-[#2f4c74]">€{model.minPrice}</div></div>
+                  <Link href={`/windows/pvc/${model.brandSlug}/${model.slug}`} className="rounded-[4px] bg-[#0f1114] px-5 py-3 font-semibold text-white shadow-[3px_3px_0_#afc9ef] transition-transform hover:-translate-y-0.5">View Details</Link>
                 </div>
-
-                {/* FOOTER */}
-
-                <div className="flex items-center justify-between mt-8">
-
-                  <div>
-
-                    <div className="text-white/40 text-sm">
-
-                      Starting from
-
-                    </div>
-
-                    <div className="text-3xl font-black text-blue-400">
-
-                      €{model.minPrice}
-
-                    </div>
-
-                  </div>
-
-                  <Link
-                    href={`/windows/pvc/${model.brandSlug}/${model.slug}`}
-                    className="
-                      px-6
-                      py-3
-                      rounded-xl
-                      bg-blue-600
-                      hover:bg-blue-500
-                      transition-all
-                      font-semibold
-                    "
-                  >
-
-                    View Details
-
-                  </Link>
-
-                </div>
-
               </div>
-
-            </div>
-
+            </article>
           ))}
-
         </div>
-
       </section>
-
     </main>
-
   )
 }
