@@ -39,7 +39,7 @@ export default function PVCWindowsPage() {
 
                 <div className="mt-5 flex items-end justify-between gap-3 md:mt-7 md:gap-4">
                   <div><span className="text-[9px] text-[#0f1114]/45 md:text-xs">Starting from</span><div className="mt-0.5 text-[24px] font-semibold leading-none text-[#2f4c74] md:mt-1 md:text-3xl">€{model.minPrice}</div></div>
-                  <Link href={`/windows/pvc/${model.brandSlug}/${model.slug}`} className="rounded-[3px] bg-[#0f1114] px-4 py-2.5 text-[11px] font-semibold text-white shadow-[3px_3px_0_#afc9ef] transition-transform hover:-translate-y-0.5 md:px-5 md:py-3 md:text-base">View Details</Link>
+                  <Link href={`/windows/pvc/${model.brandSlug}/${model.slug}`} className="inline-flex items-center justify-center gap-2 rounded-md border border-[#2f4c74] bg-[#2f4c74] px-4 py-2.5 text-[11px] font-semibold text-white shadow-[3px_3px_0_#afc9ef] transition-all hover:-translate-y-0.5 hover:bg-[#263f61] md:px-5 md:py-3 md:text-base">View Details <span aria-hidden="true">→</span></Link>
                 </div>
               </div>
             </article>
