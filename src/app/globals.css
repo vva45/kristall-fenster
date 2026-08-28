@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --kamika-blue: #afc9ef;
+  --kamika-blue-50: #f0f5fc;
+  --kamika-steel: #2f4c74;
+  --kamika-ink: #0f1114;
+  --kamika-paper: #ffffff;
+  --kamika-mist: #e4e9f0;
+  --background: var(--kamika-paper);
+  --foreground: var(--kamika-ink);
 }
 
 @theme inline {
@@ -12,15 +18,45 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--kamika-paper);
+  color: var(--kamika-ink);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  line-height: 1.6;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font: inherit; }
+img { max-width: 100%; }
+
+::selection {
+  background: var(--kamika-blue);
+  color: var(--kamika-ink);
 }
+
+:focus-visible {
+  outline: 2px solid var(--kamika-steel);
+  outline-offset: 2px;
+}
+
+.kamika-eyebrow {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--kamika-steel);
+}
+
+.kamika-grid-bg {
+  background:
+    linear-gradient(90deg, rgba(47,76,116,.055) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(47,76,116,.045) 1px, transparent 1px),
+    var(--kamika-blue-50);
+  background-size: 42px 42px;
+}
+
+.kamika-card-shadow { box-shadow: 4px 4px 0 var(--kamika-mist); }
