@@ -335,7 +335,7 @@ export function ConfiguratorApp() {
                   // Activa: chip azul Kamika con texto blanco Y la línea
                   // de abajo — el edit-en-Paint del jefe, tal cual :)
                   (step === key
-                    ? "border-kamika-ink bg-kamika-blue font-medium text-white"
+                    ? "border-kamika-ink bg-kamika-blue-active font-medium text-white"
                     : "border-transparent text-kamika-ink/50 hover:text-kamika-ink")
                 }
               >

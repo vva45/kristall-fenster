@@ -12,6 +12,9 @@
   --kamika-ink: #0f1114;
   --kamika-paper: #ffffff;
   --kamika-mist: #e4e9f0;
+  /* El azul del logo un 10% más oscuro — pedido del jefe para la
+     pestaña activa del configurador: mismo tono, algo más de cuerpo. */
+  --kamika-blue-active: #9db5d7;
   --background: var(--kamika-paper);
   --foreground: var(--kamika-ink);
 }
@@ -26,6 +29,7 @@
   --color-kamika-ink: var(--kamika-ink);
   --color-kamika-paper: var(--kamika-paper);
   --color-kamika-mist: var(--kamika-mist);
+  --color-kamika-blue-active: var(--kamika-blue-active);
 
   /* Tres roles tipográficos, como en Kamika: display / texto / técnica.
      Las variables las inyecta next/font desde el layout raíz. */

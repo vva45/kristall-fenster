@@ -1,7 +1,0 @@
-import ProductTemplate from "@/components/products/ProductTemplate"
-
-export default function Page() {
-  return (
-    <ProductTemplate slug="ideal-7000-new" />
-  )
-}
