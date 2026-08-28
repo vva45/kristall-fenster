@@ -332,8 +332,10 @@ export function ConfiguratorApp() {
                 onClick={() => setStep(key)}
                 className={
                   "shrink-0 border-b-2 px-3.5 py-3 font-mono text-[0.72rem] tracking-[0.1em] uppercase transition-colors md:px-4 " +
+                  // Activa: chip azul Kamika con texto blanco Y la línea
+                  // de abajo — el edit-en-Paint del jefe, tal cual :)
                   (step === key
-                    ? "border-kamika-ink font-medium text-kamika-ink"
+                    ? "border-kamika-ink bg-kamika-blue font-medium text-white"
                     : "border-transparent text-kamika-ink/50 hover:text-kamika-ink")
                 }
               >
