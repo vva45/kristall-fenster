@@ -54,13 +54,13 @@ export const CS = {
     pl: "Z oryginalnych katalogów",
   },
   stat1: {
-    en: "40 systems from real manufacturers",
+    en: "40 Systems from real manufacturers",
     de: "40 Systeme von echten Herstellern",
-    pl: "40 systemów prawdziwych producentów",
+    pl: "40 Systemów prawdziwych producentów",
   },
-  stat2: { en: "168 colours and finishes", de: "168 Farben und Oberflächen", pl: "168 kolorów i wykończeń" },
-  stat3: { en: "584 catalogue models", de: "584 Katalogmodelle", pl: "584 modele katalogowe" },
-  stat4: { en: "8 product ranges", de: "8 Produktbereiche", pl: "8 grup produktów" },
+  stat2: { en: "168 Colours and finishes", de: "168 Farben und Oberflächen", pl: "168 Kolorów i wykończeń" },
+  stat3: { en: "584 Catalogue models", de: "584 Katalogmodelle", pl: "584 Modele katalogowe" },
+  stat4: { en: "8 Product ranges", de: "8 Produktbereiche", pl: "8 Grup produktów" },
   ranges: { en: "Product ranges", de: "Produktbereiche", pl: "Grupy produktów" },
   rangesTitle: { en: "The real range.", de: "Das echte Sortiment.", pl: "Prawdziwa oferta." },
   rangesIntro: {

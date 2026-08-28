@@ -11,11 +11,9 @@ import { LOCALES, useLocale, type Locale } from "../lib/i18n";
 export function LocaleSwitch() {
   const { locale, setLocale } = useLocale();
   return (
-    <div
-      className="flex overflow-hidden rounded-kamika border border-kamika-mist"
-      role="group"
-      aria-label="Language"
-    >
+    // Discreto a propósito ("más fino, no tan basto"): sin caja ni
+    // borde, solo el idioma activo lleva un subrayado corto.
+    <div className="flex items-center gap-0.5" role="group" aria-label="Language">
       {LOCALES.map((l: Locale) => (
         <button
           key={l}
@@ -23,10 +21,10 @@ export function LocaleSwitch() {
           onClick={() => setLocale(l)}
           aria-pressed={locale === l}
           className={
-            "px-2.5 py-1.5 font-mono text-[0.7rem] tracking-[0.12em] uppercase transition-colors md:px-3 " +
+            "rounded-[2px] px-1.5 py-1 font-mono text-[0.62rem] tracking-[0.1em] uppercase transition-colors " +
             (locale === l
-              ? "bg-kamika-ink text-kamika-paper"
-              : "bg-kamika-paper text-kamika-ink/60 hover:text-kamika-ink")
+              ? "font-medium text-kamika-ink underline decoration-kamika-steel decoration-2 underline-offset-4"
+              : "text-kamika-ink/45 hover:text-kamika-ink")
           }
         >
           {l}
