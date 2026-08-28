@@ -18,8 +18,8 @@ export default function Home() {
             <h1 className="mt-5 max-w-5xl text-[52px] font-semibold leading-[.88] tracking-[-0.055em] sm:text-6xl md:mt-6 md:text-8xl lg:text-[108px]">KRISTALL <span className="block text-[#2f4c74]">FENSTER</span></h1>
             <p className="mt-7 max-w-3xl text-[15px] leading-7 text-[#0f1114]/65 md:mt-8 md:text-xl">Premium German windows, doors and architectural systems with modern design, outstanding thermal performance and professional online configuration.</p>
             <div className="mt-8 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap md:mt-10">
-              <Link href="/configurator" className="rounded-[3px] bg-[#0f1114] px-4 py-3 text-center text-[12px] font-semibold text-white shadow-[3px_3px_0_#afc9ef] transition-transform hover:-translate-y-0.5 sm:px-6 sm:py-3.5 sm:text-base">Open Configurator</Link>
-              <Link href="/windows" className="rounded-[3px] border border-[#2f4c74] bg-white px-4 py-3 text-center text-[12px] font-semibold text-[#2f4c74] transition-colors hover:bg-[#afc9ef] sm:px-6 sm:py-3.5 sm:text-base">Explore Products</Link>
+              <Link href="/configurator" className="inline-flex items-center justify-center gap-2 rounded-md border border-[#2f4c74] bg-[#2f4c74] px-4 py-3 text-center text-[12px] font-semibold text-white shadow-[3px_3px_0_#afc9ef] transition-all hover:-translate-y-0.5 hover:bg-[#263f61] sm:px-6 sm:py-3.5 sm:text-base">Open Configurator <span aria-hidden="true">→</span></Link>
+              <Link href="/windows" className="inline-flex items-center justify-center gap-2 rounded-md border border-[#2f4c74] bg-white px-4 py-3 text-center text-[12px] font-semibold text-[#2f4c74] transition-all hover:-translate-y-0.5 hover:bg-[#f0f5fc] sm:px-6 sm:py-3.5 sm:text-base">Explore Products <span aria-hidden="true">→</span></Link>
             </div>
           </div>
 
