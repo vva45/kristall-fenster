@@ -54,6 +54,9 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem(STORAGE_KEY);
+      // Leer el idioma guardado DESPUÉS de hidratar es deliberado:
+      // inicializarlo en useState desajustaría servidor y cliente.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (isLocale(saved)) setLocaleState(saved);
     } catch {
       /* almacenamiento bloqueado: se queda el idioma por defecto */

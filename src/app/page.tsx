@@ -1,11 +1,14 @@
 /**
  * Home del laboratorio: el hero de siempre (ya iba en clave Kamika) y
- * debajo las gamas REALES del catálogo de Kamika — antes había cinco
- * categorías inventadas con fotos de origen desconocido.
+ * debajo las gamas REALES del catálogo de Kamika. Página de SERVIDOR:
+ * los textos localizados se pintan con la hoja cliente <L>, que
+ * reacciona a los botoncitos DE/EN/PL del navbar.
  */
 import Image from "next/image";
 import Link from "next/link";
+import { L } from "../components/L";
 import { categoriesOrdered, de, manufacturersFor, modelCountFor } from "../lib/catalog";
+import { CS } from "../lib/catalog-strings";
 
 export default function Home() {
   const categories = categoriesOrdered();
@@ -14,46 +17,39 @@ export default function Home() {
       <section className="kamika-grid-bg border-b border-kamika-mist">
         <div className="mx-auto grid max-w-[1440px] gap-10 px-5 py-14 md:px-8 md:py-28 lg:grid-cols-[1.2fr_.8fr] lg:items-end">
           <div>
-            <p className="kamika-eyebrow">Konfigurator-Labor · Echte Systeme</p>
+            <p className="kamika-eyebrow"><L t={CS.heroEyebrow} /></p>
             <h1 className="mt-5 max-w-5xl text-[52px] font-semibold leading-[.88] tracking-[-0.055em] sm:text-6xl md:mt-6 md:text-8xl lg:text-[108px]">
               KRISTALL <span className="block text-kamika-steel">FENSTER</span>
             </h1>
             <p className="mt-7 max-w-3xl text-[15px] leading-7 text-kamika-ink/65 md:mt-8 md:text-xl">
-              Das Entwicklungslabor des Kamika-Fensterkonfigurators: echte
-              Profilsysteme, die echte Farbkarte und der echte Katalog —
-              Preise vorerst nur als Beispiel.
+              <L t={CS.heroIntro} />
             </p>
             <div className="mt-8 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap md:mt-10">
               <Link
                 href="/configurator"
                 className="inline-flex items-center justify-center gap-2 rounded-md border border-kamika-steel bg-kamika-steel px-4 py-3 text-center text-[12px] font-semibold text-white shadow-[3px_3px_0_var(--kamika-blue)] transition-all hover:-translate-y-0.5 hover:opacity-90 sm:px-6 sm:py-3.5 sm:text-base"
               >
-                Konfigurator öffnen <span aria-hidden>→</span>
+                <L t={CS.openConfigurator} /> <span aria-hidden>→</span>
               </Link>
               <Link
                 href="/catalog"
                 className="inline-flex items-center justify-center gap-2 rounded-md border border-kamika-steel bg-white px-4 py-3 text-center text-[12px] font-semibold text-kamika-steel transition-all hover:-translate-y-0.5 hover:bg-kamika-blue-50 sm:px-6 sm:py-3.5 sm:text-base"
               >
-                Katalog ansehen <span aria-hidden>→</span>
+                <L t={CS.viewCatalogue} /> <span aria-hidden>→</span>
               </Link>
             </div>
           </div>
 
           <div className="border-t border-kamika-steel pt-7 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
-            <p className="kamika-eyebrow">Aus den Original-Katalogen</p>
+            <p className="kamika-eyebrow"><L t={CS.fromCatalogues} /></p>
             <div className="mt-5 grid gap-0 sm:grid-cols-2 lg:grid-cols-1">
-              {[
-                "40 Systeme von echten Herstellern",
-                "168 Farben und Oberflächen",
-                "584 Katalogmodelle",
-                "8 Produktbereiche",
-              ].map((x, i) => (
+              {[CS.stat1, CS.stat2, CS.stat3, CS.stat4].map((stat, i) => (
                 <div
-                  key={x}
+                  key={i}
                   className="grid grid-cols-[34px_1fr] gap-3 border-t border-kamika-mist py-3.5 first:border-t-0 sm:first:border-t lg:first:border-t"
                 >
                   <span className="font-mono text-[11px] text-kamika-steel">0{i + 1}</span>
-                  <strong className="text-[13px] font-medium md:text-base">{x}</strong>
+                  <strong className="text-[13px] font-medium md:text-base"><L t={stat} /></strong>
                 </div>
               ))}
             </div>
@@ -63,13 +59,12 @@ export default function Home() {
 
       <section className="mx-auto max-w-[1440px] px-5 py-14 md:px-8 md:py-24">
         <div className="max-w-3xl">
-          <p className="kamika-eyebrow">Produktbereiche</p>
+          <p className="kamika-eyebrow"><L t={CS.ranges} /></p>
           <h2 className="mt-3 text-[36px] font-semibold leading-[.98] tracking-[-0.045em] md:mt-4 md:text-6xl">
-            Das echte Sortiment.
+            <L t={CS.rangesTitle} />
           </h2>
           <p className="mt-4 max-w-2xl text-[14px] leading-6 text-kamika-ink/60 md:mt-5 md:text-base">
-            Acht Produktbereiche, übernommen aus den Katalogdaten von Kamika —
-            mit echten Systemen, Modellen und Datenblättern.
+            <L t={CS.rangesIntro} />
           </p>
         </div>
 
@@ -97,17 +92,28 @@ export default function Home() {
                 </div>
                 <div className="p-5">
                   <h3 className="text-[20px] font-semibold tracking-[-0.02em]">
-                    {de(category.name)}
+                    <L t={category.name} />
                   </h3>
                   <p className="mt-1 font-mono text-[0.7rem] text-kamika-steel">
-                    {category.comingSoon
-                      ? "in Vorbereitung"
-                      : [
-                          systems > 0 ? `${systems} Systeme` : null,
-                          models > 0 ? `${models} Modelle` : null,
-                        ]
-                          .filter(Boolean)
-                          .join(" · ") || "Übersicht"}
+                    {category.comingSoon ? (
+                      <L t={CS.comingSoon} />
+                    ) : systems > 0 || models > 0 ? (
+                      <>
+                        {systems > 0 && (
+                          <>
+                            {systems} <L t={CS.systems} />
+                          </>
+                        )}
+                        {systems > 0 && models > 0 && " · "}
+                        {models > 0 && (
+                          <>
+                            {models} <L t={CS.models} />
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <L t={CS.overview} />
+                    )}
                   </p>
                 </div>
               </Link>

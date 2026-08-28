@@ -38,7 +38,7 @@ import type {
   WindowConfig,
 } from "../../data/configurator/types";
 import { calculateQuote, colorById } from "../../lib/calculateQuote";
-import { formatEuro, formatNumber, pick, useLocale, LOCALES, type Locale } from "../../lib/i18n";
+import { formatEuro, formatNumber, pick, useLocale } from "../../lib/i18n";
 import {
   colourGroupsFor,
   DEFAULT_CONFIG,
@@ -166,7 +166,7 @@ function NumberField({
 /* ── El configurador ────────────────────────────────────────────── */
 
 export function ConfiguratorApp() {
-  const { locale, setLocale } = useLocale();
+  const { locale } = useLocale();
   const [config, dispatch] = useReducer(reducer, DEFAULT_CONFIG);
   const [step, setStep] = useState<StepKey>("system");
   const [quote, setQuote] = useState<QuoteItem[]>([]);
@@ -180,6 +180,9 @@ export function ConfiguratorApp() {
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(QUOTE_STORAGE_KEY);
+      // Cargar la lista guardada tras hidratar es deliberado (mismo
+      // motivo que el idioma: SSR y cliente deben pintar igual).
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (raw) setQuote(JSON.parse(raw) as QuoteItem[]);
     } catch {
       /* sin lista guardada */
@@ -255,27 +258,8 @@ export function ConfiguratorApp() {
           <h1 className="mt-2 text-3xl md:text-4xl">{t(S.title)}</h1>
           <p className="mt-3 text-kamika-ink/70">{t(S.intro)}</p>
         </div>
-        <div className="flex items-center gap-4">
-          {/* Selector de idioma del laboratorio */}
-          <div className="flex overflow-hidden rounded-kamika border border-kamika-mist" role="group" aria-label="Language">
-            {LOCALES.map((l: Locale) => (
-              <button
-                key={l}
-                type="button"
-                onClick={() => setLocale(l)}
-                aria-pressed={locale === l}
-                className={
-                  "px-3 py-1.5 font-mono text-[0.72rem] tracking-[0.14em] uppercase transition-colors " +
-                  (locale === l
-                    ? "bg-kamika-ink text-kamika-paper"
-                    : "bg-kamika-paper text-kamika-ink/60 hover:text-kamika-ink")
-                }
-              >
-                {l}
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* El idioma se cambia con los botoncitos del navbar, que
+            valen para todo el laboratorio. */}
       </header>
 
       {/* Aviso permanente: precios de ejemplo. */}

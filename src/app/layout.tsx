@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/navbar/Navbar";
+import { LocaleProvider } from "../lib/i18n";
 
 /*
  * Las tres tipografías de Kamika, con los mismos nombres de variable
@@ -31,8 +32,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       className={`${outfit.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Navbar />
-        {children}
+        {/* Proveedor de idioma GLOBAL: los botoncitos del navbar valen
+            para todo — catálogo, home y configurador. Es un componente
+            de cliente, pero children llega como slot del servidor, así
+            que las páginas siguen prerenderizadas. */}
+        <LocaleProvider>
+          <Navbar />
+          {children}
+        </LocaleProvider>
       </body>
     </html>
   );

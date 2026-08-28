@@ -8,7 +8,6 @@
  */
 import type { Metadata } from "next";
 import { ConfiguratorApp } from "../../components/configurator/ConfiguratorApp";
-import { LocaleProvider } from "../../lib/i18n";
 
 export const metadata: Metadata = {
   title: "Fenster-Konfigurator — Kamika Labor",
@@ -17,11 +16,11 @@ export const metadata: Metadata = {
 };
 
 export default function ConfiguratorPage() {
+  // El LocaleProvider vive en el layout raíz: el idioma se elige con
+  // los botoncitos del navbar y vale para todo el laboratorio.
   return (
     <main className="flex-1">
-      <LocaleProvider>
-        <ConfiguratorApp />
-      </LocaleProvider>
+      <ConfiguratorApp />
     </main>
   );
 }

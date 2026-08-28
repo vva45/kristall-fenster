@@ -2,8 +2,8 @@
  * /catalog/[slug] — una gama entera, pintada desde los datos reales
  * copiados de Kamika: fabricantes con sus sistemas y specs de ficha,
  * y los modelos de cada colección con su imagen y su página del
- * catálogo original. Una sola ruta dinámica en vez de las ~30 páginas
- * escritas a mano del prototipo.
+ * catálogo original. Página de SERVIDOR; los textos localizados se
+ * pintan con hojas cliente <L> (botoncitos DE/EN/PL del navbar).
  *
  * Los PDF de los catálogos no se copiaron al laboratorio (100+ MB):
  * la referencia "Katalog S. N" es texto, sin enlace. En Kamika el
@@ -13,6 +13,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { L } from "../../../components/L";
 import {
   categoriesOrdered,
   categoryBySlug,
@@ -20,6 +21,7 @@ import {
   manufacturersFor,
   modelsByCollection,
 } from "../../../lib/catalog";
+import { CS } from "../../../lib/catalog-strings";
 import type { Localized } from "../../../data/catalog/types";
 
 export function generateStaticParams() {
@@ -28,8 +30,9 @@ export function generateStaticParams() {
 
 export const dynamicParams = false;
 
-const specValue = (v: string | Localized<string>): string =>
-  typeof v === "string" ? v : de(v);
+/** Un valor de spec puede venir plano o localizado; <L> quiere Localized. */
+const lv = (v: string | Localized<string>): Localized<string> =>
+  typeof v === "string" ? { en: v } : v;
 
 export async function generateMetadata({
   params,
@@ -68,17 +71,21 @@ export default async function CategoryPage({
             href="/catalog"
             className="font-mono text-[0.72rem] tracking-[0.14em] text-white/70 uppercase hover:text-white"
           >
-            ← Katalog
+            <L t={CS.backToCatalogue} />
           </Link>
-          <h1 className="mt-3 max-w-3xl text-4xl text-white md:text-5xl">{de(category.name)}</h1>
-          <p className="mt-4 max-w-2xl text-[0.95rem] text-white/85">{de(category.intro)}</p>
+          <h1 className="mt-3 max-w-3xl text-4xl text-white md:text-5xl">
+            <L t={category.name} />
+          </h1>
+          <p className="mt-4 max-w-2xl text-[0.95rem] text-white/85">
+            <L t={category.intro} />
+          </p>
         </div>
       </section>
 
       <div className="mx-auto max-w-[1440px] px-5 pb-20 md:px-8">
         {category.comingSoon && (
           <p className="mt-10 rounded-kamika border border-kamika-mist bg-kamika-blue-50 px-4 py-3 text-[0.9rem] text-kamika-ink/75">
-            Der Katalog dieser Produktlinie ist in Vorbereitung — die Übersicht folgt.
+            <L t={CS.comingSoonLong} />
           </p>
         )}
 
@@ -87,8 +94,12 @@ export default async function CategoryPage({
           <section key={manufacturer.id} className="mt-14">
             <header className="max-w-3xl">
               <p className="kamika-eyebrow">{manufacturer.name}</p>
-              <h2 className="mt-2 text-2xl md:text-3xl">{de(manufacturer.tagline)}</h2>
-              <p className="mt-3 text-[0.9rem] text-kamika-ink/65">{de(manufacturer.intro)}</p>
+              <h2 className="mt-2 text-2xl md:text-3xl">
+                <L t={manufacturer.tagline} />
+              </h2>
+              <p className="mt-3 text-[0.9rem] text-kamika-ink/65">
+                <L t={manufacturer.intro} />
+              </p>
             </header>
             <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {manufacturer.systems.map((system) => (
@@ -107,13 +118,19 @@ export default async function CategoryPage({
                   </div>
                   <div className="p-5">
                     <h3 className="text-lg">{system.name}</h3>
-                    <p className="mt-1 text-[0.85rem] text-kamika-ink/60">{de(system.tagline)}</p>
+                    <p className="mt-1 text-[0.85rem] text-kamika-ink/60">
+                      <L t={system.tagline} />
+                    </p>
                     {system.specs && system.specs.length > 0 && (
                       <dl className="mt-4 space-y-1.5 border-t border-kamika-mist pt-3 text-[0.8rem]">
                         {system.specs.slice(0, 6).map((spec, i) => (
                           <div key={i} className="flex justify-between gap-4">
-                            <dt className="text-kamika-ink/55">{de(spec.label)}</dt>
-                            <dd className="text-right font-mono">{specValue(spec.value)}</dd>
+                            <dt className="text-kamika-ink/55">
+                              <L t={spec.label} />
+                            </dt>
+                            <dd className="text-right font-mono">
+                              <L t={lv(spec.value)} />
+                            </dd>
                           </div>
                         ))}
                       </dl>
@@ -133,10 +150,12 @@ export default async function CategoryPage({
                 <p className="kamika-eyebrow">
                   {[catalogue.brand, catalogue.year].filter(Boolean).join(" · ")}
                 </p>
-                <h2 className="mt-1 text-2xl md:text-3xl">{de(catalogue.title)}</h2>
+                <h2 className="mt-1 text-2xl md:text-3xl">
+                  <L t={catalogue.title} />
+                </h2>
               </div>
               <p className="font-mono text-[0.75rem] text-kamika-ink/55">
-                {models.length} Modelle
+                {models.length} <L t={CS.models} />
               </p>
             </header>
             <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
@@ -163,14 +182,14 @@ export default async function CategoryPage({
                       <dl className="mt-2 space-y-0.5 text-[0.7rem] text-kamika-ink/60">
                         {model.specs.slice(0, 2).map((spec, i) => (
                           <div key={i} className="flex justify-between gap-2">
-                            <dt className="truncate">{specValue(spec.label)}</dt>
-                            <dd className="truncate text-right">{specValue(spec.value)}</dd>
+                            <dt className="truncate">{spec.label}</dt>
+                            <dd className="truncate text-right">{spec.value}</dd>
                           </div>
                         ))}
                       </dl>
                     )}
                     <p className="mt-2 font-mono text-[0.65rem] text-kamika-steel">
-                      Katalog S. {model.page}
+                      <L t={CS.cataloguePage} /> {model.page}
                     </p>
                   </div>
                 </article>
@@ -181,7 +200,7 @@ export default async function CategoryPage({
 
         {!category.comingSoon && manufacturers.length === 0 && collections.length === 0 && (
           <p className="mt-10 rounded-kamika border border-dashed border-kamika-mist px-4 py-8 text-center text-[0.9rem] text-kamika-ink/55">
-            Für diese Produktlinie liegt noch kein Katalogmaterial vor.
+            <L t={CS.noMaterial} />
           </p>
         )}
       </div>

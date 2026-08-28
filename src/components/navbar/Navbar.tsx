@@ -8,10 +8,13 @@
  */
 import Link from "next/link";
 import { useState } from "react";
-import { categoriesOrdered, de } from "../../lib/catalog";
+import { categoriesOrdered } from "../../lib/catalog";
+import { pick, useLocale } from "../../lib/i18n";
+import { LocaleSwitch } from "../LocaleSwitch";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { locale } = useLocale();
 
   return (
     <header className="sticky top-0 z-50 border-b border-kamika-mist bg-white/95 backdrop-blur-xl print:hidden">
@@ -47,6 +50,9 @@ export default function Navbar() {
             >
               KONFIGURATOR
             </Link>
+            <div className="ml-2 md:ml-4">
+              <LocaleSwitch />
+            </div>
           </nav>
         </div>
       </div>
@@ -66,7 +72,7 @@ export default function Navbar() {
                 className="text-sm text-kamika-ink/80 transition-colors hover:text-kamika-steel"
                 onClick={() => setOpen(false)}
               >
-                {de(category.name)}
+                {pick(category.name, locale)}
               </Link>
             ))}
           </div>
