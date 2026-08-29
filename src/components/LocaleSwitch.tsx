@@ -20,8 +20,10 @@ export function LocaleSwitch() {
           aria-pressed={locale === l}
           aria-label={LOCALE_LABEL[l]}
           lang={l}
+          // Mismo cuerpo de letra que los enlaces del menú (12px) y
+          // chip ajustado, para que no abulte más que ellos.
           className={
-            "rounded-kamika px-1.5 py-1 font-mono text-[0.6875rem] tracking-[0.12em] uppercase motion-safe:transition-colors " +
+            "rounded-[3px] px-1.5 py-0.5 font-mono text-[12px] tracking-[0.08em] uppercase motion-safe:transition-colors " +
             (locale === l
               ? "bg-kamika-steel text-kamika-paper"
               : "text-kamika-ink/55 hover:text-kamika-ink")
