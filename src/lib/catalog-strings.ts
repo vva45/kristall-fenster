@@ -9,6 +9,7 @@ export const CS = {
   // Navegación (se pintan en mayúsculas vía CSS)
   navCatalogue: { en: "Catalogue", de: "Katalog", pl: "Katalog" },
   navConfigurator: { en: "Configurator", de: "Konfigurator", pl: "Konfigurator" },
+  navContact: { en: "Contact", de: "Kontakt", pl: "Kontakt" },
 
   // Índice del catálogo
   sortiment: { en: "Product range", de: "Sortiment", pl: "Oferta" },
