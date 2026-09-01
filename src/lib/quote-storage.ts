@@ -107,7 +107,6 @@ export function parseStoredQuote(raw: string | null): QuoteItem[] {
       return [
         {
           id: typeof candidate.id === "string" ? candidate.id : crypto.randomUUID(),
-          roomName: typeof candidate.roomName === "string" ? candidate.roomName.slice(0, 80) : undefined,
           config: candidate.config,
           unitPrice: breakdown.unitPrice,
           total: breakdown.total,
