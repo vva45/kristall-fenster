@@ -1,21 +1,33 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Inter, Outfit } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "../components/navbar/Navbar";
 import { LocaleProvider } from "../lib/i18n";
 
 /*
- * Las tres tipografías de Kamika, con los mismos nombres de variable
- * que en la web principal (--font-outfit / --font-inter /
- * --font-plex-mono): así el configurador se muda allí sin tocar CSS.
+ * Fuentes autoalojadas con los mismos nombres de variable que usa la
+ * web principal (--font-outfit / --font-inter / --font-plex-mono): así
+ * el configurador se muda allí sin tocar CSS y el build no usa red.
+ * Este laboratorio reutiliza los archivos Geist/Geist Mono incluidos
+ * en la dependencia Next.js, sin añadir binarios al repositorio.
  */
-const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit", display: "swap" });
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
+const outfit = localFont({
+  src: "../../node_modules/next/dist/next-devtools/server/font/geist-latin.woff2",
+  variable: "--font-outfit",
+  display: "swap",
+  fallback: ["Arial", "sans-serif"],
+});
+const inter = localFont({
+  src: "../../node_modules/next/dist/next-devtools/server/font/geist-latin.woff2",
+  variable: "--font-inter",
+  display: "swap",
+  fallback: ["Arial", "sans-serif"],
+});
+const plexMono = localFont({
+  src: "../../node_modules/next/dist/next-devtools/server/font/geist-mono-latin.woff2",
   variable: "--font-plex-mono",
   display: "swap",
+  fallback: ["monospace"],
 });
 
 export const metadata: Metadata = {
