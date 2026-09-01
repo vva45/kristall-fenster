@@ -37,6 +37,8 @@ npm run dev
 
 La aplicación estará disponible en <http://localhost:3000>.
 
+Copie `.env.example` a `.env.local` y configure `RESEND_API_KEY` e `INQUIRY_FROM_EMAIL` para activar el envío real de solicitudes. `INQUIRY_TO_EMAIL` es opcional y usa el correo público de Kamika por defecto. Sin estas variables el endpoint responde con un error explícito y nunca simula que una solicitud ha sido entregada.
+
 ## Comandos de calidad
 
 ```bash

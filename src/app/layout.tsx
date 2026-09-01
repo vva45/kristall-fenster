@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "../components/navbar/Navbar";
 import { LocaleProvider } from "../lib/i18n";
+import { Footer } from "../components/Footer";
 
 /*
  * Fuentes autoalojadas con los mismos nombres de variable que usa la
@@ -33,7 +34,7 @@ const plexMono = localFont({
 export const metadata: Metadata = {
   title: "Kristall Fenster — Konfigurator-Labor",
   description:
-    "Development playground for the Kamika window configurator. Example prices only.",
+    "Development playground for the Kamika window configurator. Prices on request.",
   robots: { index: false, follow: false },
 };
 
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <LocaleProvider>
           <Navbar />
           {children}
+          <Footer />
         </LocaleProvider>
       </body>
     </html>
