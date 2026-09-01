@@ -171,9 +171,9 @@ export default function Navbar() {
             </Link>
             <div className="mt-3 flex items-center justify-between border-t border-kamika-mist pt-4">
               <LocaleSwitch />
-              <Link href="/contact" onClick={closeMenus} className="rounded-kamika bg-kamika-steel px-4 py-2 text-sm font-medium text-white">
+              <a href={EMAIL_HREF} className="rounded-kamika bg-kamika-steel px-4 py-2 text-sm font-medium text-white">
                 {pick(CS.navContact, locale)}
-              </Link>
+              </a>
             </div>
           </div>
         </nav>
