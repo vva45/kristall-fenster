@@ -36,8 +36,6 @@ export default function Navbar() {
   const [catalogueOpen, setCatalogueOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-  const catalogueButtonRef = useRef<HTMLButtonElement>(null);
-  const mobileButtonRef = useRef<HTMLButtonElement>(null);
   const { locale } = useLocale();
 
   const closeMenus = () => {
@@ -48,15 +46,12 @@ export default function Navbar() {
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
-      if (!catalogueOpen && !mobileOpen) return;
-      const returnFocus = mobileOpen ? mobileButtonRef.current : catalogueButtonRef.current;
-      setCatalogueOpen(false);
-      setMobileOpen(false);
-      window.requestAnimationFrame(() => returnFocus?.focus());
+      closeMenus();
+      document.getElementById("catalogue-menu-button")?.focus();
     };
     document.addEventListener("keydown", closeOnEscape);
     return () => document.removeEventListener("keydown", closeOnEscape);
-  }, [catalogueOpen, mobileOpen]);
+  }, []);
 
   return (
     <header
@@ -84,8 +79,6 @@ export default function Navbar() {
           </Link>
 
           <button
-            ref={mobileButtonRef}
-            id="mobile-menu-button"
             type="button"
             aria-label={pick(CS.navMenu, locale)}
             aria-expanded={mobileOpen}
@@ -115,7 +108,6 @@ export default function Navbar() {
                 {catalogueOpen && <span className="absolute inset-x-3 bottom-0 h-[3px] bg-kamika-steel md:inset-x-5" />}
               </Link>
               <button
-                ref={catalogueButtonRef}
                 id="catalogue-menu-button"
                 type="button"
                 aria-label={pick(CS.navOpenCatalogue, locale)}
@@ -179,9 +171,9 @@ export default function Navbar() {
             </Link>
             <div className="mt-3 flex items-center justify-between border-t border-kamika-mist pt-4">
               <LocaleSwitch />
-              <Link href="/contact" onClick={closeMenus} className="rounded-kamika bg-kamika-steel px-4 py-2 text-sm font-medium text-white">
+              <a href={EMAIL_HREF} className="rounded-kamika bg-kamika-steel px-4 py-2 text-sm font-medium text-white">
                 {pick(CS.navContact, locale)}
-              </Link>
+              </a>
             </div>
           </div>
         </nav>

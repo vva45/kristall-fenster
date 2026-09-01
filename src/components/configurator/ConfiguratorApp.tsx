@@ -39,7 +39,7 @@ import type {
   WindowConfig,
 } from "../../data/configurator/types";
 import { calculateQuote, colorById } from "../../lib/calculateQuote";
-import { formatNumber, pick, useLocale } from "../../lib/i18n";
+import { formatEuro, formatNumber, pick, useLocale } from "../../lib/i18n";
 import { parseStoredQuote, QUOTE_STORAGE_KEY } from "../../lib/quote-storage";
 import {
   colourGroupsFor,
@@ -52,7 +52,6 @@ import {
 } from "./state";
 import { S } from "./strings";
 import { WindowPreview } from "./WindowPreview";
-import { InquiryForm } from "../InquiryForm";
 
 type StepKey =
   | "system"
@@ -236,7 +235,6 @@ export function ConfiguratorApp() {
   const [roomName, setRoomName] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [announcement, setAnnouncement] = useState("");
-  const [pdfLoading, setPdfLoading] = useState(false);
   const stepPanelRef = useRef<HTMLDivElement>(null);
   const configuratorRef = useRef<HTMLDivElement>(null);
 
@@ -962,7 +960,21 @@ export function ConfiguratorApp() {
             <div className="flex items-baseline justify-between gap-4">
               <h2 className="text-lg">{t(S.priceOnRequest)}</h2>
             </div>
-            <p className="mt-2 text-sm text-kamika-ink/60">{t(S.demoPrices)}</p>
+            {config.quantity > 1 && (
+              <p className="mt-1 text-right font-mono text-[0.78rem] text-kamika-ink/60">
+                {formatEuro(breakdown.unitPrice, locale)} {t(S.perUnit)} × {config.quantity}
+              </p>
+            )}
+            <dl className="mt-4 space-y-1.5 border-t border-kamika-mist pt-3 text-[0.85rem]">
+              {breakdown.rows
+                .filter((row) => row.amount !== 0)
+                .map((row) => (
+                  <div key={row.key} className="flex justify-between gap-4">
+                    <dt className="text-kamika-ink/65">{t(row.label)}</dt>
+                    <dd className="font-mono">{formatEuro(row.amount, locale)}</dd>
+                  </div>
+                ))}
+            </dl>
             <label className="mt-5 block max-w-sm">
               <span className="mb-1 block text-[0.8rem] font-medium text-kamika-ink/70">
                 {t(S.roomName)}
@@ -1071,6 +1083,7 @@ export function ConfiguratorApp() {
                         {description}
                       </p>
                     </div>
+                    <p className="shrink-0 font-mono text-[0.95rem]">{formatEuro(item.total, locale)}</p>
                     <div className="flex w-full items-center justify-end gap-1 sm:w-auto">
                       <button
                         type="button"
