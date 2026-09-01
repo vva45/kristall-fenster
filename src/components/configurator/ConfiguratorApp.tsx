@@ -301,7 +301,7 @@ export function ConfiguratorApp() {
     `${t(S.glazing)}: ${t(GLAZINGS[config.glazing].label)}`,
     `${t(S.shutterType)}: ${t(SHUTTERS[config.shutter].label)}`,
     `${t(S.quantity)}: ${config.quantity}`,
-    `${t(S.totalLabel)}: ${formatEuro(breakdown.total, locale)} (${t(S.demoPrices)})`,
+    `${t(S.totalLabel)}: ${t(S.priceOnRequest)}`,
   ];
 
   const copySummary = async () => {
@@ -364,7 +364,27 @@ export function ConfiguratorApp() {
     announce(t(S.itemDuplicated));
   };
 
-  const quoteTotal = quote.reduce((sum, item) => sum + item.total, 0);
+  const downloadPdf = async () => {
+    setIsPdfDownloading(true);
+    try {
+      const response = await fetch("/api/quote/pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: quote, reference: "Online-Konfiguration" }),
+      });
+      if (!response.ok) throw new Error("pdf failed");
+      const url = URL.createObjectURL(await response.blob());
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "kristall-fenster-anfrage.pdf";
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      announce(t(S.pdfFailed));
+    } finally {
+      setIsPdfDownloading(false);
+    }
+  };
 
   return (
     <div ref={configuratorRef} className="mx-auto max-w-[1440px] scroll-mt-24 px-5 pb-20 md:px-8">
@@ -403,7 +423,7 @@ export function ConfiguratorApp() {
           <div className="flex items-start justify-between gap-4">
             <p className="kamika-eyebrow">{t(S.preview)}</p>
             <p className="rounded-kamika bg-kamika-ink px-3 py-1.5 font-mono text-sm text-kamika-paper" aria-live="polite">
-              {formatEuro(breakdown.total, locale)}
+              {t(S.priceOnRequest)}
             </p>
           </div>
           <div className="mt-4">
@@ -938,10 +958,7 @@ export function ConfiguratorApp() {
           {/* ── Resumen de precio ──────────────────────────────── */}
           <div className="border-t border-kamika-mist bg-kamika-blue-50/60 p-5 md:p-6">
             <div className="flex items-baseline justify-between gap-4">
-              <h2 className="text-lg">{t(S.estimated)}</h2>
-              <p className="font-mono text-xl font-medium" aria-live="polite">
-                {formatEuro(breakdown.total, locale)}
-              </p>
+              <h2 className="text-lg">{t(S.priceOnRequest)}</h2>
             </div>
             {config.quantity > 1 && (
               <p className="mt-1 text-right font-mono text-[0.78rem] text-kamika-ink/60">
@@ -1018,6 +1035,9 @@ export function ConfiguratorApp() {
                 className="rounded-kamika border border-kamika-ink/25 px-4 py-2 text-[0.85rem] font-medium hover:border-kamika-ink"
               >
                 {t(S.print)}
+              </button>
+              <button type="button" disabled={isPdfDownloading} onClick={downloadPdf} className="rounded-kamika border border-kamika-ink/25 px-4 py-2 text-[0.85rem] font-medium hover:border-kamika-ink disabled:opacity-50">
+                {t(S.downloadPdf)}
               </button>
               <button
                 type="button"
@@ -1097,14 +1117,11 @@ export function ConfiguratorApp() {
                 );
               })}
             </ul>
-            <div className="mt-4 flex items-baseline justify-between gap-4 border-t-2 border-kamika-ink pt-3">
-              <p className="font-medium">{t(S.quoteTotal)}</p>
-              <p className="font-mono text-xl font-medium">{formatEuro(quoteTotal, locale)}</p>
-            </div>
-            <p className="mt-2 text-right text-[0.75rem] text-kamika-ink/50">{t(S.demoPrices)}</p>
+            <p className="mt-4 border-t-2 border-kamika-ink pt-3 text-right text-sm font-medium">{t(S.priceOnRequest)}</p>
           </>
         )}
       </section>
+      <div className="mt-14"><InquiryForm quote={quote} /></div>
     </div>
   );
 }
