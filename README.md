@@ -9,9 +9,8 @@ Aplicación Next.js que sirve como banco de pruebas para el catálogo y el confi
 
 - Home trilingüe en alemán, inglés y polaco.
 - Catálogo de ocho gamas con fabricantes, sistemas, especificaciones y modelos.
-- Configurador de ventanas de PVC y aluminio con progreso, navegación guiada y ocho pasos accesibles por teclado.
+- Configurador de ventanas de PVC y aluminio en ocho pasos.
 - Previsualización SVG, desglose de precio y lista imprimible.
-- Selector visual de acabados y presupuesto editable, duplicable y organizado por estancia.
 - Persistencia local del idioma y el presupuesto.
 - Reglas de coherencia para medidas, aperturas, persianas y extras.
 
@@ -66,7 +65,7 @@ src/
 tests/                         pruebas unitarias e integridad del catálogo
 ```
 
-Las páginas de catálogo son Server Components. El configurador, el selector de idioma y las hojas localizadas son componentes cliente. El presupuesto se guarda en `localStorage`, pero al recuperarlo se valida su estructura y se recalculan los importes con la tarifa actual. El configurador implementa pestañas con relaciones ARIA, navegación mediante flechas, avisos en una región viva y un menú móvil independiente.
+Las páginas de catálogo son Server Components. El configurador, el selector de idioma y las hojas localizadas son componentes cliente. El presupuesto se guarda en `localStorage`, pero al recuperarlo se valida su estructura y se recalculan los importes con la tarifa actual.
 
 ## Datos del catálogo
 
