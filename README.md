@@ -9,8 +9,10 @@ Aplicación Next.js que sirve como banco de pruebas para el catálogo y el confi
 
 - Home trilingüe en alemán, inglés y polaco.
 - Catálogo de ocho gamas con fabricantes, sistemas, especificaciones y modelos.
-- Configurador de ventanas de PVC y aluminio en ocho pasos.
+- Configurador de ventanas de PVC y aluminio con progreso, navegación guiada y ocho pasos accesibles por teclado.
 - Previsualización SVG, desglose de precio y lista imprimible.
+- Selector visual de acabados y presupuesto editable, duplicable y organizado por estancia.
+- Solicitud comercial con adjuntos, ficha PDF y entrega por correo transaccional.
 - Persistencia local del idioma y el presupuesto.
 - Reglas de coherencia para medidas, aperturas, persianas y extras.
 
@@ -36,6 +38,8 @@ npm run dev
 ```
 
 La aplicación estará disponible en <http://localhost:3000>.
+
+Copie `.env.example` a `.env.local` y configure `RESEND_API_KEY` e `INQUIRY_FROM_EMAIL` para activar el envío real de solicitudes. `INQUIRY_TO_EMAIL` es opcional y usa el correo público de Kamika por defecto. Sin estas variables el endpoint responde con un error explícito y nunca simula que una solicitud ha sido entregada.
 
 ## Comandos de calidad
 
@@ -65,7 +69,7 @@ src/
 tests/                         pruebas unitarias e integridad del catálogo
 ```
 
-Las páginas de catálogo son Server Components. El configurador, el selector de idioma y las hojas localizadas son componentes cliente. El presupuesto se guarda en `localStorage`, pero al recuperarlo se valida su estructura y se recalculan los importes con la tarifa actual.
+Las páginas de catálogo son Server Components. El configurador, el selector de idioma y las hojas localizadas son componentes cliente. El presupuesto se guarda en `localStorage`, pero al recuperarlo se valida su estructura y se recalculan los importes con la tarifa actual. El configurador implementa pestañas con relaciones ARIA, navegación mediante flechas, avisos en una región viva y un menú móvil independiente.
 
 ## Datos del catálogo
 
@@ -111,3 +115,5 @@ npm run start
 ```
 
 Antes de publicar el proyecto como web comercial hay que revisar precios, reglas técnicas, formulario de contacto, privacidad, páginas legales y la configuración `robots` del layout raíz.
+
+Las páginas legales incluidas son borradores técnicos transparentes: faltan la dirección, forma jurídica, representación, posibles datos registrales, plazos de conservación y la revisión jurídica de la configuración final. No deben considerarse listas para producción hasta que el operador aporte esos datos.

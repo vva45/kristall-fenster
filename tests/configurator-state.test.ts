@@ -32,6 +32,11 @@ describe("configurator reducer", () => {
     assert.deepEqual(result.leafOpenings, defaultOpeningsFor("three"));
   });
 
+  test("recupera una configuración completa al editar una posición", () => {
+    const stored = { ...DEFAULT_CONFIG, widthMm: 1450, notes: "Cocina" };
+    assert.deepEqual(reducer(DEFAULT_CONFIG, { type: "replace", config: stored }), stored);
+  });
+
   test("elimina accesorios de hoja cuando todas las hojas son fijas", () => {
     const configured = {
       ...DEFAULT_CONFIG,

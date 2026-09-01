@@ -12,13 +12,10 @@ import { categoriesOrdered } from "../../lib/catalog";
 import { pick, useLocale } from "../../lib/i18n";
 import { CS } from "../../lib/catalog-strings";
 import { LocaleSwitch } from "../LocaleSwitch";
+import { COMPANY } from "../../lib/company";
 
 /* Contacto REAL de Kamika (src/data/company.ts de la web principal) —
    el laboratorio no inventa teléfonos como hacía el prototipo. */
-const PHONE = "+49 162 774 2992";
-const PHONE_HREF = `tel:${PHONE.replace(/\s+/g, "")}`;
-const EMAIL_HREF = "mailto:kamika.bauelemente@gmail.com";
-
 /** El icono de teléfono de Kamika: trazo 1.5, hereda el color. */
 const PhoneIcon = () => (
   <svg
@@ -39,6 +36,8 @@ export default function Navbar() {
   const [catalogueOpen, setCatalogueOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const catalogueButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileButtonRef = useRef<HTMLButtonElement>(null);
   const { locale } = useLocale();
 
   const closeMenus = () => {
@@ -49,12 +48,15 @@ export default function Navbar() {
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
-      closeMenus();
-      document.getElementById("catalogue-menu-button")?.focus();
+      if (!catalogueOpen && !mobileOpen) return;
+      const returnFocus = mobileOpen ? mobileButtonRef.current : catalogueButtonRef.current;
+      setCatalogueOpen(false);
+      setMobileOpen(false);
+      window.requestAnimationFrame(() => returnFocus?.focus());
     };
     document.addEventListener("keydown", closeOnEscape);
     return () => document.removeEventListener("keydown", closeOnEscape);
-  }, []);
+  }, [catalogueOpen, mobileOpen]);
 
   return (
     <header
@@ -82,6 +84,8 @@ export default function Navbar() {
           </Link>
 
           <button
+            ref={mobileButtonRef}
+            id="mobile-menu-button"
             type="button"
             aria-label={pick(CS.navMenu, locale)}
             aria-expanded={mobileOpen}
@@ -111,6 +115,7 @@ export default function Navbar() {
                 {catalogueOpen && <span className="absolute inset-x-3 bottom-0 h-[3px] bg-kamika-steel md:inset-x-5" />}
               </Link>
               <button
+                ref={catalogueButtonRef}
                 id="catalogue-menu-button"
                 type="button"
                 aria-label={pick(CS.navOpenCatalogue, locale)}
@@ -134,14 +139,14 @@ export default function Navbar() {
             <div className="ml-4 flex items-center gap-4">
               <LocaleSwitch />
               <a
-                href={PHONE_HREF}
+                href={COMPANY.phoneHref}
                 className="hidden items-center gap-2 font-mono text-[0.8125rem] text-kamika-steel hover:text-kamika-ink lg:flex"
               >
                 <PhoneIcon />
-                {PHONE}
+                {COMPANY.phone}
               </a>
               <a
-                href={EMAIL_HREF}
+                href="/contact"
                 className="hidden rounded-kamika bg-kamika-steel px-4 py-2 text-sm font-medium text-kamika-paper motion-safe:transition-opacity hover:opacity-85 sm:block"
               >
                 {pick(CS.navContact, locale)}
@@ -174,9 +179,9 @@ export default function Navbar() {
             </Link>
             <div className="mt-3 flex items-center justify-between border-t border-kamika-mist pt-4">
               <LocaleSwitch />
-              <a href={EMAIL_HREF} className="rounded-kamika bg-kamika-steel px-4 py-2 text-sm font-medium text-white">
+              <Link href="/contact" onClick={closeMenus} className="rounded-kamika bg-kamika-steel px-4 py-2 text-sm font-medium text-white">
                 {pick(CS.navContact, locale)}
-              </a>
+              </Link>
             </div>
           </div>
         </nav>

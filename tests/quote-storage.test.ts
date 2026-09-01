@@ -6,6 +6,7 @@ import { parseStoredQuote } from "../src/lib/quote-storage";
 
 const validItem = {
   id: "stored-item",
+  roomName: "Kitchen",
   config: DEFAULT_CONFIG,
   unitPrice: 1,
   total: 1,
@@ -28,6 +29,7 @@ describe("parseStoredQuote", () => {
 
     assert.equal(result.length, 1);
     assert.equal(result[0].id, validItem.id);
+    assert.equal(result[0].roomName, validItem.roomName);
   });
 
   test("recalcula importes para no confiar en precios antiguos manipulados", () => {
