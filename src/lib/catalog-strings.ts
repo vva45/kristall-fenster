@@ -10,6 +10,8 @@ export const CS = {
   navCatalogue: { en: "Catalogue", de: "Katalog", pl: "Katalog" },
   navConfigurator: { en: "Configurator", de: "Konfigurator", pl: "Konfigurator" },
   navContact: { en: "Contact", de: "Kontakt", pl: "Kontakt" },
+  navMenu: { en: "Menu", de: "Menü", pl: "Menu" },
+  navOpenCatalogue: { en: "Open product ranges", de: "Produktbereiche öffnen", pl: "Otwórz grupy produktów" },
 
   // Índice del catálogo
   sortiment: { en: "Product range", de: "Sortiment", pl: "Oferta" },

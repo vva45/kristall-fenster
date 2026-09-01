@@ -105,6 +105,7 @@ export interface WindowConfig {
 /** Un elemento guardado en la lista de presupuesto. */
 export interface QuoteItem {
   id: string;
+  roomName?: string;
   config: WindowConfig;
   unitPrice: number;
   total: number;
