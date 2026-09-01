@@ -31,6 +31,7 @@ import {
 import { brandsForMaterial, systemsForBrand } from "../../data/configurator/systems";
 import type {
   ExtraId,
+  ColorFinish,
   LeafOpening,
   Localized,
   QuoteItem,
@@ -38,7 +39,8 @@ import type {
   WindowConfig,
 } from "../../data/configurator/types";
 import { calculateQuote, colorById } from "../../lib/calculateQuote";
-import { formatEuro, formatNumber, pick, useLocale } from "../../lib/i18n";
+import { formatNumber, pick, useLocale } from "../../lib/i18n";
+import { parseStoredQuote, QUOTE_STORAGE_KEY } from "../../lib/quote-storage";
 import {
   colourGroupsFor,
   DEFAULT_CONFIG,
@@ -50,8 +52,7 @@ import {
 } from "./state";
 import { S } from "./strings";
 import { WindowPreview } from "./WindowPreview";
-
-const QUOTE_STORAGE_KEY = "kamika-configurator-quote-v1";
+import { InquiryForm } from "../InquiryForm";
 
 type StepKey =
   | "system"
@@ -113,6 +114,65 @@ function ChoiceButton({
   );
 }
 
+function ColourPicker({
+  label,
+  current,
+  groups,
+  onChange,
+  translate,
+}: {
+  label: string;
+  current: ColorFinish;
+  groups: ReturnType<typeof colourGroupsFor>;
+  onChange: (id: string) => void;
+  translate: <T,>(value: Localized<T>) => T;
+}) {
+  return (
+    <fieldset>
+      <legend className="kamika-eyebrow mt-6 mb-2 first:mt-0">{label}</legend>
+      <div className="flex items-center gap-3 rounded-kamika border border-kamika-mist bg-kamika-blue-50 p-3">
+        <span
+          aria-hidden
+          className="h-10 w-10 shrink-0 rounded-kamika border border-kamika-ink/15"
+          style={{ backgroundColor: current.hex }}
+        />
+        <span className="min-w-0">
+          <strong className="block truncate text-[0.9rem]">{translate(current.name)}</strong>
+          <span className="block font-mono text-[0.72rem] text-kamika-ink/55">{current.code}</span>
+        </span>
+      </div>
+      <div className="mt-3 max-h-72 space-y-4 overflow-y-auto rounded-kamika border border-kamika-mist p-3">
+        {groups.map((group) => (
+          <div key={group.key}>
+            <p className="mb-2 text-[0.72rem] font-medium text-kamika-ink/60">
+              {translate(group.label)}
+            </p>
+            <div className="grid grid-cols-5 gap-2 sm:grid-cols-8">
+              {group.colours.map((colour) => (
+                <button
+                  key={colour.id}
+                  type="button"
+                  aria-label={`${translate(colour.name)} (${colour.code})`}
+                  aria-pressed={current.id === colour.id}
+                  title={`${translate(colour.name)} (${colour.code})`}
+                  onClick={() => onChange(colour.id)}
+                  className={
+                    "aspect-square min-h-10 rounded-kamika border shadow-[inset_0_0_0_1px_rgba(255,255,255,.35)] " +
+                    (current.id === colour.id
+                      ? "border-kamika-ink ring-2 ring-kamika-steel ring-offset-2"
+                      : "border-kamika-ink/15 hover:border-kamika-steel")
+                  }
+                  style={{ backgroundColor: colour.hex }}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+
 /**
  * Campo numérico con borrador local: se puede teclear con calma y el
  * valor se aplica al salir del campo o con Enter (si se aplicara
@@ -169,11 +229,33 @@ export function ConfiguratorApp() {
   const { locale } = useLocale();
   const [config, dispatch] = useReducer(reducer, DEFAULT_CONFIG);
   const [step, setStep] = useState<StepKey>("system");
+  const [visitedSteps, setVisitedSteps] = useState<Set<StepKey>>(() => new Set());
   const [quote, setQuote] = useState<QuoteItem[]>([]);
   const [quoteReady, setQuoteReady] = useState(false);
   const [copyState, setCopyState] = useState<"idle" | "ok" | "fail">("idle");
+  const [roomName, setRoomName] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [announcement, setAnnouncement] = useState("");
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const stepPanelRef = useRef<HTMLDivElement>(null);
+  const configuratorRef = useRef<HTMLDivElement>(null);
 
   const t = <T,>(v: Localized<T>) => pick(v, locale);
+  const stepIndex = STEPS.findIndex(({ key }) => key === step);
+  const progressLabel = t(S.stepProgress)
+    .replace("{current}", String(stepIndex + 1))
+    .replace("{total}", String(STEPS.length));
+
+  const announce = (message: string) => {
+    setAnnouncement(message);
+    window.setTimeout(() => setAnnouncement(""), 2500);
+  };
+
+  const goToStep = (key: StepKey) => {
+    setVisitedSteps((visited) => new Set(visited).add(step));
+    setStep(key);
+    window.requestAnimationFrame(() => stepPanelRef.current?.focus());
+  };
 
   // La lista guardada se carga tras montar (evita desajustes de
   // hidratación y aguanta almacenamiento bloqueado).
@@ -183,7 +265,7 @@ export function ConfiguratorApp() {
       // Cargar la lista guardada tras hidratar es deliberado (mismo
       // motivo que el idioma: SSR y cliente deben pintar igual).
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      if (raw) setQuote(JSON.parse(raw) as QuoteItem[]);
+      setQuote(parseStoredQuote(raw));
     } catch {
       /* sin lista guardada */
     }
@@ -221,7 +303,7 @@ export function ConfiguratorApp() {
     `${t(S.glazing)}: ${t(GLAZINGS[config.glazing].label)}`,
     `${t(S.shutterType)}: ${t(SHUTTERS[config.shutter].label)}`,
     `${t(S.quantity)}: ${config.quantity}`,
-    `${t(S.totalLabel)}: ${formatEuro(breakdown.total, locale)} (${t(S.demoPrices)})`,
+    `${t(S.totalLabel)}: ${t(S.priceOnRequest)}`,
   ];
 
   const copySummary = async () => {
@@ -235,22 +317,89 @@ export function ConfiguratorApp() {
   };
 
   const addToQuote = () => {
+    if (editingId) {
+      setQuote((prev) =>
+        prev.map((item) =>
+          item.id === editingId
+            ? { ...item, roomName: roomName.trim() || undefined, config, unitPrice: breakdown.unitPrice, total: breakdown.total }
+            : item,
+        ),
+      );
+      setEditingId(null);
+      setRoomName("");
+      announce(t(S.itemUpdated));
+      return;
+    }
     setQuote((prev) => [
       ...prev,
       {
         id: typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+        roomName: roomName.trim() || undefined,
         config,
         unitPrice: breakdown.unitPrice,
         total: breakdown.total,
         addedAt: Date.now(),
       },
     ]);
+    setRoomName("");
+    announce(t(S.itemAdded));
   };
 
-  const quoteTotal = quote.reduce((sum, item) => sum + item.total, 0);
+  const editItem = (item: QuoteItem) => {
+    dispatch({ type: "replace", config: item.config });
+    setEditingId(item.id);
+    setRoomName(item.roomName ?? "");
+    goToStep("system");
+    configuratorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const duplicateItem = (item: QuoteItem) => {
+    setQuote((prev) => [
+      ...prev,
+      {
+        ...item,
+        id: typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+        roomName: item.roomName ? `${item.roomName} · 2` : undefined,
+        addedAt: Date.now(),
+      },
+    ]);
+    announce(t(S.itemDuplicated));
+  };
+
+  const downloadPdf = async () => {
+    setPdfLoading(true);
+    try {
+      const response = await fetch("/api/quote/pdf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: quote, reference: "Online-Konfiguration" }),
+      });
+      if (!response.ok) throw new Error("pdf failed");
+      const url = URL.createObjectURL(await response.blob());
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "kristall-fenster-anfrage.pdf";
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      announce(t(S.pdfFailed));
+    } finally {
+      setPdfLoading(false);
+    }
+  };
 
   return (
-    <div className="mx-auto max-w-[1440px] px-5 pb-20 md:px-8">
+    <div ref={configuratorRef} className="mx-auto max-w-[1440px] scroll-mt-24 px-5 pb-20 md:px-8">
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        className={
+          "fixed right-4 bottom-4 z-[60] max-w-sm rounded-kamika bg-kamika-ink px-4 py-3 text-sm text-white shadow-[var(--shadow-profile-steel)] transition-opacity print:hidden " +
+          (announcement ? "opacity-100" : "pointer-events-none opacity-0")
+        }
+      >
+        {announcement}
+      </div>
       {/* Cabecera */}
       <header className="flex flex-wrap items-end justify-between gap-4 pt-10 pb-6 md:pt-14">
         <div className="max-w-2xl">
@@ -271,12 +420,12 @@ export function ConfiguratorApp() {
         {/* ── Vista previa ─────────────────────────────────────── */}
         <section
           aria-label={t(S.preview)}
-          className="kamika-grid-bg min-w-0 rounded-kamika border border-kamika-mist p-5 md:p-7 lg:sticky lg:top-6"
+          className="kamika-grid-bg order-2 min-w-0 rounded-kamika border border-kamika-mist p-5 md:p-7 lg:sticky lg:top-24 lg:order-1"
         >
           <div className="flex items-start justify-between gap-4">
             <p className="kamika-eyebrow">{t(S.preview)}</p>
             <p className="rounded-kamika bg-kamika-ink px-3 py-1.5 font-mono text-sm text-kamika-paper" aria-live="polite">
-              {formatEuro(breakdown.total, locale)}
+              {t(S.priceOnRequest)}
             </p>
           </div>
           <div className="mt-4">
@@ -305,15 +454,50 @@ export function ConfiguratorApp() {
         {/* ── Pasos ────────────────────────────────────────────── */}
         {/* min-w-0: sin él, la fila de pestañas (min-content ancho)
             ensancharía la columna del grid y desbordaría en móvil. */}
-        <section className="min-w-0 rounded-kamika border border-kamika-mist">
-          <div className="flex overflow-x-auto border-b border-kamika-mist" role="tablist">
-            {STEPS.map(({ key, label }) => (
+        <section className="order-1 min-w-0 rounded-kamika border border-kamika-mist lg:order-2">
+          <div className="border-b border-kamika-mist bg-kamika-blue-50/50 px-4 py-3">
+            <div className="flex items-center justify-between gap-4 font-mono text-[0.72rem] uppercase tracking-[0.08em] text-kamika-ink/60">
+              <span>{progressLabel}</span>
+              <span>{t(STEPS[stepIndex].label)}</span>
+            </div>
+            <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-kamika-mist" aria-hidden>
+              <div
+                className="h-full bg-kamika-steel transition-[width]"
+                style={{ width: `${((stepIndex + 1) / STEPS.length) * 100}%` }}
+              />
+            </div>
+          </div>
+          <div
+            className="flex overflow-x-auto border-b border-kamika-mist"
+            role="tablist"
+            aria-label={progressLabel}
+          >
+            {STEPS.map(({ key, label }, index) => (
               <button
                 key={key}
+                id={`config-tab-${key}`}
                 type="button"
                 role="tab"
                 aria-selected={step === key}
-                onClick={() => setStep(key)}
+                aria-controls={`config-panel-${key}`}
+                tabIndex={step === key ? 0 : -1}
+                onClick={() => goToStep(key)}
+                onKeyDown={(event) => {
+                  if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+                  event.preventDefault();
+                  const nextIndex =
+                    event.key === "Home"
+                      ? 0
+                      : event.key === "End"
+                        ? STEPS.length - 1
+                        : (index + (event.key === "ArrowRight" ? 1 : -1) + STEPS.length) % STEPS.length;
+                  const nextKey = STEPS[nextIndex].key;
+                  setVisitedSteps((visited) => new Set(visited).add(step));
+                  setStep(nextKey);
+                  window.requestAnimationFrame(() =>
+                    document.getElementById(`config-tab-${nextKey}`)?.focus(),
+                  );
+                }}
                 className={
                   "shrink-0 border-b-2 px-3.5 py-3 font-mono text-[0.72rem] tracking-[0.1em] uppercase transition-colors md:px-4 " +
                   // Activa: chip azul Kamika con texto blanco Y la línea
@@ -323,12 +507,22 @@ export function ConfiguratorApp() {
                     : "border-transparent text-kamika-ink/50 hover:text-kamika-ink")
                 }
               >
+                {visitedSteps.has(key) && key !== step && (
+                  <span className="mr-1" aria-label={t(S.completed)}>✓</span>
+                )}
                 {t(label)}
               </button>
             ))}
           </div>
 
-          <div className="p-5 md:p-6">
+          <div
+            ref={stepPanelRef}
+            id={`config-panel-${step}`}
+            role="tabpanel"
+            aria-labelledby={`config-tab-${step}`}
+            tabIndex={-1}
+            className="p-5 outline-none md:p-6"
+          >
             {/* 1 · Sistema */}
             {step === "system" && (
               <div>
@@ -483,38 +677,24 @@ export function ConfiguratorApp() {
             {/* 4 · Color */}
             {step === "colour" && (
               <div>
-                {(["exteriorColorId", "interiorColorId"] as const).map((field) => {
-                  const current = field === "exteriorColorId" ? exterior : interior;
-                  return (
-                    <div key={field}>
-                      <FieldLabel>
-                        {t(field === "exteriorColorId" ? S.exteriorColour : S.interiorColour)}
-                      </FieldLabel>
-                      <div className="flex items-center gap-3">
-                        <span
-                          aria-hidden
-                          className="h-9 w-9 shrink-0 rounded-kamika border border-kamika-mist"
-                          style={{ backgroundColor: current.hex }}
-                        />
-                        <select
-                          value={config[field]}
-                          onChange={(e) => dispatch({ type: "patch", patch: { [field]: e.target.value } })}
-                          className="w-full rounded-kamika border border-kamika-mist bg-kamika-paper px-3 py-2 text-[0.9rem]"
-                        >
-                          {colourGroups.map((group) => (
-                            <optgroup key={group.key} label={t(group.label)}>
-                              {group.colours.map((c) => (
-                                <option key={c.id} value={c.id}>
-                                  {t(c.name)} ({c.code})
-                                </option>
-                              ))}
-                            </optgroup>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                  );
-                })}
+                <ColourPicker
+                  label={t(S.exteriorColour)}
+                  current={exterior}
+                  groups={colourGroups}
+                  translate={t}
+                  onChange={(exteriorColorId) =>
+                    dispatch({ type: "patch", patch: { exteriorColorId } })
+                  }
+                />
+                <ColourPicker
+                  label={t(S.interiorColour)}
+                  current={interior}
+                  groups={colourGroups}
+                  translate={t}
+                  onChange={(interiorColorId) =>
+                    dispatch({ type: "patch", patch: { interiorColorId } })
+                  }
+                />
 
                 <FieldLabel>{t(S.gasket)}</FieldLabel>
                 <div className="grid grid-cols-2 gap-2.5">
@@ -755,37 +935,67 @@ export function ConfiguratorApp() {
             )}
           </div>
 
+          <div className="sticky bottom-0 z-10 flex items-center justify-between gap-3 border-t border-kamika-mist bg-white/95 px-5 py-3 backdrop-blur md:px-6">
+            <button
+              type="button"
+              disabled={stepIndex === 0}
+              onClick={() => goToStep(STEPS[stepIndex - 1].key)}
+              className="rounded-kamika border border-kamika-ink/25 px-4 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-35"
+            >
+              ← {t(S.previous)}
+            </button>
+            <span className="hidden font-mono text-[0.72rem] text-kamika-ink/50 sm:block">
+              {progressLabel}
+            </span>
+            <button
+              type="button"
+              disabled={stepIndex === STEPS.length - 1}
+              onClick={() => goToStep(STEPS[stepIndex + 1].key)}
+              className="rounded-kamika bg-kamika-steel px-4 py-2 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-35"
+            >
+              {t(S.next)} →
+            </button>
+          </div>
+
           {/* ── Resumen de precio ──────────────────────────────── */}
           <div className="border-t border-kamika-mist bg-kamika-blue-50/60 p-5 md:p-6">
             <div className="flex items-baseline justify-between gap-4">
-              <h2 className="text-lg">{t(S.estimated)}</h2>
-              <p className="font-mono text-xl font-medium" aria-live="polite">
-                {formatEuro(breakdown.total, locale)}
-              </p>
+              <h2 className="text-lg">{t(S.priceOnRequest)}</h2>
             </div>
-            {config.quantity > 1 && (
-              <p className="mt-1 text-right font-mono text-[0.78rem] text-kamika-ink/60">
-                {formatEuro(breakdown.unitPrice, locale)} {t(S.perUnit)} × {config.quantity}
-              </p>
-            )}
-            <dl className="mt-4 space-y-1.5 border-t border-kamika-mist pt-3 text-[0.85rem]">
-              {breakdown.rows
-                .filter((row) => row.amount !== 0)
-                .map((row) => (
-                  <div key={row.key} className="flex justify-between gap-4">
-                    <dt className="text-kamika-ink/65">{t(row.label)}</dt>
-                    <dd className="font-mono">{formatEuro(row.amount, locale)}</dd>
-                  </div>
-                ))}
-            </dl>
+            <p className="mt-2 text-sm text-kamika-ink/60">{t(S.demoPrices)}</p>
+            <label className="mt-5 block max-w-sm">
+              <span className="mb-1 block text-[0.8rem] font-medium text-kamika-ink/70">
+                {t(S.roomName)}
+              </span>
+              <input
+                type="text"
+                maxLength={80}
+                value={roomName}
+                onChange={(event) => setRoomName(event.target.value)}
+                placeholder={t(S.roomPlaceholder)}
+                className="w-full rounded-kamika border border-kamika-mist bg-white px-3 py-2 text-[0.9rem]"
+              />
+            </label>
             <div className="mt-5 flex flex-wrap gap-3">
               <button
                 type="button"
                 onClick={addToQuote}
                 className="rounded-kamika bg-kamika-ink px-4 py-2.5 text-[0.9rem] font-medium text-kamika-paper transition-opacity hover:opacity-85"
               >
-                {t(S.addToQuote)}
+                {t(editingId ? S.saveChanges : S.addToQuote)}
               </button>
+              {editingId && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingId(null);
+                    setRoomName("");
+                  }}
+                  className="rounded-kamika px-4 py-2.5 text-[0.9rem] font-medium text-kamika-ink/60 hover:text-kamika-ink"
+                >
+                  {t(S.cancelEdit)}
+                </button>
+              )}
               <button
                 type="button"
                 onClick={copySummary}
@@ -814,9 +1024,17 @@ export function ConfiguratorApp() {
               >
                 {t(S.print)}
               </button>
+              <button type="button" disabled={pdfLoading} onClick={downloadPdf} className="rounded-kamika border border-kamika-ink/25 px-4 py-2 text-[0.85rem] font-medium hover:border-kamika-ink disabled:opacity-50">
+                {t(S.downloadPdf)}
+              </button>
               <button
                 type="button"
-                onClick={() => setQuote([])}
+                onClick={() => {
+                  if (!window.confirm(t(S.clearConfirm))) return;
+                  setQuote([]);
+                  setEditingId(null);
+                  announce(t(S.listCleared));
+                }}
                 className="rounded-kamika px-4 py-2 text-[0.85rem] font-medium text-kamika-ink/60 hover:text-kamika-ink"
               >
                 {t(S.clear)}
@@ -844,35 +1062,53 @@ export function ConfiguratorApp() {
                   `× ${formatNumber(item.config.quantity, locale)} ${t(S.units)}`,
                 ].join(" · ");
                 return (
-                  <li key={item.id} className="flex items-center gap-4 px-4 py-3.5">
+                  <li key={item.id} className="flex flex-wrap items-center gap-3 px-4 py-3.5 sm:flex-nowrap">
                     <div className="min-w-0 flex-1">
-                      <p className="text-[0.9rem] font-medium">{t(S.quoteItem)}</p>
-                      <p className="truncate text-[0.8rem] text-kamika-ink/60" title={description}>
+                      <p className="text-[0.9rem] font-medium">
+                        {item.roomName || t(S.quoteItem)}
+                      </p>
+                      <p className="line-clamp-2 text-[0.8rem] text-kamika-ink/60" title={description}>
                         {description}
                       </p>
                     </div>
-                    <p className="shrink-0 font-mono text-[0.95rem]">{formatEuro(item.total, locale)}</p>
+                    <div className="flex w-full items-center justify-end gap-1 sm:w-auto">
+                      <button
+                        type="button"
+                        onClick={() => editItem(item)}
+                        className="rounded-kamika px-2 py-1 text-[0.78rem] font-medium text-kamika-steel hover:bg-kamika-blue-50 print:hidden"
+                      >
+                        {t(S.edit)}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => duplicateItem(item)}
+                        className="rounded-kamika px-2 py-1 text-[0.78rem] font-medium text-kamika-steel hover:bg-kamika-blue-50 print:hidden"
+                      >
+                        {t(S.duplicate)}
+                      </button>
                     <button
                       type="button"
-                      onClick={() => setQuote((prev) => prev.filter((q) => q.id !== item.id))}
+                      onClick={() => {
+                        setQuote((prev) => prev.filter((q) => q.id !== item.id));
+                        if (editingId === item.id) setEditingId(null);
+                        announce(t(S.itemRemoved));
+                      }}
                       aria-label={t(S.remove)}
                       title={t(S.remove)}
                       className="shrink-0 rounded-kamika px-2 py-1 text-kamika-ink/45 hover:text-kamika-ink print:hidden"
                     >
                       ×
                     </button>
+                    </div>
                   </li>
                 );
               })}
             </ul>
-            <div className="mt-4 flex items-baseline justify-between gap-4 border-t-2 border-kamika-ink pt-3">
-              <p className="font-medium">{t(S.quoteTotal)}</p>
-              <p className="font-mono text-xl font-medium">{formatEuro(quoteTotal, locale)}</p>
-            </div>
-            <p className="mt-2 text-right text-[0.75rem] text-kamika-ink/50">{t(S.demoPrices)}</p>
+            <p className="mt-4 border-t-2 border-kamika-ink pt-3 text-right text-sm font-medium">{t(S.priceOnRequest)}</p>
           </>
         )}
       </section>
+      <div className="mt-14"><InquiryForm quote={quote} /></div>
     </div>
   );
 }

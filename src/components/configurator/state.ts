@@ -121,6 +121,7 @@ const normalize = (c: WindowConfig): WindowConfig => {
 
 export type Action =
   | { type: "patch"; patch: Partial<WindowConfig> }
+  | { type: "replace"; config: WindowConfig }
   | { type: "setMaterial"; material: FrameMaterial }
   | { type: "setBrand"; brand: string }
   | { type: "setSash"; sash: SashLayout }
@@ -130,6 +131,8 @@ export type Action =
 
 export function reducer(state: WindowConfig, action: Action): WindowConfig {
   switch (action.type) {
+    case "replace":
+      return normalize(action.config);
     case "patch":
       return normalize({ ...state, ...action.patch });
     case "setMaterial": {

@@ -10,6 +10,8 @@ export const CS = {
   navCatalogue: { en: "Catalogue", de: "Katalog", pl: "Katalog" },
   navConfigurator: { en: "Configurator", de: "Konfigurator", pl: "Konfigurator" },
   navContact: { en: "Contact", de: "Kontakt", pl: "Kontakt" },
+  navMenu: { en: "Menu", de: "Menü", pl: "Menu" },
+  navOpenCatalogue: { en: "Open product ranges", de: "Produktbereiche öffnen", pl: "Otwórz grupy produktów" },
 
   // Índice del catálogo
   sortiment: { en: "Product range", de: "Sortiment", pl: "Oferta" },
@@ -43,9 +45,9 @@ export const CS = {
     pl: "Laboratorium konfiguratora · Prawdziwe systemy",
   },
   heroIntro: {
-    en: "The development lab of the Kamika window configurator: real profile systems, the real colour chart and the real catalogue — prices are examples for now.",
-    de: "Das Entwicklungslabor des Kamika-Fensterkonfigurators: echte Profilsysteme, die echte Farbkarte und der echte Katalog — Preise vorerst nur als Beispiel.",
-    pl: "Laboratorium konfiguratora okien Kamika: prawdziwe systemy profili, prawdziwa paleta kolorów i prawdziwy katalog — ceny na razie przykładowe.",
+    en: "The development lab of the Kamika window configurator: real profile systems, the real colour chart and the real catalogue — binding prices on request.",
+    de: "Das Entwicklungslabor des Kamika-Fensterkonfigurators: echte Profilsysteme, die echte Farbkarte und der echte Katalog — verbindliche Preise auf Anfrage.",
+    pl: "Laboratorium konfiguratora okien Kamika: prawdziwe systemy profili, prawdziwa paleta kolorów i prawdziwy katalog — wiążące ceny na zapytanie.",
   },
   openConfigurator: {
     en: "Open the configurator",
