@@ -12,7 +12,7 @@ import { ConfiguratorApp } from "../../components/configurator/ConfiguratorApp";
 export const metadata: Metadata = {
   title: "Fenster-Konfigurator — Kamika Labor",
   description:
-    "Window configurator prototype with real profile systems and colour charts. Example prices only.",
+    "Window configurator with real profile systems and colour charts. Prices on request.",
 };
 
 export default function ConfiguratorPage() {

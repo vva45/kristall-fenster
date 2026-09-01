@@ -15,9 +15,9 @@ export const S = {
   },
   /** El aviso honesto. Visible SIEMPRE mientras las tarifas no sean reales. */
   demoPrices: {
-    en: "Example prices — final quotes come from the Kamika team.",
-    de: "Beispielpreise — verbindliche Angebote erstellt das Kamika-Team.",
-    pl: "Ceny przykładowe — wiążącą wycenę przygotowuje zespół Kamika.",
+    en: "Prices on request — the Kamika team checks every configuration.",
+    de: "Preis auf Anfrage — das Kamika-Team prüft jede Konfiguration.",
+    pl: "Cena na zapytanie — zespół Kamika sprawdza każdą konfigurację.",
   },
 
   stepSystem: { en: "System", de: "System", pl: "System" },
@@ -123,6 +123,7 @@ export const S = {
   metaSize: { en: "Size", de: "Maße", pl: "Wymiary" },
   metaOpening: { en: "Opening", de: "Öffnung", pl: "Otwieranie" },
   estimated: { en: "Estimated price", de: "Preisschätzung", pl: "Cena szacunkowa" },
+  priceOnRequest: { en: "Price on request", de: "Preis auf Anfrage", pl: "Cena na zapytanie" },
   perUnit: { en: "per unit", de: "pro Stück", pl: "za sztukę" },
   totalLabel: { en: "Total", de: "Gesamt", pl: "Razem" },
   addToQuote: { en: "Add to quote list", de: "Zur Angebotsliste", pl: "Dodaj do wyceny" },
@@ -152,6 +153,8 @@ export const S = {
   clearConfirm: { en: "Clear every item from the quote list?", de: "Alle Positionen aus der Angebotsliste entfernen?", pl: "Usunąć wszystkie pozycje z listy wyceny?" },
   quoteTotal: { en: "Quote total", de: "Summe der Liste", pl: "Suma wyceny" },
   print: { en: "Print", de: "Drucken", pl: "Drukuj" },
+  downloadPdf: { en: "Download PDF", de: "PDF herunterladen", pl: "Pobierz PDF" },
+  pdfFailed: { en: "The PDF could not be created.", de: "Das PDF konnte nicht erstellt werden.", pl: "Nie udało się utworzyć pliku PDF." },
   clear: { en: "Clear list", de: "Liste leeren", pl: "Wyczyść listę" },
   remove: { en: "Remove", de: "Entfernen", pl: "Usuń" },
   units: { en: "pcs", de: "Stk.", pl: "szt." },

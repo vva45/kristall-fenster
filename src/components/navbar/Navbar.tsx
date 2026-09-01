@@ -12,13 +12,10 @@ import { categoriesOrdered } from "../../lib/catalog";
 import { pick, useLocale } from "../../lib/i18n";
 import { CS } from "../../lib/catalog-strings";
 import { LocaleSwitch } from "../LocaleSwitch";
+import { COMPANY } from "../../lib/company";
 
 /* Contacto REAL de Kamika (src/data/company.ts de la web principal) —
    el laboratorio no inventa teléfonos como hacía el prototipo. */
-const PHONE = "+49 162 774 2992";
-const PHONE_HREF = `tel:${PHONE.replace(/\s+/g, "")}`;
-const EMAIL_HREF = "mailto:kamika.bauelemente@gmail.com";
-
 /** El icono de teléfono de Kamika: trazo 1.5, hereda el color. */
 const PhoneIcon = () => (
   <svg
@@ -134,14 +131,14 @@ export default function Navbar() {
             <div className="ml-4 flex items-center gap-4">
               <LocaleSwitch />
               <a
-                href={PHONE_HREF}
+                href={COMPANY.phoneHref}
                 className="hidden items-center gap-2 font-mono text-[0.8125rem] text-kamika-steel hover:text-kamika-ink lg:flex"
               >
                 <PhoneIcon />
-                {PHONE}
+                {COMPANY.phone}
               </a>
               <a
-                href={EMAIL_HREF}
+                href="/contact"
                 className="hidden rounded-kamika bg-kamika-steel px-4 py-2 text-sm font-medium text-kamika-paper motion-safe:transition-opacity hover:opacity-85 sm:block"
               >
                 {pick(CS.navContact, locale)}
