@@ -39,6 +39,7 @@ import type {
 } from "../../data/configurator/types";
 import { calculateQuote, colorById } from "../../lib/calculateQuote";
 import { formatEuro, formatNumber, pick, useLocale } from "../../lib/i18n";
+import { parseStoredQuote, QUOTE_STORAGE_KEY } from "../../lib/quote-storage";
 import {
   colourGroupsFor,
   DEFAULT_CONFIG,
@@ -50,8 +51,6 @@ import {
 } from "./state";
 import { S } from "./strings";
 import { WindowPreview } from "./WindowPreview";
-
-const QUOTE_STORAGE_KEY = "kamika-configurator-quote-v1";
 
 type StepKey =
   | "system"
@@ -183,7 +182,7 @@ export function ConfiguratorApp() {
       // Cargar la lista guardada tras hidratar es deliberado (mismo
       // motivo que el idioma: SSR y cliente deben pintar igual).
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      if (raw) setQuote(JSON.parse(raw) as QuoteItem[]);
+      setQuote(parseStoredQuote(raw));
     } catch {
       /* sin lista guardada */
     }
