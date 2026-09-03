@@ -5,8 +5,7 @@
  * de la carta del catálogo WIKĘD PCV/ALU publicada en Kamika, los Ug
  * de los acristalamientos son los estándar que citan las propias
  * fichas de los sistemas ("Ug 1,1 doble / 0,5–0,7 triple, argón").
- * Los PRECIOS no viven aquí — están todos en pricing.ts, marcados
- * como provisionales.
+ * Las selecciones se validan por separado y los precios se preparan tras la revisión técnica.
  */
 import type {
   ExtraId,

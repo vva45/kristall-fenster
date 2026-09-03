@@ -3,12 +3,10 @@
 /**
  * El configurador entero, en React de verdad: un solo árbol de estado
  * (useReducer) del que cuelgan los ocho pasos, la vista previa SVG,
- * el desglose de precio y la lista de presupuesto. Sustituye al
+ * la revisión técnica y la lista de solicitud. Sustituye al
  * prototipo de script-que-manipula-el-DOM.
  *
- * Los PRECIOS son de ejemplo (data/configurator/pricing.ts) y la
- * interfaz lo dice en un aviso permanente — regla de la casa: nada
- * de números fingiendo ser reales.
+ * No calcula precios: cada selección se valida antes de enviarse.
  */
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import {
@@ -29,6 +27,7 @@ import {
   SOUND_GLASS,
 } from "../../data/configurator/options";
 import { brandsForMaterial, systemsForBrand } from "../../data/configurator/systems";
+import { COLORS } from "../../data/configurator/colors";
 import type {
   ExtraId,
   ColorFinish,
@@ -38,9 +37,9 @@ import type {
   SashLayout,
   WindowConfig,
 } from "../../data/configurator/types";
-import { calculateQuote, colorById } from "../../lib/calculateQuote";
 import { formatNumber, pick, useLocale } from "../../lib/i18n";
-import { parseStoredQuote, QUOTE_STORAGE_KEY } from "../../lib/quote-storage";
+import { parseStoredQuote, QUOTE_STORAGE_KEY, serializeStoredQuote } from "../../lib/quote-storage";
+import { validateConfiguration } from "../../lib/validate-configuration";
 import {
   colourGroupsFor,
   DEFAULT_CONFIG,
@@ -75,6 +74,8 @@ const STEPS: { key: StepKey; label: Localized<string> }[] = [
   { key: "shutter", label: S.stepShutter },
   { key: "extras", label: S.stepExtras },
 ];
+
+const colorById = (id: string) => COLORS.find((colour) => colour.id === id) ?? COLORS[0];
 
 /* ── Átomos de interfaz ─────────────────────────────────────────── */
 
@@ -244,7 +245,7 @@ export function ConfiguratorApp() {
   const stepIndex = STEPS.findIndex(({ key }) => key === step);
   const progressLabel = t(S.stepProgress)
     .replace("{current}", String(stepIndex + 1))
-    .replace("{total}", String(STEPS.length));
+    .replace("{count}", String(STEPS.length));
 
   const announce = (message: string) => {
     setAnnouncement(message);
@@ -274,7 +275,7 @@ export function ConfiguratorApp() {
   useEffect(() => {
     if (!quoteReady) return;
     try {
-      window.localStorage.setItem(QUOTE_STORAGE_KEY, JSON.stringify(quote));
+      window.localStorage.setItem(QUOTE_STORAGE_KEY, serializeStoredQuote(quote));
     } catch {
       /* sin persistencia */
     }
@@ -283,7 +284,7 @@ export function ConfiguratorApp() {
   const system = systemById(config.systemId);
   const exterior = colorById(config.exteriorColorId);
   const interior = colorById(config.interiorColorId);
-  const breakdown = useMemo(() => calculateQuote(config), [config]);
+  const validation = useMemo(() => validateConfiguration(config), [config]);
   const colourGroups = useMemo(() => colourGroupsFor(config.material), [config.material]);
   const canShutter = shutterAvailable(config);
   const allFixed = fixedOnly(config);
@@ -303,7 +304,7 @@ export function ConfiguratorApp() {
     `${t(S.glazing)}: ${t(GLAZINGS[config.glazing].label)}`,
     `${t(S.shutterType)}: ${t(SHUTTERS[config.shutter].label)}`,
     `${t(S.quantity)}: ${config.quantity}`,
-    `${t(S.totalLabel)}: ${t(S.priceOnRequest)}`,
+    `${t(S.reviewStatus)}: ${validation.requiresTechnicalReview ? t(S.reviewRequired) : t(S.reviewStandard)}`,
   ];
 
   const copySummary = async () => {
@@ -317,11 +318,15 @@ export function ConfiguratorApp() {
   };
 
   const addToQuote = () => {
+    if (!validation.valid) {
+      announce(t(S.fixErrors));
+      return;
+    }
     if (editingId) {
       setQuote((prev) =>
         prev.map((item) =>
           item.id === editingId
-            ? { ...item, roomName: roomName.trim() || undefined, config, unitPrice: breakdown.unitPrice, total: breakdown.total }
+            ? { ...item, roomName: roomName.trim() || undefined, config }
             : item,
         ),
       );
@@ -336,8 +341,6 @@ export function ConfiguratorApp() {
         id: typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
         roomName: roomName.trim() || undefined,
         config,
-        unitPrice: breakdown.unitPrice,
-        total: breakdown.total,
         addedAt: Date.now(),
       },
     ]);
@@ -389,9 +392,9 @@ export function ConfiguratorApp() {
             valen para todo el laboratorio. */}
       </header>
 
-      {/* Aviso permanente: precios de ejemplo. */}
+      {/* Aviso permanente: la selección aún requiere confirmación técnica. */}
       <p className="mb-8 inline-block rounded-kamika border border-amber-300 bg-amber-50 px-3 py-1.5 text-[0.8rem] font-medium text-amber-900">
-        ⚠︎ {t(S.demoPrices)}
+        {t(S.technicalNotice)}
       </p>
 
       <div className="grid items-start gap-8 lg:grid-cols-[1.02fr_1fr]">
@@ -401,7 +404,7 @@ export function ConfiguratorApp() {
           className="kamika-grid-bg order-2 min-w-0 rounded-kamika border border-kamika-mist p-5 md:p-7 lg:sticky lg:top-24 lg:order-1"
         >
           <div className="flex items-start justify-between gap-4">
-            <p className="kamika-eyebrow">{t(S.preview)}</p>
+            <div><p className="kamika-eyebrow">{t(S.preview)}</p><p className="mt-1 text-xs text-kamika-ink/60">{t(S.previewNotice)}</p></div>
             <p className="rounded-kamika bg-kamika-ink px-3 py-1.5 font-mono text-sm text-kamika-paper" aria-live="polite">
               {t(S.priceOnRequest)}
             </p>
@@ -938,9 +941,12 @@ export function ConfiguratorApp() {
           {/* ── Resumen de precio ──────────────────────────────── */}
           <div className="border-t border-kamika-mist bg-kamika-blue-50/60 p-5 md:p-6">
             <div className="flex items-baseline justify-between gap-4">
-              <h2 className="text-lg">{t(S.priceOnRequest)}</h2>
+              <h2 className="text-lg">{t(S.configurationReview)}</h2>
             </div>
-            <p className="mt-2 text-sm text-kamika-ink/60">{t(S.demoPrices)}</p>
+            <p className="mt-2 text-sm text-kamika-ink/60">{t(S.technicalNotice)}</p>
+            {validation.errors.length > 0 && <div role="alert" className="mt-4 rounded-kamika border border-red-300 bg-red-50 p-3 text-sm text-red-800"><strong>{t(S.errorsLabel)}</strong><p>{t(S.fixErrors)}</p></div>}
+            {validation.warnings.length > 0 && <div className="mt-3 rounded-kamika border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900"><strong>{t(S.warningsLabel)}</strong><p>{t(S.reviewRequired)}</p></div>}
+            {validation.valid && validation.warnings.length === 0 && <p className="mt-3 text-sm font-medium text-kamika-steel">{t(S.reviewStandard)}</p>}
             <label className="mt-5 block max-w-sm">
               <span className="mb-1 block text-[0.8rem] font-medium text-kamika-ink/70">
                 {t(S.roomName)}
@@ -958,7 +964,8 @@ export function ConfiguratorApp() {
               <button
                 type="button"
                 onClick={addToQuote}
-                className="rounded-kamika bg-kamika-ink px-4 py-2.5 text-[0.9rem] font-medium text-kamika-paper transition-opacity hover:opacity-85"
+                disabled={!validation.valid}
+                className="rounded-kamika bg-kamika-ink px-4 py-2.5 text-[0.9rem] font-medium text-kamika-paper transition-opacity hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {t(editingId ? S.saveChanges : S.addToQuote)}
               </button>
@@ -1088,7 +1095,7 @@ export function ConfiguratorApp() {
           </>
         )}
       </section>
-      <ConfiguratorInquiry quote={quote} />
+      <ConfiguratorInquiry quote={quote} onSuccess={() => { setQuote([]); setEditingId(null); dispatch({ type: "reset" }); }} />
     </div>
   );
 }

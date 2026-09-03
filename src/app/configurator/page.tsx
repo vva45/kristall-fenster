@@ -3,8 +3,7 @@
  *
  * Antes: un shell de ids + un script vanilla de 1300 líneas
  * manipulando el DOM (el prototipo). Ahora: estado tipado en
- * componentes de verdad, datos reales de Kamika y precios de ejemplo
- * claramente marcados (data/configurator/pricing.ts).
+ * componentes de verdad, datos reales de Kamika y revisión técnica.
  */
 import type { Metadata } from "next";
 import { ConfiguratorApp } from "../../components/configurator/ConfiguratorApp";

@@ -7,7 +7,7 @@ export async function POST(request: Request) {
   }
   const requestBody: unknown = await request.json().catch(() => null);
   const record = typeof requestBody === "object" && requestBody !== null ? requestBody as Record<string, unknown> : {};
-  const items = parseStoredQuote(JSON.stringify(record.items ?? []));
+  const items = parseStoredQuote(JSON.stringify({ version: 2, items: record.items ?? [] }));
   if (items.length === 0) return Response.json({ error: "empty_quote" }, { status: 400 });
   const reference = typeof record.reference === "string" ? record.reference.slice(0, 80) : "Online";
   const pdf = createQuotePdf(items, reference);
