@@ -1,17 +1,17 @@
 # Kristall Fenster — laboratorio del configurador
 
-Aplicación Next.js que sirve como banco de pruebas para el catálogo y el configurador de ventanas de Kamika. Combina datos reales de fabricantes, colores y modelos con una tarifa **provisional** destinada únicamente a validar la experiencia de configuración.
+Aplicación Next.js que sirve como banco de pruebas para el catálogo y el configurador de ventanas de Kamika. Combina datos reales de fabricantes, colores y modelos con validación explícita y solicitud de revisión técnica.
 
 > [!WARNING]
-> Los precios de `src/data/configurator/pricing.ts` son ejemplos. La aplicación mantiene `noindex` y no debe presentarse como una oferta comercial hasta integrar la tarifa y las reglas de fabricación reales.
+> El configurador no calcula precios ni sustituye la revisión técnica. La aplicación mantiene `noindex` hasta completar la revisión comercial y jurídica.
 
 ## Funcionalidad
 
 - Home trilingüe en alemán, inglés y polaco.
 - Catálogo de ocho gamas con fabricantes, sistemas, especificaciones y modelos.
 - Configurador de ventanas de PVC y aluminio con progreso, navegación guiada y ocho pasos accesibles por teclado.
-- Previsualización SVG, desglose de precio y lista imprimible.
-- Selector visual de acabados y presupuesto editable, duplicable y organizado por estancia.
+- Previsualización SVG claramente orientativa y lista imprimible.
+- Selector visual de acabados y lista editable, duplicable y organizado por estancia.
 - Solicitud comercial con adjuntos, ficha PDF y entrega por correo transaccional.
 - Persistencia local del idioma y el presupuesto.
 - Reglas de coherencia para medidas, aperturas, persianas y extras.
@@ -69,7 +69,7 @@ src/
 tests/                         pruebas unitarias e integridad del catálogo
 ```
 
-Las páginas de catálogo son Server Components. El configurador, el selector de idioma y las hojas localizadas son componentes cliente. El presupuesto se guarda en `localStorage`, pero al recuperarlo se valida su estructura y se recalculan los importes con la tarifa actual. El configurador implementa pestañas con relaciones ARIA, navegación mediante flechas, avisos en una región viva y un menú móvil independiente.
+Las páginas de catálogo son Server Components. El configurador, el selector de idioma y las hojas localizadas son componentes cliente. La lista se guarda en un sobre versionado de `localStorage`; al recuperarla se validan tanto su estructura como sus reglas técnicas. El configurador implementa pestañas con relaciones ARIA, navegación mediante flechas, avisos en una región viva y un menú móvil independiente.
 
 ## Datos del catálogo
 
@@ -98,14 +98,9 @@ type Localized<T> = { en: T; de?: T; pl?: T };
 
 Si falta alemán o polaco, la interfaz cae al inglés. El idioma seleccionado se recuerda en `localStorage`. En la futura web pública se recomienda migrar esta solución a rutas localizadas para producir metadata y `lang` correctos por idioma.
 
-## Precios y reglas comerciales
+## Revisión técnica y comercial
 
-Toda cifra monetaria provisional vive en `src/data/configurator/pricing.ts`. `src/lib/calculateQuote.ts` contiene únicamente la mecánica del cálculo. Para convertir el laboratorio en una herramienta comercial será necesario sustituir la tarifa y añadir, entre otras cosas:
-
-- impuestos, transporte, montaje y descuentos;
-- restricciones reales por sistema, herraje, dimensiones y peso;
-- versionado de tarifa;
-- envío del presupuesto al negocio y confirmación al cliente.
+`validateConfiguration` bloquea combinaciones incoherentes y señala configuraciones que requieren revisión individual. Los precios se preparan exclusivamente después de esa revisión; transporte, montaje, impuestos, descuentos, dimensiones, peso y herrajes se confirman en la oferta vinculante.
 
 ## Integración continua
 

@@ -1,6 +1,8 @@
-import { colorById } from "./calculateQuote";
+import { COLORS } from "../data/configurator/colors";
 import { systemById } from "../components/configurator/state";
 import type { QuoteItem } from "../data/configurator/types";
+
+const colorById = (id: string) => COLORS.find((colour) => colour.id === id) ?? COLORS[0];
 
 const ascii = (value: string) =>
   value.normalize("NFKD").replace(/[^\x20-\x7e]/g, "").replace(/[()\\]/g, "\\$&");

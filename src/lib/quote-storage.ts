@@ -1,10 +1,11 @@
 import { COLORS } from "../data/configurator/colors";
 import { LIMITS, ORNAMENT_GLASSES } from "../data/configurator/options";
-import { calculateQuote } from "./calculateQuote";
 import { SYSTEMS } from "../data/configurator/systems";
 import type { QuoteItem, WindowConfig } from "../data/configurator/types";
+import { validateConfiguration } from "./validate-configuration";
 
-export const QUOTE_STORAGE_KEY = "kamika-configurator-quote-v1";
+export const QUOTE_STORAGE_KEY = "kamika-configurator-quote";
+export const QUOTE_STORAGE_VERSION = 2;
 
 const MATERIALS = new Set(["pvc", "aluminium"]);
 const SASHES = new Set(["one", "two", "three", "topLight", "bottomLight"]);
@@ -91,26 +92,23 @@ const isWindowConfig = (value: unknown): value is WindowConfig => {
 
 /**
  * Lee el presupuesto persistido sin confiar en datos manipulados u
- * obsoletos. Los precios siempre se recalculan con la tarifa actual.
+ * obsoletos. El sobre versionado permite rechazar esquemas incompatibles.
  */
 export function parseStoredQuote(raw: string | null): QuoteItem[] {
   if (!raw) return [];
 
   try {
     const parsed: unknown = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
+    if (!isRecord(parsed) || parsed.version !== QUOTE_STORAGE_VERSION || !Array.isArray(parsed.items)) return [];
 
-    return parsed.flatMap((candidate): QuoteItem[] => {
-      if (!isRecord(candidate) || !isWindowConfig(candidate.config)) return [];
+    return parsed.items.flatMap((candidate): QuoteItem[] => {
+      if (!isRecord(candidate) || !isWindowConfig(candidate.config) || !validateConfiguration(candidate.config).valid) return [];
 
-      const breakdown = calculateQuote(candidate.config);
       return [
         {
           id: typeof candidate.id === "string" ? candidate.id : crypto.randomUUID(),
           roomName: typeof candidate.roomName === "string" ? candidate.roomName.slice(0, 80) : undefined,
           config: candidate.config,
-          unitPrice: breakdown.unitPrice,
-          total: breakdown.total,
           addedAt: isFiniteNumber(candidate.addedAt) ? candidate.addedAt : Date.now(),
         },
       ];
@@ -118,4 +116,8 @@ export function parseStoredQuote(raw: string | null): QuoteItem[] {
   } catch {
     return [];
   }
+}
+
+export function serializeStoredQuote(items: QuoteItem[]): string {
+  return JSON.stringify({ version: QUOTE_STORAGE_VERSION, items });
 }

@@ -67,6 +67,7 @@ export async function POST(request: Request) {
   const address = text(form, "address", 200);
   const requestedDate = text(form, "requestedDate", 40);
   const message = text(form, "message", 3000);
+  const inquiryType = text(form, "inquiryType", 20) === "configuration" ? "configuration" : "general";
   const locale = parseLocale(form.get("locale"));
   const privacy = form.get("privacy") === "on";
   if (!name || !/^\S+@\S+\.\S+$/.test(email) || !phone || !privacy) {
@@ -79,10 +80,14 @@ export async function POST(request: Request) {
   }
 
   const items = parseStoredQuote(text(form, "quote", 1_000_000));
+  if (inquiryType === "configuration" && items.length === 0) {
+    return Response.json({ error: "empty_configuration" }, { status: 400 });
+  }
   const requestId = `KF-${new Date().toISOString().slice(0, 10).replaceAll("-", "")}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
   const details = [
     ["Name", name], ["E-Mail", email], ["Telefon", phone], ["PLZ", postcode],
     ["Adresse", address], ["Wunschtermin", requestedDate], ["Nachricht", message],
+    ["Anfrageart", inquiryType === "configuration" ? "Konfiguration" : "Allgemeine Anfrage"],
     ["Positionen", String(items.length)], ["Referenz", requestId],
   ].filter(([, value]) => value);
   const html = `<h1>Neue Anfrage ${escapeHtml(requestId)}</h1><dl>${details

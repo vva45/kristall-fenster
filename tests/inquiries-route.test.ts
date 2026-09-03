@@ -11,6 +11,21 @@ test("valida campos obligatorios antes de enviar correo", async () => {
   assert.equal(response.status, 400);
 });
 
+test("distingue una configuración vacía de una consulta general", async () => {
+  const form = new FormData();
+  form.set("name", "Max Mustermann");
+  form.set("email", "max@example.com");
+  form.set("phone", "+49 123");
+  form.set("privacy", "on");
+  form.set("inquiryType", "configuration");
+  form.set("quote", JSON.stringify({ version: 2, items: [] }));
+  const response = await POST(new Request("http://localhost/api/inquiries", {
+    method: "POST", body: form, headers: { "x-forwarded-for": "test-empty-configuration" },
+  }));
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), { error: "empty_configuration" });
+});
+
 test("entrega una solicitud válida al proveedor configurado", async () => {
   const originalFetch = globalThis.fetch;
   const originalKey = process.env.RESEND_API_KEY;
