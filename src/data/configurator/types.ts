@@ -107,7 +107,5 @@ export interface QuoteItem {
   id: string;
   roomName?: string;
   config: WindowConfig;
-  unitPrice: number;
-  total: number;
   addedAt: number;
 }

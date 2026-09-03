@@ -15,6 +15,7 @@ export type InquiryErrorCode =
   | "invalid_form"
   | "required_fields"
   | "invalid_attachments"
+  | "empty_configuration"
   | "email_not_configured"
   | "email_failed";
 
@@ -25,7 +26,7 @@ export function validateAttachments(files: File[]): InquiryErrorCode | null {
       (file) =>
         file.size > MAX_ATTACHMENT_BYTES || !ALLOWED_ATTACHMENT_TYPES.has(file.type),
     ) ||
-    files.reduce((total, file) => total + file.size, 0) > MAX_ATTACHMENTS_BYTES
+    files.reduce((bytes, file) => bytes + file.size, 0) > MAX_ATTACHMENTS_BYTES
   ) {
     return "invalid_attachments";
   }
