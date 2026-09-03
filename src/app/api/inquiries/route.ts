@@ -101,7 +101,7 @@ export async function POST(request: Request) {
   if (items.length > 0) {
     attachments.unshift({
       filename: `${requestId}.pdf`,
-      content: Buffer.from(createQuotePdf(items, requestId)).toString("base64"),
+      content: Buffer.from(await createQuotePdf(items, requestId, locale)).toString("base64"),
     });
   }
 

@@ -370,7 +370,7 @@ export function ConfiguratorApp() {
   };
 
   return (
-    <div ref={configuratorRef} className="mx-auto max-w-[1440px] scroll-mt-24 px-5 pb-20 md:px-8">
+    <div ref={configuratorRef} className="configurator-print-root mx-auto max-w-[1440px] scroll-mt-24 px-5 pb-20 md:px-8">
       <div
         aria-live="polite"
         aria-atomic="true"
@@ -381,6 +381,12 @@ export function ConfiguratorApp() {
       >
         {announcement}
       </div>
+      <div className="hidden print:block" aria-hidden="true">
+        <p className="text-xs font-semibold tracking-[0.18em]">KRISTALL FENSTER</p>
+        <h1 className="mt-2 text-2xl">{t(S.quoteTitle)}</h1>
+        <p className="mt-2 text-sm">{t(S.technicalNotice)}</p>
+      </div>
+      <div className="configurator-screen-only">
       {/* Cabecera */}
       <header className="flex flex-wrap items-end justify-between gap-4 pt-10 pb-6 md:pt-14">
         <div className="max-w-2xl">
@@ -993,8 +999,10 @@ export function ConfiguratorApp() {
         </section>
       </div>
 
+      </div>
+
       {/* ── Lista de presupuesto ─────────────────────────────────── */}
-      <section aria-label={t(S.quoteTitle)} className="mt-14">
+      <section aria-label={t(S.quoteTitle)} className="configurator-quote mt-14">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="kamika-eyebrow">{t(S.quoteEyebrow)}</p>
@@ -1095,7 +1103,7 @@ export function ConfiguratorApp() {
           </>
         )}
       </section>
-      <ConfiguratorInquiry quote={quote} onSuccess={() => { setQuote([]); setEditingId(null); dispatch({ type: "reset" }); }} />
+      <div className="print:hidden"><ConfiguratorInquiry quote={quote} onSuccess={() => { setQuote([]); setEditingId(null); dispatch({ type: "reset" }); }} /></div>
     </div>
   );
 }

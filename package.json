@@ -14,7 +14,9 @@
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --import ./tests/register.mjs --test tests/*.test.ts",
     "validate:data": "node --experimental-strip-types --import ./tests/register.mjs --test tests/catalog-integrity.test.ts",
-    "check": "npm run lint && npm run typecheck && npm test && npm run build"
+    "check": "npm run lint && npm run typecheck && npm test && npm run build",
+    "test:e2e": "playwright test",
+    "test:e2e:install": "playwright install --with-deps chromium"
   },
   "dependencies": {
     "next": "16.2.6",
@@ -30,6 +32,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "@axe-core/playwright": "4.10.2",
+    "@playwright/test": "1.55.0"
   }
 }
