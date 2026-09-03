@@ -41,7 +41,7 @@ const ERROR_MESSAGES = {
 
 const FALLBACK_ERROR: InquiryErrorCode = "email_failed";
 
-export function InquiryForm({ quote, onSuccess }: { quote?: QuoteItem[]; onSuccess?: () => void }) {
+export function InquiryForm({ initialMessage, quote, onSuccess }: { initialMessage?: string; quote?: QuoteItem[]; onSuccess?: () => void }) {
   const { locale } = useLocale();
   const t = <K extends keyof typeof T>(key: K) => pick(T[key], locale);
   const [state, setState] = useState<{ status: "idle" | "sending" | "success" | "error"; reference?: string; error?: InquiryErrorCode }>({ status: "idle" });

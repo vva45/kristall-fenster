@@ -26,7 +26,7 @@ import {
   SAFETY_GLASS,
   SOUND_GLASS,
 } from "../../data/configurator/options";
-import { brandsForMaterial, systemsForBrand } from "../../data/configurator/systems";
+import { brandsForMaterial, SYSTEMS, systemsForBrand } from "../../data/configurator/systems";
 import { COLORS } from "../../data/configurator/colors";
 import type {
   ExtraId,
