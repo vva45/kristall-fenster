@@ -18,6 +18,7 @@ import type {
   CategorySlug,
   Localized,
   Manufacturer,
+  ManufacturerSystem,
 } from "../data/catalog/types";
 
 /** Alemán con caída al inglés — la misma regla `pick` de Kamika. */
@@ -55,3 +56,26 @@ export const modelsByCollection = (
 
 export const modelCountFor = (slug: CategorySlug): number =>
   CATALOGUE_MODELS.filter((m) => modelCategory(m) === slug).length;
+
+export const manufacturerById = (slug: CategorySlug, id: string): Manufacturer | undefined =>
+  manufacturersFor(slug).find((manufacturer) => manufacturer.id === id);
+
+export const systemByPath = (
+  slug: CategorySlug,
+  manufacturerId: string,
+  systemId: string,
+): { manufacturer: Manufacturer; system: ManufacturerSystem } | undefined => {
+  const manufacturer = manufacturerById(slug, manufacturerId);
+  const system = manufacturer?.systems.find((candidate) => candidate.id === systemId);
+  return manufacturer && system ? { manufacturer, system } : undefined;
+};
+
+export const modelByPath = (
+  slug: CategorySlug,
+  catalogueId: string,
+  modelId: string,
+): { catalogue: Catalogue; model: CatalogueModel } | undefined => {
+  const group = modelsByCollection(slug).find(({ catalogue }) => catalogue.id === catalogueId);
+  const model = group?.models.find((candidate) => candidate.id === modelId);
+  return group && model ? { catalogue: group.catalogue, model } : undefined;
+};
