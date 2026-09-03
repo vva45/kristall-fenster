@@ -1,14 +1,32 @@
 import { COMPANY } from "../../../lib/company";
+import { parseLocale, validateAttachments } from "../../../lib/inquiry";
 import { createQuotePdf } from "../../../lib/quote-pdf";
 import { parseStoredQuote } from "../../../lib/quote-storage";
 
 export const runtime = "nodejs";
 
-const MAX_FILES = 5;
-const MAX_FILE_BYTES = 5 * 1024 * 1024;
-const MAX_TOTAL_BYTES = 15 * 1024 * 1024;
-const ALLOWED_TYPES = new Set(["application/pdf", "image/jpeg", "image/png", "image/webp"]);
 const attempts = new Map<string, { count: number; resetAt: number }>();
+
+const CONFIRMATIONS = {
+  de: {
+    subject: "Ihre Anfrage",
+    greeting: "Guten Tag",
+    received: "wir haben Ihre Anfrage erhalten. Ihre Referenz lautet",
+    next: "Das Kamika-Team prüft die Konfiguration und meldet sich mit einem verbindlichen Angebot.",
+  },
+  en: {
+    subject: "Your request",
+    greeting: "Hello",
+    received: "we have received your request. Your reference is",
+    next: "The Kamika team will review the configuration and contact you with a binding quote.",
+  },
+  pl: {
+    subject: "Twoje zapytanie",
+    greeting: "Dzień dobry",
+    received: "otrzymaliśmy Twoje zapytanie. Numer referencyjny to",
+    next: "Zespół Kamika sprawdzi konfigurację i skontaktuje się z wiążącą ofertą.",
+  },
+} as const;
 
 const text = (form: FormData, key: string, max: number) => {
   const value = form.get(key);
@@ -49,17 +67,14 @@ export async function POST(request: Request) {
   const address = text(form, "address", 200);
   const requestedDate = text(form, "requestedDate", 40);
   const message = text(form, "message", 3000);
+  const locale = parseLocale(form.get("locale"));
   const privacy = form.get("privacy") === "on";
   if (!name || !/^\S+@\S+\.\S+$/.test(email) || !phone || !privacy) {
     return Response.json({ error: "required_fields" }, { status: 400 });
   }
 
   const files = form.getAll("attachments").filter((entry): entry is File => entry instanceof File && entry.size > 0);
-  if (
-    files.length > MAX_FILES ||
-    files.some((file) => file.size > MAX_FILE_BYTES || !ALLOWED_TYPES.has(file.type)) ||
-    files.reduce((sum, file) => sum + file.size, 0) > MAX_TOTAL_BYTES
-  ) {
+  if (validateAttachments(files)) {
     return Response.json({ error: "invalid_attachments" }, { status: 400 });
   }
 
@@ -117,8 +132,8 @@ export async function POST(request: Request) {
       from,
       to: [email],
       reply_to: to,
-      subject: `Ihre Anfrage ${requestId}`,
-      html: `<p>Guten Tag ${escapeHtml(name)},</p><p>wir haben Ihre Anfrage erhalten. Ihre Referenz lautet <strong>${escapeHtml(requestId)}</strong>.</p><p>Das Kamika-Team prüft die Konfiguration und meldet sich mit einem verbindlichen Angebot.</p>`,
+      subject: `${CONFIRMATIONS[locale].subject} ${requestId}`,
+      html: `<p>${CONFIRMATIONS[locale].greeting} ${escapeHtml(name)},</p><p>${CONFIRMATIONS[locale].received} <strong>${escapeHtml(requestId)}</strong>.</p><p>${CONFIRMATIONS[locale].next}</p>`,
     }),
   });
   if (!confirmation.ok) console.error("Inquiry confirmation failed", { requestId, status: confirmation.status });
