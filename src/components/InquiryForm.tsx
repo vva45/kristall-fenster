@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { QuoteItem } from "../data/configurator/types";
+import { validateAttachments, type InquiryErrorCode } from "../lib/inquiry";
 import { pick, useLocale } from "../lib/i18n";
 
 const T = {
@@ -21,28 +22,52 @@ const T = {
   send: { en: "Send request", de: "Anfrage senden", pl: "Wyślij zapytanie" },
   sending: { en: "Sending…", de: "Wird gesendet…", pl: "Wysyłanie…" },
   success: { en: "Thank you. Your reference is", de: "Vielen Dank. Ihre Referenz lautet", pl: "Dziękujemy. Numer zapytania:" },
-  error: { en: "The request could not be sent. Please contact us by phone or email.", de: "Die Anfrage konnte nicht gesendet werden. Bitte kontaktieren Sie uns telefonisch oder per E-Mail.", pl: "Nie udało się wysłać zapytania. Skontaktuj się z nami telefonicznie lub e-mailem." },
 } as const;
+
+const ERROR_MESSAGES = {
+    en: {
+      rate_limited: "Too many attempts. Please try again later.", invalid_form: "The form could not be read. Please try again.", required_fields: "Please complete all required fields.", invalid_attachments: "Check the number, type and size of your files.", email_not_configured: "The email service is temporarily unavailable. Please contact us by phone or email.", email_failed: "Sending failed. Please contact us by phone or email.",
+    },
+    de: {
+      rate_limited: "Zu viele Versuche. Bitte versuchen Sie es später erneut.", invalid_form: "Das Formular konnte nicht gelesen werden. Bitte versuchen Sie es erneut.", required_fields: "Bitte füllen Sie alle Pflichtfelder aus.", invalid_attachments: "Bitte prüfen Sie Anzahl, Typ und Größe Ihrer Dateien.", email_not_configured: "Der E-Mail-Dienst ist vorübergehend nicht verfügbar. Bitte kontaktieren Sie uns telefonisch oder per E-Mail.", email_failed: "Der Versand ist fehlgeschlagen. Bitte kontaktieren Sie uns telefonisch oder per E-Mail.",
+    },
+    pl: {
+      rate_limited: "Zbyt wiele prób. Spróbuj ponownie później.", invalid_form: "Nie udało się odczytać formularza. Spróbuj ponownie.", required_fields: "Uzupełnij wszystkie wymagane pola.", invalid_attachments: "Sprawdź liczbę, typ i rozmiar plików.", email_not_configured: "Usługa e-mail jest chwilowo niedostępna. Skontaktuj się z nami telefonicznie lub e-mailem.", email_failed: "Wysyłanie nie powiodło się. Skontaktuj się z nami telefonicznie lub e-mailem.",
+    },
+} as const;
+
+const FALLBACK_ERROR: InquiryErrorCode = "email_failed";
 
 export function InquiryForm({ quote = [] }: { quote?: QuoteItem[] }) {
   const { locale } = useLocale();
   const t = <K extends keyof typeof T>(key: K) => pick(T[key], locale);
-  const [state, setState] = useState<{ status: "idle" | "sending" | "success" | "error"; reference?: string }>({ status: "idle" });
+  const [state, setState] = useState<{ status: "idle" | "sending" | "success" | "error"; reference?: string; error?: InquiryErrorCode }>({ status: "idle" });
 
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formElement = event.currentTarget;
-    setState({ status: "sending" });
     const form = new FormData(formElement);
+    const attachmentError = validateAttachments(
+      form.getAll("attachments").filter((entry): entry is File => entry instanceof File && entry.size > 0),
+    );
+    if (attachmentError) {
+      setState({ status: "error", error: attachmentError });
+      return;
+    }
+    setState({ status: "sending" });
     form.set("quote", JSON.stringify(quote));
+    form.set("locale", locale);
     try {
       const response = await fetch("/api/inquiries", { method: "POST", body: form });
-      const result = await response.json() as { requestId?: string };
-      if (!response.ok || !result.requestId) throw new Error("request failed");
+      const result = await response.json() as { requestId?: string; error?: InquiryErrorCode };
+      if (!response.ok || !result.requestId) {
+        setState({ status: "error", error: result.error ?? FALLBACK_ERROR });
+        return;
+      }
       formElement.reset();
       setState({ status: "success", reference: result.requestId });
     } catch {
-      setState({ status: "error" });
+      setState({ status: "error", error: FALLBACK_ERROR });
     }
   };
 
@@ -68,7 +93,7 @@ export function InquiryForm({ quote = [] }: { quote?: QuoteItem[] }) {
           <button disabled={state.status === "sending"} className="rounded-kamika bg-kamika-ink px-5 py-3 font-medium text-white disabled:opacity-50">{state.status === "sending" ? t("sending") : t("send")}</button>
           <p className={`mt-3 text-sm ${state.status === "error" ? "text-red-700" : "text-kamika-steel"}`} aria-live="polite">
             {state.status === "success" && `${t("success")} ${state.reference}`}
-            {state.status === "error" && t("error")}
+            {state.status === "error" && ERROR_MESSAGES[locale][state.error ?? FALLBACK_ERROR]}
           </p>
         </div>
       </form>
