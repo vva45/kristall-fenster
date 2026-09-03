@@ -7,7 +7,13 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { L } from "../../components/L";
-import { categoriesOrdered, de, manufacturersFor, modelCountFor } from "../../lib/catalog";
+import {
+  cataloguesOrdered,
+  categoriesOrdered,
+  de,
+  manufacturersFor,
+  modelCountFor,
+} from "../../lib/catalog";
 import { CS } from "../../lib/catalog-strings";
 
 export const metadata: Metadata = {
@@ -17,6 +23,7 @@ export const metadata: Metadata = {
 
 export default function CatalogPage() {
   const categories = categoriesOrdered();
+  const catalogues = cataloguesOrdered();
   return (
     <main className="flex-1">
       <div className="mx-auto max-w-[1440px] px-5 pb-20 md:px-8">
@@ -81,6 +88,48 @@ export default function CatalogPage() {
             );
           })}
         </div>
+
+        <section className="mt-20 border-t border-kamika-mist pt-12" aria-labelledby="catalogue-documents">
+          <header className="max-w-2xl">
+            <p className="kamika-eyebrow"><L t={CS.fromCatalogues} /></p>
+            <h2 id="catalogue-documents" className="mt-2 text-3xl md:text-4xl">
+              <L t={CS.originalCatalogues} />
+            </h2>
+            <p className="mt-3 text-kamika-ink/70"><L t={CS.originalCataloguesIntro} /></p>
+          </header>
+
+          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+            {catalogues.map((catalogue) => (
+              <article
+                key={catalogue.id}
+                className="overflow-hidden rounded-kamika border border-kamika-mist bg-kamika-paper"
+              >
+                <div className="relative aspect-[3/4] bg-kamika-blue-50">
+                  <Image
+                    src={catalogue.cover}
+                    alt={de(catalogue.title)}
+                    fill
+                    sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="border-t border-kamika-mist p-4">
+                  <p className="font-mono text-[0.65rem] uppercase tracking-[0.08em] text-kamika-steel">
+                    {[catalogue.brand, catalogue.year].filter(Boolean).join(" · ")}
+                  </p>
+                  <h3 className="mt-1 text-[0.9rem] font-medium leading-snug">
+                    <L t={catalogue.title} />
+                  </h3>
+                  <p className="mt-2 text-[0.72rem] text-kamika-ink/55">
+                    {catalogue.pages ? <>{catalogue.pages} <L t={CS.pages} /> · </> : null}
+                    {catalogue.sizeMb ? `${catalogue.sizeMb.toLocaleString("de-DE")} MB · ` : null}
+                    <L t={CS.documented} />
+                  </p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
       </div>
     </main>
   );

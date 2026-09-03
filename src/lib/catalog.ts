@@ -29,6 +29,9 @@ export const categoriesOrdered = (): Category[] =>
 export const categoryBySlug = (slug: string): Category | undefined =>
   CATEGORIES.find((c) => c.slug === slug);
 
+export const cataloguesOrdered = (): Catalogue[] =>
+  [...CATALOGUES].sort((a, b) => (b.year ?? 0) - (a.year ?? 0) || de(a.title).localeCompare(de(b.title), "de"));
+
 export const manufacturersFor = (slug: CategorySlug): Manufacturer[] =>
   MANUFACTURERS.filter((m) => m.category === slug);
 

@@ -80,6 +80,12 @@ Los archivos de `src/data/catalog` son copias de la fuente de datos de `kamika-b
 3. Comprobar los conteos visibles en la home.
 4. Ejecutar `npm run check` antes de integrar el cambio.
 
+La procedencia, el alcance exacto de la copia y las reglas para incorporar nuevos
+materiales están documentados en [`docs/kamika-upstream.md`](docs/kamika-upstream.md).
+Actualmente el laboratorio conserva 8 gamas, 15 catálogos, 11 fabricantes, 40
+sistemas, 584 modelos y las 660 imágenes necesarias para mostrarlos sin depender
+de recursos remotos.
+
 La validación comprueba IDs duplicados, referencias entre entidades, existencia de imágenes y páginas de modelos. Los PDF originales no forman parte de este laboratorio; las referencias de página son informativas.
 
 ## Internacionalización
