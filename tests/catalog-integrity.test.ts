@@ -75,4 +75,14 @@ describe("integridad del catálogo", () => {
       if (pages) assert.ok(model.page <= pages, `Página fuera del catálogo: ${model.catalogue}/${model.id}`);
     }
   });
+
+  test("cada catálogo conserva una ruta PDF única y metadatos publicables", () => {
+    assertUnique(CATALOGUES.map((catalogue) => catalogue.file), "rutas PDF");
+    for (const catalogue of CATALOGUES) {
+      assert.match(catalogue.file, /^\/pdf\/catalogues\/[a-z0-9-]+\.pdf$/);
+      assert.ok((catalogue.pages ?? 0) > 0, `Faltan páginas: ${catalogue.id}`);
+      assert.ok((catalogue.sizeMb ?? 0) > 0, `Falta tamaño: ${catalogue.id}`);
+      assert.ok((catalogue.year ?? 0) >= 2000, `Falta edición: ${catalogue.id}`);
+    }
+  });
 });

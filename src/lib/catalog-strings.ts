@@ -37,6 +37,14 @@ export const CS = {
   },
   cataloguePage: { en: "Catalogue p.", de: "Katalog S.", pl: "Katalog s." },
   backToCatalogue: { en: "← Catalogue", de: "← Katalog", pl: "← Katalog" },
+  originalCatalogues: { en: "Original catalogues", de: "Original-Kataloge", pl: "Oryginalne katalogi" },
+  originalCataloguesIntro: {
+    en: "The documents behind the product data, with their original page count and edition.",
+    de: "Die Dokumente hinter den Produktdaten – mit ursprünglicher Seitenzahl und Ausgabe.",
+    pl: "Dokumenty źródłowe danych produktowych wraz z oryginalną liczbą stron i wydaniem.",
+  },
+  pages: { en: "pages", de: "Seiten", pl: "stron" },
+  documented: { en: "documented", de: "dokumentiert", pl: "udokumentowany" },
 
   // Home
   heroEyebrow: {
