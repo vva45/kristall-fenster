@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { QuoteItem } from "../../data/configurator/types";
+import { useLocale } from "../../lib/i18n";
 
 export function QuotePdfButton({
   items,
@@ -13,6 +14,7 @@ export function QuotePdfButton({
   onError: () => void;
 }) {
   const [isDownloading, setIsDownloading] = useState(false);
+  const { locale } = useLocale();
 
   const download = async () => {
     setIsDownloading(true);
@@ -20,7 +22,7 @@ export function QuotePdfButton({
       const response = await fetch("/api/quote/pdf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items, reference: "Online-Konfiguration" }),
+        body: JSON.stringify({ items, reference: "Online-Konfiguration", locale }),
       });
       if (!response.ok) throw new Error("pdf failed");
       const url = URL.createObjectURL(await response.blob());
@@ -40,6 +42,7 @@ export function QuotePdfButton({
     <button
       type="button"
       disabled={isDownloading}
+      aria-busy={isDownloading}
       onClick={download}
       className="rounded-kamika border border-kamika-ink/25 px-4 py-2 text-[0.85rem] font-medium hover:border-kamika-ink disabled:opacity-50"
     >

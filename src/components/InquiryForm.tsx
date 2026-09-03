@@ -41,6 +41,13 @@ const ERROR_MESSAGES = {
 
 const FALLBACK_ERROR: InquiryErrorCode = "email_failed";
 
+type InquiryFormProps = {
+  quote?: QuoteItem[];
+  onSuccess?: () => void;
+  initialMessage?: string;
+};
+
+export function InquiryForm({ quote, onSuccess, initialMessage = "" }: InquiryFormProps) {
 export function InquiryForm({ initialMessage, quote, onSuccess }: { initialMessage?: string; quote?: QuoteItem[]; onSuccess?: () => void }) {
   const { locale } = useLocale();
   const t = <K extends keyof typeof T>(key: K) => pick(T[key], locale);
