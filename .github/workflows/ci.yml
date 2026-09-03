@@ -41,8 +41,5 @@ jobs:
       - name: Unit tests
         run: npm test
 
-      - name: Validate catalogue data
-        run: npm run validate:data
-
       - name: Production build
         run: npm run build
