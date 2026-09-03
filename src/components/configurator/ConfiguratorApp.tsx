@@ -27,7 +27,7 @@ import {
   SOUND_GLASS,
 } from "../../data/configurator/options";
 import { brandsForMaterial, systemsForBrand } from "../../data/configurator/systems";
-import { COLORS } from "../../data/configurator/colors";
+import { SYSTEMS } from "../../data/configurator/systems";
 import type {
   ExtraId,
   ColorFinish,
