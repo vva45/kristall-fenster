@@ -123,7 +123,7 @@ export default function CatalogPage() {
                   <p className="mt-2 text-[0.72rem] text-kamika-ink/55">
                     {catalogue.pages ? <>{catalogue.pages} <L t={CS.pages} /> · </> : null}
                     {catalogue.sizeMb ? `${catalogue.sizeMb.toLocaleString("de-DE")} MB · ` : null}
-                    <L t={CS.documented} />
+                    <L t={CS.pdfUnavailable} />
                   </p>
                 </div>
               </article>
