@@ -45,6 +45,7 @@ export const CS = {
   },
   pages: { en: "pages", de: "Seiten", pl: "stron" },
   documented: { en: "documented", de: "dokumentiert", pl: "udokumentowany" },
+  pdfUnavailable: { en: "PDF in preparation", de: "PDF in Vorbereitung", pl: "PDF w przygotowaniu" },
 
   // Home
   heroEyebrow: {

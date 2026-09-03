@@ -29,6 +29,7 @@ import {
   SOUND_GLASS,
 } from "../../data/configurator/options";
 import { brandsForMaterial, systemsForBrand } from "../../data/configurator/systems";
+import { SYSTEMS } from "../../data/configurator/systems";
 import type {
   ExtraId,
   ColorFinish,
@@ -226,9 +227,12 @@ function NumberField({
 
 /* ── El configurador ────────────────────────────────────────────── */
 
-export function ConfiguratorApp() {
+export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string }) {
   const { locale } = useLocale();
-  const [config, dispatch] = useReducer(reducer, DEFAULT_CONFIG);
+  const [config, dispatch] = useReducer(reducer, initialSystemId, (requested) => {
+    const selected = SYSTEMS.find((system) => system.id === requested);
+    return selected ? { ...DEFAULT_CONFIG, material: selected.material, systemId: selected.id } : DEFAULT_CONFIG;
+  });
   const [step, setStep] = useState<StepKey>("system");
   const [visitedSteps, setVisitedSteps] = useState<Set<StepKey>>(() => new Set());
   const [quote, setQuote] = useState<QuoteItem[]>([]);

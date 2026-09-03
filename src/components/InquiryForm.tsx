@@ -38,7 +38,12 @@ const ERROR_MESSAGES = {
 
 const FALLBACK_ERROR: InquiryErrorCode = "email_failed";
 
-export function InquiryForm({ quote = [] }: { quote?: QuoteItem[] }) {
+export type InquiryFormProps = {
+  quote?: QuoteItem[];
+  onSuccess?: () => void;
+};
+
+export function InquiryForm({ quote = [], onSuccess }: InquiryFormProps) {
   const { locale } = useLocale();
   const t = <K extends keyof typeof T>(key: K) => pick(T[key], locale);
   const [state, setState] = useState<{ status: "idle" | "sending" | "success" | "error"; reference?: string; error?: InquiryErrorCode }>({ status: "idle" });
@@ -66,6 +71,7 @@ export function InquiryForm({ quote = [] }: { quote?: QuoteItem[] }) {
       }
       formElement.reset();
       setState({ status: "success", reference: result.requestId });
+      onSuccess?.();
     } catch {
       setState({ status: "error", error: FALLBACK_ERROR });
     }
