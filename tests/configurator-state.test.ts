@@ -85,4 +85,13 @@ describe("configurator reducer", () => {
     assert.equal(result.exteriorColorId, "ral-9016");
     assert.equal(result.interiorColorId, "ral-9016");
   });
+
+  test("permite solicitar una ventana de madera con acabados compatibles", () => {
+    const result = reducer(DEFAULT_CONFIG, { type: "setMaterial", material: "wood" });
+
+    assert.equal(result.material, "wood");
+    assert.equal(result.systemId, "timber-made-to-measure");
+    assert.equal(result.exteriorColorId, "ral-9016");
+    assert.equal(result.interiorColorId, "ral-9016");
+  });
 });

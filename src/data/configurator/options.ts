@@ -22,9 +22,10 @@ import type {
   SoundGlass,
 } from "./types";
 
-export const MATERIAL_LABEL: Record<"pvc" | "aluminium", Localized<string>> = {
+export const MATERIAL_LABEL: Record<"pvc" | "aluminium" | "wood", Localized<string>> = {
   pvc: { en: "PVC", de: "Kunststoff (PVC)", pl: "PVC" },
   aluminium: { en: "Aluminium", de: "Aluminium", pl: "Aluminium" },
+  wood: { en: "Timber", de: "Holz", pl: "Drewno" },
 };
 
 export const SASH_LAYOUTS: Record<SashLayout, { label: Localized<string>; note: Localized<string>; panels: number }> = {
