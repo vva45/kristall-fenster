@@ -50,4 +50,20 @@ describe("validateConfiguration", () => {
     assert.deepEqual(warnings(config), ["large_element", "special_glass", "security_package", "roller_shutter", "special_request"]);
     assert.equal(validateConfiguration(config).requiresTechnicalReview, true);
   });
+
+  test("aplica compatibilidades propias de una corredera", () => {
+    const sliding: WindowConfig = {
+      ...DEFAULT_CONFIG,
+      systemId: "salamander-evolutiondrive-plus",
+      sash: "slide2",
+      leafOpenings: ["fixedSash", "slideLeft"],
+      widthMm: 1800,
+      heightMm: 2000,
+    };
+    assert.equal(validateConfiguration(sliding).valid, true);
+    assert.ok(codes({ ...sliding, glazing: "double" }).includes("incompatible_glazing"));
+    assert.ok(codes({ ...sliding, shutter: "topBox" }).includes("incompatible_shutter"));
+    assert.ok(codes({ ...sliding, security: "rc2n" }).includes("incompatible_hardware"));
+    assert.ok(codes({ ...sliding, leafOpenings: ["turnLeft", "turnRight"] }).includes("invalid_opening"));
+  });
 });

@@ -35,6 +35,7 @@ export interface ColorFinish {
 
 /** Material de marco que ofrece el configurador (lo que Kamika monta). */
 export type FrameMaterial = "pvc" | "aluminium";
+export type ProductKind = "window" | "sliding";
 
 /** Un sistema de perfil real, con specs de su ficha técnica. */
 export interface ProfileSystem {
@@ -51,10 +52,12 @@ export interface ProfileSystem {
   note?: Localized<string>;
   /** Only documented systems may be selected in a customer request. */
   configurable?: boolean;
+  /** Familia funcional: evita mezclar herrajes de ventana y corredera. */
+  productKind?: ProductKind;
 }
 
 /** Composición del elemento: cuántas hojas y cómo se reparten. */
-export type SashLayout = "one" | "two" | "three" | "topLight" | "bottomLight";
+export type SashLayout = "one" | "two" | "three" | "topLight" | "bottomLight" | "slide2" | "slide3" | "slide4";
 
 /** Función de una hoja. */
 export type LeafOpening =
@@ -64,7 +67,9 @@ export type LeafOpening =
   | "turnRight"
   | "tilt"
   | "tiltTurnLeft"
-  | "tiltTurnRight";
+  | "tiltTurnRight"
+  | "slideLeft"
+  | "slideRight";
 
 export type Glazing = "double" | "triple" | "triplePlus";
 export type SoundGlass = "standard" | "sound38" | "sound42";

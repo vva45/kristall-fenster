@@ -41,6 +41,11 @@ export const S = {
   completed: { en: "Completed", de: "Erledigt", pl: "Ukończono" },
 
   material: { en: "Frame material", de: "Rahmenmaterial", pl: "Materiał ramy" },
+  productFamily: { en: "Product family", de: "Produktfamilie", pl: "Rodzina produktu" },
+  windows: { en: "Windows", de: "Fenster", pl: "Okna" },
+  sliders: { en: "Sliding doors", de: "Schiebetüren", pl: "Drzwi przesuwne" },
+  windowsNote: { en: "Turn, tilt and fixed sashes", de: "Dreh-, Kipp- und Festflügel", pl: "Skrzydła rozwierne, uchylne i stałe" },
+  slidersNote: { en: "Sliding and lift-and-slide systems", de: "Schiebe- und Hebeschiebesysteme", pl: "Systemy przesuwne i HST" },
   brand: { en: "Manufacturer", de: "Hersteller", pl: "Producent" },
   system: { en: "Profile system", de: "Profilsystem", pl: "System profili" },
   specDepth: { en: "Installation depth", de: "Bautiefe", pl: "Głębokość zabudowy" },
@@ -135,6 +140,8 @@ export const S = {
   },
 
   preview: { en: "Preview", de: "Vorschau", pl: "Podgląd" },
+  viewExterior: { en: "Exterior", de: "Außen", pl: "Zewnątrz" },
+  viewInterior: { en: "Interior", de: "Innen", pl: "Wewnątrz" },
   metaSystem: { en: "System", de: "System", pl: "System" },
   metaType: { en: "Type", de: "Typ", pl: "Typ" },
   metaSize: { en: "Size", de: "Maße", pl: "Wymiary" },

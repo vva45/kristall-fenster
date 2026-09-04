@@ -209,19 +209,23 @@ export const SYSTEMS: ProfileSystem[] = [
     uw: { en: "0.66 (reference window)", de: "0,66 (Referenzfenster)", pl: "0,66 (okno referencyjne)" },
     note: { en: "Frame 96 / sash 106 mm, 62 mm thermal break", de: "Rahmen 96 / Flügel 106 mm, 62 mm thermische Trennung", pl: "Rama 96 / skrzydło 106 mm, przekładka 62 mm" },
   },
+  // ── Correderas: configurador propio dentro del flujo común ───
+  { id: "salamander-evolutiondrive-plus", material: "pvc", brand: "Salamander", name: "evolutionDrive Plus+", productKind: "sliding", depthMm: 152, note: { en: "Sliding patio system", de: "Schiebetürsystem", pl: "System drzwi przesuwnych" } },
+  { id: "salamander-evolutiondrive-82-hst", material: "pvc", brand: "Salamander", name: "evolutionDrive 82 HST", productKind: "sliding", depthMm: 194, note: { en: "Lift-and-slide system", de: "Hebeschiebetürsystem", pl: "System podnoszono-przesuwny" } },
+  { id: "procural-alu-slide-sl1600tt-hi", material: "aluminium", brand: "PROCURAL", name: "Alu Slide SL1600TT HI", productKind: "sliding", depthMm: 160, note: { en: "Lift-and-slide, two or three tracks", de: "Hebeschiebe, zwei oder drei Schienen", pl: "Podnoszono-przesuwne, dwie lub trzy szyny" } },
 ];
 
 export const systemById = (id: string): ProfileSystem =>
   SYSTEMS.find((s) => s.id === id) ?? SYSTEMS[0];
 
 /** Marcas disponibles para un material, en el orden del array. */
-export const brandsForMaterial = (material: string): string[] => {
+export const brandsForMaterial = (material: string, kind: "window" | "sliding" = "window"): string[] => {
   const seen: string[] = [];
   for (const s of SYSTEMS) {
-    if (s.material === material && s.configurable !== false && !seen.includes(s.brand)) seen.push(s.brand);
+    if (s.material === material && (s.productKind ?? "window") === kind && s.configurable !== false && !seen.includes(s.brand)) seen.push(s.brand);
   }
   return seen;
 };
 
-export const systemsForBrand = (material: string, brand: string): ProfileSystem[] =>
-  SYSTEMS.filter((s) => s.material === material && s.brand === brand && s.configurable !== false);
+export const systemsForBrand = (material: string, brand: string, kind: "window" | "sliding" = "window"): ProfileSystem[] =>
+  SYSTEMS.filter((s) => s.material === material && (s.productKind ?? "window") === kind && s.brand === brand && s.configurable !== false);

@@ -8,7 +8,7 @@ export const QUOTE_STORAGE_KEY = "kamika-configurator-quote";
 export const QUOTE_STORAGE_VERSION = 2;
 
 const MATERIALS = new Set(["pvc", "aluminium"]);
-const SASHES = new Set(["one", "two", "three", "topLight", "bottomLight"]);
+const SASHES = new Set(["one", "two", "three", "topLight", "bottomLight", "slide2", "slide3", "slide4"]);
 const OPENINGS = new Set([
   "fixed",
   "fixedSash",
@@ -17,6 +17,8 @@ const OPENINGS = new Set([
   "tilt",
   "tiltTurnLeft",
   "tiltTurnRight",
+  "slideLeft",
+  "slideRight",
 ]);
 const GASKETS = new Set(["black", "grey"]);
 const GLAZINGS = new Set(["double", "triple", "triplePlus"]);
@@ -51,7 +53,7 @@ const isWindowConfig = (value: unknown): value is WindowConfig => {
   const exterior = COLORS.find((colour) => colour.id === value.exteriorColorId);
   const interior = COLORS.find((colour) => colour.id === value.interiorColorId);
   const expectedLeaves =
-    value.sash === "one" ? 1 : value.sash === "three" ? 3 : value.sash ? 2 : 0;
+    value.sash === "one" ? 1 : value.sash === "three" || value.sash === "slide3" ? 3 : value.sash === "slide4" ? 4 : value.sash ? 2 : 0;
 
   return (
     isStringIn(value.material, MATERIALS) &&

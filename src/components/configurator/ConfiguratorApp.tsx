@@ -28,6 +28,7 @@ import {
 } from "../../data/configurator/options";
 import { brandsForMaterial, SYSTEMS, systemsForBrand } from "../../data/configurator/systems";
 import { COLORS } from "../../data/configurator/colors";
+import { openingsForLayout, rulesForSystem } from "../../data/configurator/rules";
 import type {
   ExtraId,
   ColorFinish,
@@ -242,6 +243,7 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
   const [roomName, setRoomName] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
   const [announcement, setAnnouncement] = useState("");
+  const [previewSide, setPreviewSide] = useState<"exterior" | "interior">("exterior");
   const stepPanelRef = useRef<HTMLDivElement>(null);
   const configuratorRef = useRef<HTMLDivElement>(null);
 
@@ -286,6 +288,8 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
   }, [quote, quoteReady]);
 
   const system = systemById(config.systemId);
+  const systemRules = rulesForSystem(system);
+  const productKind = systemRules.kind;
   const exterior = colorById(config.exteriorColorId);
   const interior = colorById(config.interiorColorId);
   const validation = useMemo(() => validateConfiguration(config), [config]);
@@ -407,14 +411,14 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
           aria-label={t(S.preview)}
           className="kamika-grid-bg order-2 min-w-0 rounded-kamika border border-kamika-mist p-5 md:p-7 lg:sticky lg:top-24 lg:order-1"
         >
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex flex-wrap items-start justify-between gap-4">
             <div><p className="kamika-eyebrow">{t(S.preview)}</p><p className="mt-1 text-xs text-kamika-ink/60">{t(S.previewNotice)}</p></div>
-            <p className="rounded-kamika bg-kamika-ink px-3 py-1.5 font-mono text-sm text-kamika-paper" aria-live="polite">
-              {t(S.priceOnRequest)}
-            </p>
+            <div className="flex rounded-kamika border border-kamika-mist bg-white p-1">
+              {(["exterior", "interior"] as const).map((side) => <button key={side} type="button" aria-pressed={previewSide === side} onClick={() => setPreviewSide(side)} className={(previewSide === side ? "bg-kamika-ink text-white " : "text-kamika-ink/60 ") + "rounded px-3 py-1 text-xs font-medium"}>{t(side === "exterior" ? S.viewExterior : S.viewInterior)}</button>)}
+            </div>
           </div>
           <div className="mt-4">
-            <WindowPreview config={config} exterior={exterior} interior={interior} />
+            <WindowPreview config={config} exterior={exterior} interior={interior} side={previewSide} />
           </div>
           <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 border-t border-kamika-mist pt-4 text-[0.85rem] md:grid-cols-4">
             <div>
@@ -511,6 +515,10 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
             {/* 1 · Sistema */}
             {step === "system" && (
               <div>
+                <FieldLabel>{t(S.productFamily)}</FieldLabel>
+                <div className="grid grid-cols-2 gap-2.5">
+                  {(["window", "sliding"] as const).map((kind) => <ChoiceButton key={kind} selected={productKind === kind} onClick={() => dispatch({ type: "setProductKind", productKind: kind })} title={t(kind === "window" ? S.windows : S.sliders)} note={t(kind === "window" ? S.windowsNote : S.slidersNote)} />)}
+                </div>
                 <FieldLabel>{t(S.material)}</FieldLabel>
                 <div className="grid grid-cols-2 gap-2.5">
                   {(["pvc", "aluminium"] as const).map((m) => (
@@ -525,7 +533,7 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
 
                 <FieldLabel>{t(S.brand)}</FieldLabel>
                 <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
-                  {brandsForMaterial(config.material).map((brand) => (
+                  {brandsForMaterial(config.material, productKind).map((brand) => (
                     <ChoiceButton
                       key={brand}
                       selected={system.brand === brand}
@@ -537,7 +545,7 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
 
                 <FieldLabel>{t(S.system)}</FieldLabel>
                 <div className="grid gap-2.5 sm:grid-cols-2">
-                  {systemsForBrand(config.material, system.brand).map((s) => (
+                  {systemsForBrand(config.material, system.brand, productKind).map((s) => (
                     <ChoiceButton
                       key={s.id}
                       selected={config.systemId === s.id}
@@ -588,6 +596,7 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
                     <ChoiceButton
                       key={sash}
                       selected={config.sash === sash}
+                      disabled={!systemRules.layouts.includes(sash)}
                       onClick={() => dispatch({ type: "setSash", sash })}
                       title={t(SASH_LAYOUTS[sash].label)}
                       note={t(SASH_LAYOUTS[sash].note)}
@@ -607,6 +616,7 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
                           <ChoiceButton
                             key={o}
                             selected={opening === o}
+                            disabled={!openingsForLayout(config.sash, index).includes(o)}
                             onClick={() => dispatch({ type: "setLeafOpening", index, opening: o })}
                             title={t(LEAF_OPENINGS[o])}
                           />
@@ -625,16 +635,16 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
                   <NumberField
                     label={t(S.width)}
                     value={config.widthMm}
-                    min={LIMITS.minWidth}
-                    max={LIMITS.maxWidth}
+                    min={systemRules.minWidth}
+                    max={systemRules.maxWidth}
                     step={10}
                     onCommit={(widthMm) => dispatch({ type: "patch", patch: { widthMm } })}
                   />
                   <NumberField
                     label={t(S.height)}
                     value={config.heightMm}
-                    min={LIMITS.minHeight}
-                    max={LIMITS.maxHeight}
+                    min={systemRules.minHeight}
+                    max={systemRules.maxHeight}
                     step={10}
                     onCommit={(heightMm) => dispatch({ type: "patch", patch: { heightMm } })}
                   />
@@ -710,6 +720,7 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
                     <ChoiceButton
                       key={g}
                       selected={config.glazing === g}
+                      disabled={!systemRules.glazing.includes(g)}
                       onClick={() => dispatch({ type: "patch", patch: { glazing: g } })}
                       title={t(GLAZINGS[g].label)}
                       note={t(GLAZINGS[g].note)}
@@ -811,7 +822,7 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
                     <ChoiceButton
                       key={s}
                       selected={config.shutter === s}
-                      disabled={s !== "none" && !canShutter}
+                      disabled={!systemRules.shutters.includes(s) || (s !== "none" && !canShutter)}
                       onClick={() => dispatch({ type: "patch", patch: { shutter: s } })}
                       title={t(SHUTTERS[s].label)}
                       note={t(SHUTTERS[s].note)}
@@ -825,7 +836,7 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
                     <ChoiceButton
                       key={c}
                       selected={config.shutterControl === c}
-                      disabled={config.shutter === "none"}
+                      disabled={config.shutter === "none" || !systemRules.shutterControls.includes(c)}
                       onClick={() => dispatch({ type: "patch", patch: { shutterControl: c } })}
                       title={t(SHUTTER_CONTROLS[c])}
                     />
@@ -869,7 +880,7 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
                     <ChoiceButton
                       key={h}
                       selected={config.handle === h}
-                      disabled={allFixed}
+                      disabled={allFixed || !systemRules.handles.includes(h)}
                       onClick={() => dispatch({ type: "patch", patch: { handle: h } })}
                       title={t(HANDLES[h].label)}
                       note={t(HANDLES[h].note)}
@@ -883,7 +894,7 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
                     <ChoiceButton
                       key={s}
                       selected={config.security === s}
-                      disabled={allFixed && s !== "base"}
+                      disabled={!systemRules.security.includes(s) || (allFixed && s !== "base")}
                       onClick={() => dispatch({ type: "patch", patch: { security: s } })}
                       title={t(SECURITY[s].label)}
                       note={t(SECURITY[s].note)}
@@ -894,7 +905,7 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
                 <FieldLabel>{t(S.extrasLabel)}</FieldLabel>
                 <div className="space-y-2.5">
                   {(Object.keys(EXTRAS) as ExtraId[]).map((extra) => {
-                    const disabled = allFixed && extra !== "trickleVent";
+                    const disabled = !systemRules.extras.includes(extra) || (allFixed && extra !== "trickleVent");
                     return (
                       <label
                         key={extra}
