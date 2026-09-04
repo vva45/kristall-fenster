@@ -9,7 +9,7 @@ import type { Metadata } from "next";
 import { ConfiguratorApp } from "../../components/configurator/ConfiguratorApp";
 
 export const metadata: Metadata = {
-  title: "Fenster-Konfigurator — Kamika Labor",
+  title: "Fenster-Konfigurator — Kamika Bauelemente",
   description:
     "Window configurator with real profile systems and colour charts. Prices on request.",
 };

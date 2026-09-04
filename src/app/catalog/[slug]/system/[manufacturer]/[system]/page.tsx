@@ -15,7 +15,7 @@ const localized = (value: string | Localized<string>): Localized<string> => type
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; manufacturer: string; system: string }> }): Promise<Metadata> {
   const p = await params; const category = categoriesOrdered().find((item) => item.slug === p.slug); const entry = category && systemByPath(category.slug, p.manufacturer, p.system);
-  return { title: entry ? `${entry.manufacturer.name} ${entry.system.name} — Kristall Fenster` : "System — Kristall Fenster" };
+  return { title: entry ? `${entry.manufacturer.name} ${entry.system.name} — Kamika Bauelemente` : "System — Kamika Bauelemente" };
 }
 
 export default async function SystemDetail({ params }: { params: Promise<{ slug: string; manufacturer: string; system: string }> }) {

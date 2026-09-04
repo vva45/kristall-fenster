@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { InquiryForm } from "../../components/InquiryForm";
 import { COMPANY } from "../../lib/company";
 
-export const metadata: Metadata = { title: "Kontakt — Kristall Fenster", description: "Kontakt und Anfrage an Kamika Bauelemente." };
+export const metadata: Metadata = { title: "Kontakt — Kamika Bauelemente", description: "Kontakt und Anfrage an Kamika Bauelemente." };
 
 export default async function ContactPage({ searchParams }: { searchParams: Promise<{ product?: string | string[] }> }) {
   const product = (await searchParams).product;

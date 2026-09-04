@@ -17,7 +17,7 @@ import {
 import { CS } from "../../lib/catalog-strings";
 
 export const metadata: Metadata = {
-  title: "Katalog — Kristall Fenster Labor",
+  title: "Katalog — Kamika Bauelemente",
   description: "Real product ranges, mirrored from the Kamika catalogue data.",
 };
 

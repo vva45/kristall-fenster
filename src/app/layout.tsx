@@ -32,10 +32,9 @@ const plexMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Kristall Fenster — Konfigurator-Labor",
+  title: "Kamika Bauelemente — Fenster, Türen und Bauelemente",
   description:
-    "Development playground for the Kamika window configurator. Prices on request.",
-  robots: { index: false, follow: false },
+    "Fenster, Türen und Bauelemente von Kamika. Systeme, Farben und Angebote auf Anfrage.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -1,126 +1,68 @@
-/**
- * Home del laboratorio: el hero de siempre (ya iba en clave Kamika) y
- * debajo las gamas REALES del catálogo de Kamika. Página de SERVIDOR:
- * los textos localizados se pintan con la hoja cliente <L>, que
- * reacciona a los botoncitos DE/EN/PL del navbar.
- */
 import Image from "next/image";
 import Link from "next/link";
 import { L } from "../components/L";
 import { categoriesOrdered, de, manufacturersFor, modelCountFor } from "../lib/catalog";
 import { CS } from "../lib/catalog-strings";
 
+const materialStories = [
+  { image: "/images/categories/windows-hero.jpg", title: CS.materialPvc, text: CS.materialPvcText, tone: "bg-[#dfe8e6]" },
+  { image: "/images/categories/entrance-doors-hero.jpg", title: CS.materialAlu, text: CS.materialAluText, tone: "bg-[#d8c9b7]" },
+  { image: "/images/categories/patio-doors-hero.jpg", title: CS.materialGlass, text: CS.materialGlassText, tone: "bg-[#bccbd1]" },
+];
+
 export default function Home() {
   const categories = categoriesOrdered();
-  return (
-    <main className="min-h-screen bg-white text-kamika-ink">
-      <section className="kamika-grid-bg border-b border-kamika-mist">
-        <div className="mx-auto grid max-w-[1440px] gap-10 px-5 py-14 md:px-8 md:py-28 lg:grid-cols-[1.2fr_.8fr] lg:items-end">
-          <div>
-            <p className="kamika-eyebrow"><L t={CS.heroEyebrow} /></p>
-            <h1 className="mt-5 max-w-5xl text-[52px] font-semibold leading-[.88] tracking-[-0.055em] sm:text-6xl md:mt-6 md:text-8xl lg:text-[108px]">
-              KRISTALL <span className="block text-kamika-steel">FENSTER</span>
-            </h1>
-            <p className="mt-7 max-w-3xl text-[15px] leading-7 text-kamika-ink/65 md:mt-8 md:text-xl">
-              <L t={CS.heroIntro} />
-            </p>
-            <div className="mt-8 grid grid-cols-2 gap-3 sm:flex sm:flex-wrap md:mt-10">
-              <Link
-                href="/configurator"
-                className="inline-flex items-center justify-center gap-2 rounded-md border border-kamika-steel bg-kamika-steel px-4 py-3 text-center text-[12px] font-semibold text-white shadow-[3px_3px_0_var(--kamika-blue)] transition-all hover:-translate-y-0.5 hover:opacity-90 sm:px-6 sm:py-3.5 sm:text-base"
-              >
-                <L t={CS.openConfigurator} /> <span aria-hidden>→</span>
-              </Link>
-              <Link
-                href="/catalog"
-                className="inline-flex items-center justify-center gap-2 rounded-md border border-kamika-steel bg-white px-4 py-3 text-center text-[12px] font-semibold text-kamika-steel transition-all hover:-translate-y-0.5 hover:bg-kamika-blue-50 sm:px-6 sm:py-3.5 sm:text-base"
-              >
-                <L t={CS.viewCatalogue} /> <span aria-hidden>→</span>
-              </Link>
-            </div>
-          </div>
-
-          <div className="border-t border-kamika-steel pt-7 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
-            <p className="kamika-eyebrow"><L t={CS.fromCatalogues} /></p>
-            <div className="mt-5 grid gap-0 sm:grid-cols-2 lg:grid-cols-1">
-              {[CS.stat1, CS.stat2, CS.stat3, CS.stat4].map((stat, i) => (
-                <div
-                  key={i}
-                  className="grid grid-cols-[34px_1fr] gap-3 border-t border-kamika-mist py-3.5 first:border-t-0 sm:first:border-t lg:first:border-t"
-                >
-                  <span className="font-mono text-[11px] text-kamika-steel">0{i + 1}</span>
-                  <strong className="text-[13px] font-medium md:text-base"><L t={stat} /></strong>
-                </div>
-              ))}
+  return <main className="min-h-screen bg-[#f3f1ec] text-kamika-ink">
+    <section className="architectural-hero relative min-h-[calc(100svh-64px)] overflow-hidden bg-kamika-ink text-white">
+      <Image src="/images/categories/patio-doors-hero.jpg" alt="" fill priority sizes="100vw" className="object-cover object-center" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,18,20,.84)_0%,rgba(10,18,20,.42)_47%,rgba(10,18,20,.08)_100%)]" />
+      <div className="absolute inset-0 opacity-20 [background:linear-gradient(90deg,transparent_49.9%,white_50%,transparent_50.1%)]" />
+      <div className="relative mx-auto flex min-h-[calc(100svh-64px)] max-w-[1440px] flex-col justify-between px-5 py-10 md:px-8 md:py-14">
+        <div className="flex items-center justify-between border-t border-white/35 pt-4 font-mono text-[10px] uppercase tracking-[.18em] text-white/75">
+          <L t={CS.heroEyebrow} /><span>DE · 2026</span>
+        </div>
+        <div className="max-w-[880px] pb-6">
+          <h1 className="hero-reveal text-[clamp(3.5rem,10vw,9.5rem)] font-medium leading-[.78] tracking-[-.07em]">
+            Kamika <span className="block text-kamika-blue">Bauelemnte</span>
+          </h1>
+          <div className="mt-8 grid gap-7 border-t border-white/35 pt-6 md:grid-cols-[1fr_auto] md:items-end">
+            <p className="max-w-xl text-base leading-7 text-white/80 md:text-lg"><L t={CS.heroIntro} /></p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/catalog" className="soft-button bg-white px-5 py-3 text-sm font-semibold text-kamika-ink"><L t={CS.viewCatalogue} /> ↗</Link>
+              <Link href="/configurator" className="soft-button border border-white/60 px-5 py-3 text-sm font-semibold text-white"><L t={CS.openConfigurator} /> →</Link>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section className="mx-auto max-w-[1440px] px-5 py-14 md:px-8 md:py-24">
-        <div className="max-w-3xl">
-          <p className="kamika-eyebrow"><L t={CS.ranges} /></p>
-          <h2 className="mt-3 text-[36px] font-semibold leading-[.98] tracking-[-0.045em] md:mt-4 md:text-6xl">
-            <L t={CS.rangesTitle} />
-          </h2>
-          <p className="mt-4 max-w-2xl text-[14px] leading-6 text-kamika-ink/60 md:mt-5 md:text-base">
-            <L t={CS.rangesIntro} />
-          </p>
-        </div>
+    <section className="mx-auto max-w-[1440px] px-5 py-20 md:px-8 md:py-32">
+      <div className="grid gap-8 md:grid-cols-[.8fr_1.2fr] md:items-end">
+        <p className="kamika-eyebrow"><L t={CS.ranges} /></p>
+        <div><h2 className="text-[clamp(2.8rem,6vw,6.5rem)] leading-[.9]"><L t={CS.rangesTitle} /></h2><p className="mt-6 max-w-2xl text-kamika-ink/60"><L t={CS.rangesIntro} /></p></div>
+      </div>
+      <div className="editorial-grid mt-14">
+        {categories.map((category, index) => {
+          const models = modelCountFor(category.slug);
+          const systems = manufacturersFor(category.slug).reduce((sum, m) => sum + m.systems.length, 0);
+          return <Link key={category.slug} href={`/catalog/${category.slug}`} className={`editorial-card group relative overflow-hidden bg-kamika-ink ${index === 0 || index === 5 ? "editorial-card-wide" : ""}`}>
+            <Image src={category.heroImage} alt={de(category.name)} fill sizes="(min-width:1024px) 50vw, 100vw" className="object-cover transition duration-700 group-hover:scale-[1.04]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/5 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 text-white md:p-7">
+              <div><span className="font-mono text-[10px] tracking-[.14em] text-white/65">0{index + 1}</span><h3 className="mt-1 text-2xl md:text-3xl"><L t={category.name} /></h3></div>
+              <span className="grid size-11 shrink-0 place-items-center rounded-full border border-white/50 transition group-hover:rotate-45 group-hover:bg-white group-hover:text-black">↗</span>
+            </div>
+            <span className="absolute right-5 top-5 rounded-full bg-white/90 px-3 py-1 font-mono text-[10px] text-black backdrop-blur">{systems || models || "—"} <L t={systems ? CS.systems : CS.models} /></span>
+          </Link>;
+        })}
+      </div>
+    </section>
 
-        <div className="mt-9 grid gap-5 sm:grid-cols-2 md:mt-12 lg:grid-cols-4">
-          {categories.map((category) => {
-            const models = modelCountFor(category.slug);
-            const systems = manufacturersFor(category.slug).reduce(
-              (sum, m) => sum + m.systems.length,
-              0,
-            );
-            return (
-              <Link
-                key={category.slug}
-                href={`/catalog/${category.slug}`}
-                className="group overflow-hidden rounded-kamika border border-kamika-mist bg-white shadow-[3px_3px_0_var(--kamika-mist)]"
-              >
-                <div className="relative aspect-[16/10] overflow-hidden bg-kamika-blue-50">
-                  <Image
-                    src={category.heroImage}
-                    alt={de(category.name)}
-                    fill
-                    sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.025]"
-                  />
-                </div>
-                <div className="p-5">
-                  <h3 className="text-[20px] font-semibold tracking-[-0.02em]">
-                    <L t={category.name} />
-                  </h3>
-                  <p className="mt-1 font-mono text-[0.7rem] text-kamika-steel">
-                    {category.comingSoon ? (
-                      <L t={CS.comingSoon} />
-                    ) : systems > 0 || models > 0 ? (
-                      <>
-                        {systems > 0 && (
-                          <>
-                            {systems} <L t={CS.systems} />
-                          </>
-                        )}
-                        {systems > 0 && models > 0 && " · "}
-                        {models > 0 && (
-                          <>
-                            {models} <L t={CS.models} />
-                          </>
-                        )}
-                      </>
-                    ) : (
-                      <L t={CS.overview} />
-                    )}
-                  </p>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-    </main>
-  );
+    <section className="bg-kamika-ink py-20 text-white md:py-28">
+      <div className="mx-auto max-w-[1440px] px-5 md:px-8">
+        <div className="flex items-end justify-between gap-6"><div><p className="kamika-eyebrow !text-kamika-blue"><L t={CS.materials} /></p><h2 className="mt-4 text-4xl md:text-6xl"><L t={CS.materialsTitle} /></h2></div><span className="hidden font-mono text-xs text-white/45 md:block">01 — 03</span></div>
+        <div className="mt-12 grid gap-px bg-white/15 md:grid-cols-3">{materialStories.map((story, i) => <article key={i} className={`${story.tone} group text-kamika-ink`}><div className="relative aspect-[4/3] overflow-hidden"><Image src={story.image} alt="" fill sizes="33vw" className="object-cover saturate-[.8] transition duration-700 group-hover:scale-105 group-hover:saturate-100" /></div><div className="p-6 md:p-8"><span className="font-mono text-[10px]">0{i+1}</span><h3 className="mt-8 text-3xl"><L t={story.title} /></h3><p className="mt-3 text-sm leading-6 text-kamika-ink/65"><L t={story.text} /></p></div></article>)}</div>
+      </div>
+    </section>
+  </main>;
 }

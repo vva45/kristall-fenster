@@ -8,7 +8,7 @@ import { categoriesOrdered, de, modelByPath, modelsByCollection } from "../../..
 
 export function generateStaticParams() { return categoriesOrdered().flatMap((category) => modelsByCollection(category.slug).flatMap(({ catalogue, models }) => models.map((model) => ({ slug: category.slug, catalogue: catalogue.id, model: model.id })))); }
 export const dynamicParams = false;
-export async function generateMetadata({ params }: { params: Promise<{ slug: string; catalogue: string; model: string }> }): Promise<Metadata> { const p = await params; const category = categoriesOrdered().find((item) => item.slug === p.slug); const entry = category && modelByPath(category.slug, p.catalogue, p.model); return { title: entry ? `${entry.model.name} — ${de(entry.catalogue.title)}` : "Modell — Kristall Fenster" }; }
+export async function generateMetadata({ params }: { params: Promise<{ slug: string; catalogue: string; model: string }> }): Promise<Metadata> { const p = await params; const category = categoriesOrdered().find((item) => item.slug === p.slug); const entry = category && modelByPath(category.slug, p.catalogue, p.model); return { title: entry ? `${entry.model.name} — ${de(entry.catalogue.title)}` : "Modell — Kamika Bauelemente" }; }
 
 export default async function ModelDetail({ params }: { params: Promise<{ slug: string; catalogue: string; model: string }> }) {
   const p = await params; const category = categoriesOrdered().find((item) => item.slug === p.slug); const entry = category && modelByPath(category.slug, p.catalogue, p.model); if (!category || !entry) notFound();
