@@ -171,6 +171,7 @@ function ColourPicker({
           </div>
         ))}
       </div>
+      <p className="mt-2 text-[0.75rem] text-kamika-ink/60">{translate(S.colourAvailability)}</p>
     </fieldset>
   );
 }
@@ -230,7 +231,7 @@ function NumberField({
 export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string }) {
   const { locale } = useLocale();
   const [config, dispatch] = useReducer(reducer, initialSystemId, (requested) => {
-    const selected = SYSTEMS.find((system) => system.id === requested);
+    const selected = SYSTEMS.find((system) => system.id === requested && system.configurable !== false);
     return selected ? { ...DEFAULT_CONFIG, material: selected.material, systemId: selected.id } : DEFAULT_CONFIG;
   });
   const [step, setStep] = useState<StepKey>("system");
@@ -552,6 +553,10 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
                     />
                   ))}
                 </div>
+
+                <p className="mt-4 rounded-kamika border border-kamika-mist bg-kamika-blue-50 px-3 py-2.5 text-[0.8rem] text-kamika-ink/70">
+                  {t(S.systemAvailability)}
+                </p>
 
                 {/* Specs del sistema elegido, de su ficha real. */}
                 <dl className="mt-6 grid grid-cols-2 gap-3 rounded-kamika bg-kamika-blue-50 p-4 text-[0.85rem] sm:grid-cols-3">

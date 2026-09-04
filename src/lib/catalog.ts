@@ -25,10 +25,10 @@ import type {
 export const de = <T,>(v: Localized<T>): T => v.de ?? v.en;
 
 export const categoriesOrdered = (): Category[] =>
-  [...CATEGORIES].sort((a, b) => a.order - b.order);
+  CATEGORIES.filter((category) => category.published !== false).sort((a, b) => a.order - b.order);
 
 export const categoryBySlug = (slug: string): Category | undefined =>
-  CATEGORIES.find((c) => c.slug === slug);
+  categoriesOrdered().find((c) => c.slug === slug);
 
 export const cataloguesOrdered = (): Catalogue[] =>
   [...CATALOGUES].sort((a, b) => (b.year ?? 0) - (a.year ?? 0) || de(a.title).localeCompare(de(b.title), "de"));

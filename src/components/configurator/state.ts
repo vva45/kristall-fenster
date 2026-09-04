@@ -150,6 +150,7 @@ export function reducer(state: WindowConfig, action: Action): WindowConfig {
     }
     case "setBrand": {
       const system = systemsForBrand(state.material, action.brand)[0];
+      if (!system) return state;
       return normalize({ ...state, systemId: system.id });
     }
     case "setSash":

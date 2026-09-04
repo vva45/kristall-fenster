@@ -51,7 +51,7 @@ export function validateConfiguration(config: WindowConfig): ConfigurationValida
   if (!Number.isInteger(config.quantity) || config.quantity < 1 || config.quantity > LIMITS.maxQuantity) {
     addError("invalid_quantity", "quantity");
   }
-  if (!system || system.material !== config.material) addError("invalid_system", "systemId");
+  if (!system || system.material !== config.material || system.configurable === false) addError("invalid_system", "systemId");
   if ([config.exteriorColorId, config.interiorColorId].some((id) =>
     !COLORS.some((colour) => colour.id === id && colour.materials.includes(config.material)))) {
     addError("invalid_colour", "exteriorColorId");
