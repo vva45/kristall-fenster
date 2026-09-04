@@ -90,4 +90,14 @@ describe("configurator reducer", () => {
     const result = reducer(DEFAULT_CONFIG, { type: "setBrand", brand: "REHAU" });
     assert.equal(result.systemId, DEFAULT_CONFIG.systemId);
   });
+
+  test("separa correderas y normaliza tipología, medida y accesorios", () => {
+    const result = reducer(DEFAULT_CONFIG, { type: "setProductKind", productKind: "sliding" });
+    assert.match(result.systemId, /evolutiondrive/);
+    assert.equal(result.sash, "slide2");
+    assert.deepEqual(result.leafOpenings, ["fixedSash", "slideLeft"]);
+    assert.equal(result.widthMm, 1500);
+    assert.equal(result.heightMm, 1800);
+    assert.equal(result.glazing, "triple");
+  });
 });

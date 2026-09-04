@@ -6,11 +6,13 @@
 import { COLORS } from "../../data/configurator/colors";
 import { LIMITS } from "../../data/configurator/options";
 import { brandsForMaterial, systemById, systemsForBrand } from "../../data/configurator/systems";
+import { openingsForLayout, rulesForSystem } from "../../data/configurator/rules";
 import type {
   ColorFinish,
   FrameMaterial,
   LeafOpening,
   Localized,
+  ProductKind,
   SashLayout,
   WindowConfig,
 } from "../../data/configurator/types";
@@ -19,7 +21,7 @@ import { S } from "./strings";
 export const WHITE_ID = "ral-9016";
 
 export const leafCountFor = (sash: SashLayout): number =>
-  sash === "one" ? 1 : sash === "three" ? 3 : 2;
+  sash === "one" ? 1 : sash === "three" || sash === "slide3" ? 3 : sash === "slide4" ? 4 : 2;
 
 export const defaultOpeningsFor = (sash: SashLayout): LeafOpening[] => {
   switch (sash) {
@@ -33,6 +35,12 @@ export const defaultOpeningsFor = (sash: SashLayout): LeafOpening[] => {
       return ["tilt", "tiltTurnRight"]; // [oberlicht, hoja principal]
     case "bottomLight":
       return ["tiltTurnRight", "fixed"]; // [hoja principal, unterlicht]
+    case "slide2":
+      return ["fixedSash", "slideLeft"];
+    case "slide3":
+      return ["fixedSash", "slideLeft", "fixedSash"];
+    case "slide4":
+      return ["fixedSash", "slideLeft", "slideRight", "fixedSash"];
   }
 };
 
@@ -42,6 +50,8 @@ export const leafNameFor = (sash: SashLayout, index: number): Localized<string> 
   if (sash === "topLight") return index === 0 ? S.leafTop : S.leafMain;
   if (sash === "bottomLight") return index === 0 ? S.leafMain : S.leafBottom;
   if (sash === "three") return [S.leafLeft, S.leafCentre, S.leafRight][index];
+  if (sash === "slide3") return [S.leafLeft, S.leafCentre, S.leafRight][index];
+  if (sash === "slide4") return [S.leafLeft, S.leafCentre, S.leafCentre, S.leafRight][index];
   return [S.leafLeft, S.leafRight][index];
 };
 
@@ -88,9 +98,10 @@ const clamp = (value: number, min: number, max: number) =>
 /** Reglas de coherencia tras cualquier cambio. */
 const normalize = (c: WindowConfig): WindowConfig => {
   const next = { ...c };
+  const rules = rulesForSystem(systemById(next.systemId));
 
-  next.widthMm = clamp(next.widthMm, LIMITS.minWidth, LIMITS.maxWidth);
-  next.heightMm = clamp(next.heightMm, LIMITS.minHeight, LIMITS.maxHeight);
+  next.widthMm = clamp(next.widthMm, rules.minWidth, rules.maxWidth);
+  next.heightMm = clamp(next.heightMm, rules.minHeight, rules.maxHeight);
   next.quantity = clamp(Math.round(next.quantity), 1, LIMITS.maxQuantity);
   next.muntinVertical = clamp(Math.round(next.muntinVertical), 0, 5);
   next.muntinHorizontal = clamp(Math.round(next.muntinHorizontal), 0, 5);
@@ -101,6 +112,20 @@ const normalize = (c: WindowConfig): WindowConfig => {
     const defaults = defaultOpeningsFor(next.sash);
     next.leafOpenings = defaults.map((d, i) => next.leafOpenings[i] ?? d);
   }
+  if (!rules.layouts.includes(next.sash)) {
+    next.sash = rules.layouts[0];
+    next.leafOpenings = defaultOpeningsFor(next.sash);
+  } else {
+    next.leafOpenings = next.leafOpenings.map((opening, index) =>
+      openingsForLayout(next.sash, index).includes(opening) ? opening : defaultOpeningsFor(next.sash)[index],
+    );
+  }
+  if (!rules.glazing.includes(next.glazing)) next.glazing = rules.glazing[0];
+  if (!rules.shutters.includes(next.shutter)) next.shutter = "none";
+  if (!rules.security.includes(next.security)) next.security = "base";
+  if (!rules.handles.includes(next.handle)) next.handle = "standard";
+  if (next.shutter !== "none" && !rules.shutterControls.includes(next.shutterControl)) next.shutterControl = rules.shutterControls[0];
+  next.extras = next.extras.filter((extra) => rules.extras.includes(extra));
 
   // Sin hueco válido no hay persiana; sin persiana no hay mando ni mosquitera.
   if (next.shutter !== "none" && !shutterAvailable(next)) next.shutter = "none";
@@ -123,6 +148,7 @@ export type Action =
   | { type: "patch"; patch: Partial<WindowConfig> }
   | { type: "replace"; config: WindowConfig }
   | { type: "setMaterial"; material: FrameMaterial }
+  | { type: "setProductKind"; productKind: ProductKind }
   | { type: "setBrand"; brand: string }
   | { type: "setSash"; sash: SashLayout }
   | { type: "setLeafOpening"; index: number; opening: LeafOpening }
@@ -137,8 +163,9 @@ export function reducer(state: WindowConfig, action: Action): WindowConfig {
       return normalize({ ...state, ...action.patch });
     case "setMaterial": {
       if (action.material === state.material) return state;
-      const brand = brandsForMaterial(action.material)[0];
-      const system = systemsForBrand(action.material, brand)[0];
+      const kind = systemById(state.systemId).productKind ?? "window";
+      const brand = brandsForMaterial(action.material, kind)[0];
+      const system = systemsForBrand(action.material, brand, kind)[0];
       // Al cambiar de material la carta de colores cambia: vuelta al blanco.
       return normalize({
         ...state,
@@ -148,8 +175,15 @@ export function reducer(state: WindowConfig, action: Action): WindowConfig {
         interiorColorId: WHITE_ID,
       });
     }
+    case "setProductKind": {
+      const brand = brandsForMaterial(state.material, action.productKind)[0] ?? brandsForMaterial("pvc", action.productKind)[0];
+      const material = brandsForMaterial(state.material, action.productKind).length ? state.material : "pvc";
+      const system = systemsForBrand(material, brand, action.productKind)[0];
+      return normalize({ ...state, material, systemId: system.id, sash: rulesForSystem(system).layouts[0], leafOpenings: defaultOpeningsFor(rulesForSystem(system).layouts[0]), shutter: "none" });
+    }
     case "setBrand": {
-      const system = systemsForBrand(state.material, action.brand)[0];
+      const kind = systemById(state.systemId).productKind ?? "window";
+      const system = systemsForBrand(state.material, action.brand, kind)[0];
       if (!system) return state;
       return normalize({ ...state, systemId: system.id });
     }

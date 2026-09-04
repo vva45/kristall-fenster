@@ -7,6 +7,7 @@
  * apertura en la convención de plano, sprossen, persiana y mosquitera.
  */
 import { leafCountFor } from "./state";
+import { leafWidthsMm } from "../../data/configurator/rules";
 import type { ColorFinish, WindowConfig } from "../../data/configurator/types";
 
 const clampChannel = (v: number) => Math.max(0, Math.min(255, v));
@@ -35,10 +36,12 @@ export function WindowPreview({
   config,
   exterior,
   interior,
+  side,
 }: {
   config: WindowConfig;
   exterior: ColorFinish;
   interior: ColorFinish;
+  side: "exterior" | "interior";
 }) {
   const shutterOn = config.shutter !== "none";
 
@@ -58,8 +61,9 @@ export function WindowPreview({
   const y = shutterOn ? 78 : 42;
   const frame = Math.max(18, Math.min(34, w * 0.055));
 
-  const frameShade = shade(exterior.hex, -18);
-  const rail = interior.hex;
+  const visibleFinish = side === "exterior" ? exterior : interior;
+  const frameShade = shade(visibleFinish.hex, -18);
+  const rail = visibleFinish.hex;
   const gasket = config.gasket === "black" ? "#1f2221" : "#c7cac4";
 
   // Rectángulos de hoja (el hueco de cristal de cada una).
@@ -107,7 +111,7 @@ export function WindowPreview({
           <stop offset="100%" stopColor="#f5fafd" />
         </linearGradient>
         <linearGradient id="cfg-frame" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0%" stopColor={exterior.hex} />
+          <stop offset="0%" stopColor={visibleFinish.hex} />
           <stop offset="100%" stopColor={frameShade} />
         </linearGradient>
         <pattern id="cfg-mesh" width="10" height="10" patternUnits="userSpaceOnUse">
@@ -118,7 +122,7 @@ export function WindowPreview({
       {/* Cajón de persiana con sus lamas. */}
       {shutterOn && (
         <g>
-          <rect x={x - 18} y={y - 56} width={w + 36} height={56} rx={4} fill={shade(exterior.hex, 12)} />
+          <rect x={x - 18} y={y - 56} width={w + 36} height={56} rx={4} fill={shade(visibleFinish.hex, 12)} />
           {Array.from({ length: 8 }, (_, i) => (
             <line
               key={i}
@@ -126,7 +130,7 @@ export function WindowPreview({
               y1={y - 46 + i * 7}
               x2={x + w + 14}
               y2={y - 46 + i * 7}
-              stroke={shade(exterior.hex, -34)}
+              stroke={shade(visibleFinish.hex, -34)}
               strokeWidth={2}
               opacity={0.35}
             />
@@ -200,6 +204,11 @@ export function WindowPreview({
       {/* Líneas de apertura, como en un plano. */}
       {panels.map((p, pi) => {
         if (isFixed(p.opening)) return null;
+        if (p.opening === "slideLeft" || p.opening === "slideRight") {
+          const direction = p.opening === "slideLeft" ? -1 : 1;
+          const cy = p.y + p.h / 2;
+          return <g key={`o-${pi}`} stroke="#e55353" strokeWidth={3} fill="none"><line x1={p.x + p.w * 0.25} y1={cy} x2={p.x + p.w * 0.75} y2={cy} /><path d={`M ${p.x + p.w * (direction < 0 ? .25 : .75)} ${cy} l ${-direction * 12} -9 m ${direction * 12} 9 l ${-direction * 12} 9`} /></g>;
+        }
         const leftHinge = p.opening === "turnLeft" || p.opening === "tiltTurnLeft";
         const hingeX = leftHinge ? p.x + 12 : p.x + p.w - 12;
         const handleX = leftHinge ? p.x + p.w - 12 : p.x + 12;
@@ -231,6 +240,21 @@ export function WindowPreview({
           </g>
         );
       })}
+
+      {/* Cotas por hoja y cota vertical total. */}
+      {panels.map((p, index) => (
+        <g key={`dim-${index}`} fill="#2f4c74" fontFamily="var(--font-plex-mono), monospace" fontSize={12}>
+          <line x1={p.x} y1={y + h + 18} x2={p.x + p.w} y2={y + h + 18} stroke="#7790ad" />
+          <line x1={p.x} y1={y + h + 13} x2={p.x} y2={y + h + 23} stroke="#7790ad" />
+          <line x1={p.x + p.w} y1={y + h + 13} x2={p.x + p.w} y2={y + h + 23} stroke="#7790ad" />
+          <text x={p.x + p.w / 2} y={y + h + 36} textAnchor="middle">{leafWidthsMm(config.widthMm, config.sash)[index]} mm</text>
+        </g>
+      ))}
+      <g fill="#2f4c74" stroke="#7790ad" fontFamily="var(--font-plex-mono), monospace" fontSize={13}>
+        <line x1={x - 28} y1={y} x2={x - 28} y2={y + h} />
+        <line x1={x - 34} y1={y} x2={x - 22} y2={y} /><line x1={x - 34} y1={y + h} x2={x - 22} y2={y + h} />
+        <text x={x - 40} y={y + h / 2} textAnchor="middle" fill="#2f4c74" stroke="none" transform={`rotate(-90 ${x - 40} ${y + h / 2})`}>{config.heightMm} mm</text>
+      </g>
 
       {/* Mosquitera. */}
       {config.mosquito && (

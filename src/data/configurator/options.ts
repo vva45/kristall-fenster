@@ -53,6 +53,9 @@ export const SASH_LAYOUTS: Record<SashLayout, { label: Localized<string>; note: 
     note: { en: "Lower element", de: "Unteres Element", pl: "Element dolny" },
     panels: 2,
   },
+  slide2: { label: { en: "2-panel slider", de: "2-teilige Schiebetür", pl: "Przesuwne 2-częściowe" }, note: { en: "Scheme A", de: "Schema A", pl: "Schemat A" }, panels: 2 },
+  slide3: { label: { en: "3-panel slider", de: "3-teilige Schiebetür", pl: "Przesuwne 3-częściowe" }, note: { en: "Wide centre opening", de: "Breite Mittelöffnung", pl: "Szerokie otwarcie środkowe" }, panels: 3 },
+  slide4: { label: { en: "4-panel slider", de: "4-teilige Schiebetür", pl: "Przesuwne 4-częściowe" }, note: { en: "Two central moving panels", de: "Zwei mittlere Schiebeflügel", pl: "Dwa środkowe skrzydła ruchome" }, panels: 4 },
 };
 
 export const LEAF_OPENINGS: Record<LeafOpening, Localized<string>> = {
@@ -63,6 +66,8 @@ export const LEAF_OPENINGS: Record<LeafOpening, Localized<string>> = {
   tilt: { en: "Tilt only", de: "Kipp", pl: "Uchylne" },
   tiltTurnLeft: { en: "Tilt & turn left", de: "Dreh-Kipp links", pl: "Rozwierno-uchylne lewe" },
   tiltTurnRight: { en: "Tilt & turn right", de: "Dreh-Kipp rechts", pl: "Rozwierno-uchylne prawe" },
+  slideLeft: { en: "Slides left", de: "Schiebt nach links", pl: "Przesuwa się w lewo" },
+  slideRight: { en: "Slides right", de: "Schiebt nach rechts", pl: "Przesuwa się w prawo" },
 };
 
 export const GLAZINGS: Record<Glazing, { label: Localized<string>; note: Localized<string> }> = {
