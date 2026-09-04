@@ -17,7 +17,7 @@ export default function Home() {
   return <main className="min-h-screen bg-[#f3f1ec] text-kamika-ink">
     <LocalizedMetadata title={SITE.homeTitle} description={SITE.homeDescription} />
     <section className="architectural-hero relative min-h-[calc(100svh-64px)] overflow-hidden bg-kamika-ink text-white">
-      <Image src="/images/categories/patio-doors-hero.jpg" alt="" fill priority sizes="100vw" className="object-cover object-center" />
+      <Image src="/images/categories/patio-doors-hero.jpg" alt="" fill priority unoptimized sizes="100vw" className="object-cover object-center" />
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,18,20,.84)_0%,rgba(10,18,20,.42)_47%,rgba(10,18,20,.08)_100%)]" />
       <div className="absolute inset-0 opacity-20 [background:linear-gradient(90deg,transparent_49.9%,white_50%,transparent_50.1%)]" />
       <div className="relative mx-auto flex min-h-[calc(100svh-64px)] max-w-[1440px] flex-col justify-between px-5 py-10 md:px-8 md:py-14">
@@ -53,7 +53,7 @@ export default function Home() {
             ? "(min-width: 1440px) 912px, (min-width: 1024px) 66vw, (min-width: 768px) 50vw, 100vw"
             : "(min-width: 1440px) 448px, (min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw";
           return <Link key={category.slug} href={`/catalog/${category.slug}`} className={`editorial-card group relative overflow-hidden bg-kamika-ink ${isFeatured ? "editorial-card-wide" : ""}`}>
-            <Image src={category.heroImage} alt={de(category.name)} fill sizes={imageSizes} className="editorial-card-image object-contain transition duration-700 group-hover:brightness-105" />
+            <Image src={category.heroImage} alt={de(category.name)} fill unoptimized sizes={imageSizes} className="editorial-card-image object-contain transition duration-700 group-hover:brightness-105" />
             <div className="editorial-card-shade absolute inset-0" />
             <div className="editorial-card-content absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 text-white md:p-7">
               <div><span className="font-mono text-[10px] tracking-[.14em] text-white/65">0{index + 1}</span><h3 className="mt-1 text-2xl md:text-3xl"><L t={category.name} /></h3></div>
@@ -68,7 +68,7 @@ export default function Home() {
     <section className="bg-kamika-ink py-20 text-white md:py-28">
       <div className="mx-auto max-w-[1440px] px-5 md:px-8">
         <div className="flex items-end justify-between gap-6"><div><p className="kamika-eyebrow !text-kamika-blue"><L t={CS.materials} /></p><h2 className="mt-4 text-4xl md:text-6xl"><L t={CS.materialsTitle} /></h2></div><span className="hidden font-mono text-xs text-white/45 md:block">01 — 03</span></div>
-        <div className="mt-12 grid gap-4 md:grid-cols-3 md:gap-5">{materialStories.map((story, i) => <article key={i} className={`${story.tone} group text-kamika-ink`}><div className="relative aspect-[4/3] overflow-hidden"><Image src={story.image} alt="" fill sizes="(min-width: 768px) 33vw, 100vw" className="origin-top-left object-cover object-left saturate-[.8] transition duration-700 group-hover:scale-105 group-hover:saturate-100" /></div><div className="p-6 md:p-8"><span className="font-mono text-[10px]">0{i+1}</span><h3 className="mt-8 text-3xl"><L t={story.title} /></h3><p className="mt-3 text-sm leading-6 text-kamika-ink/65"><L t={story.text} /></p></div></article>)}</div>
+        <div className="mt-12 grid gap-4 md:grid-cols-3 md:gap-5">{materialStories.map((story, i) => <article key={i} className={`${story.tone} group text-kamika-ink`}><div className="relative aspect-[4/3] overflow-hidden"><Image src={story.image} alt="" fill unoptimized sizes="(min-width: 768px) 33vw, 100vw" className="origin-top-left object-cover object-left saturate-[.8] transition duration-700 group-hover:scale-105 group-hover:saturate-100" /></div><div className="p-6 md:p-8"><span className="font-mono text-[10px]">0{i+1}</span><h3 className="mt-8 text-3xl"><L t={story.title} /></h3><p className="mt-3 text-sm leading-6 text-kamika-ink/65"><L t={story.text} /></p></div></article>)}</div>
       </div>
     </section>
   </main>;
