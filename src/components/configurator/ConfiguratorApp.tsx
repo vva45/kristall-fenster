@@ -508,8 +508,8 @@ export function ConfiguratorApp() {
             {step === "system" && (
               <div>
                 <FieldLabel>{t(S.material)}</FieldLabel>
-                <div className="grid grid-cols-2 gap-2.5">
-                  {(["pvc", "aluminium"] as const).map((m) => (
+                <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+                  {(["pvc", "aluminium", "wood"] as const).map((m) => (
                     <ChoiceButton
                       key={m}
                       selected={config.material === m}

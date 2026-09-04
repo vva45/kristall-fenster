@@ -34,7 +34,7 @@ export interface ColorFinish {
 }
 
 /** Material de marco que ofrece el configurador (lo que Kamika monta). */
-export type FrameMaterial = "pvc" | "aluminium";
+export type FrameMaterial = "pvc" | "aluminium" | "wood";
 
 /** Un sistema de perfil real, con specs de su ficha técnica. */
 export interface ProfileSystem {

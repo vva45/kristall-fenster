@@ -208,6 +208,20 @@ export const SYSTEMS: ProfileSystem[] = [
     uw: { en: "0.66 (reference window)", de: "0,66 (Referenzfenster)", pl: "0,66 (okno referencyjne)" },
     note: { en: "Frame 96 / sash 106 mm, 62 mm thermal break", de: "Rahmen 96 / Flügel 106 mm, 62 mm thermische Trennung", pl: "Rama 96 / skrzydło 106 mm, przekładka 62 mm" },
   },
+
+  // Holzfenster werden individuell spezifiziert; deshalb keine erfundenen
+  // Profilwerte, sondern eine ausdrückliche technische Angebotsprüfung.
+  {
+    id: "timber-made-to-measure",
+    material: "wood",
+    brand: "Holz nach Maß",
+    name: "Individuelle Ausführung",
+    note: {
+      en: "Timber species, profile and glazing are confirmed after technical review.",
+      de: "Holzart, Profil und Verglasung werden nach technischer Prüfung bestätigt.",
+      pl: "Gatunek drewna, profil i pakiet szybowy są potwierdzane po weryfikacji technicznej.",
+    },
+  },
 ];
 
 export const systemById = (id: string): ProfileSystem =>

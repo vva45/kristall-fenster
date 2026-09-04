@@ -17,6 +17,11 @@
   --kamika-blue-active: #9db5d7;
   --background: var(--kamika-paper);
   --foreground: var(--kamika-ink);
+  /* Pilas del sistema: no dependen de binarios versionados, de la red ni
+     de rutas privadas dentro de Next.js. Conservan los tres roles visuales. */
+  --font-outfit: Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-inter: Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-plex-mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
 }
 
 @theme inline {
@@ -31,8 +36,7 @@
   --color-kamika-mist: var(--kamika-mist);
   --color-kamika-blue-active: var(--kamika-blue-active);
 
-  /* Tres roles tipográficos, como en Kamika: display / texto / técnica.
-     Las variables las inyecta next/font desde el layout raíz. */
+  /* Tres roles tipográficos, como en Kamika: display / texto / técnica. */
   --font-display: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
