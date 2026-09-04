@@ -62,6 +62,8 @@ export interface Category {
   heroImage: string;
   order: number;
   comingSoon?: boolean; // si true, la página usa el layout coming-soon
+  /** False keeps an undocumented range out of every public catalogue surface. */
+  published?: boolean;
   /**
    * Gama padre, para las que son un tipo dentro de otra.
    *

@@ -112,6 +112,7 @@ export const CATEGORIES: Category[] = [
     heroImage: "/images/categories/pergolas-hero.jpg",
     order: 7,
     comingSoon: true,
+    published: false,
   },
   {
     slug: "accessories",
@@ -132,7 +133,7 @@ export const CATEGORIES: Category[] = [
  * ellas, no contra las de arriba.
  */
 export const orderedCategories = (): Category[] =>
-  [...CATEGORIES].sort((a, b) => a.order - b.order);
+  CATEGORIES.filter((category) => category.published !== false).sort((a, b) => a.order - b.order);
 
 /**
  * Las gamas de primer nivel: las que salen en la home, en el mosaico de
@@ -157,7 +158,7 @@ export const getCategory = (slug: CategorySlug): Category | undefined =>
   CATEGORIES.find((category) => category.slug === slug);
 
 /** Todos los slugs válidos, para `generateStaticParams` y validaciones. */
-export const CATEGORY_SLUGS: CategorySlug[] = CATEGORIES.map((category) => category.slug);
+export const CATEGORY_SLUGS: CategorySlug[] = orderedCategories().map((category) => category.slug);
 
 export const isCategorySlug = (value: string): value is CategorySlug =>
   (CATEGORY_SLUGS as string[]).includes(value);

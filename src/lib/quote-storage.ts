@@ -68,6 +68,7 @@ const isWindowConfig = (value: unknown): value is WindowConfig => {
     isStringIn(value.exteriorColorId, COLOR_IDS) &&
     isStringIn(value.interiorColorId, COLOR_IDS) &&
     system?.material === value.material &&
+    system.configurable !== false &&
     exterior?.materials.includes(value.material) === true &&
     interior?.materials.includes(value.material) === true &&
     isStringIn(value.gasket, GASKETS) &&

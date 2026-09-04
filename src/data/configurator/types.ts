@@ -49,6 +49,8 @@ export interface ProfileSystem {
   uw?: Localized<string>; // Uw como lo publica la ficha (con su condición)
   chambers?: Localized<string>;
   note?: Localized<string>;
+  /** Only documented systems may be selected in a customer request. */
+  configurable?: boolean;
 }
 
 /** Composición del elemento: cuántas hojas y cómo se reparten. */

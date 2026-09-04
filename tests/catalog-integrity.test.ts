@@ -53,6 +53,10 @@ describe("integridad del catálogo", () => {
     }
   });
 
+  test("no publica gamas sin documentación", () => {
+    assert.ok(CATEGORIES.find((category) => category.slug === "pergolas")?.published === false);
+  });
+
   test("todas las imágenes publicadas existen", async () => {
     const images = [
       ...CATEGORIES.map((category) => category.heroImage),

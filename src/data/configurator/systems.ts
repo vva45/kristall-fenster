@@ -173,6 +173,7 @@ export const SYSTEMS: ProfileSystem[] = [
     material: "pvc",
     brand: "REHAU",
     name: "Synego",
+    configurable: false,
     note: {
       en: "Technical sheet on its way from the supplier — specs follow.",
       de: "Technisches Datenblatt ist beim Lieferanten angefragt — Werte folgen.",
@@ -217,10 +218,10 @@ export const systemById = (id: string): ProfileSystem =>
 export const brandsForMaterial = (material: string): string[] => {
   const seen: string[] = [];
   for (const s of SYSTEMS) {
-    if (s.material === material && !seen.includes(s.brand)) seen.push(s.brand);
+    if (s.material === material && s.configurable !== false && !seen.includes(s.brand)) seen.push(s.brand);
   }
   return seen;
 };
 
 export const systemsForBrand = (material: string, brand: string): ProfileSystem[] =>
-  SYSTEMS.filter((s) => s.material === material && s.brand === brand);
+  SYSTEMS.filter((s) => s.material === material && s.brand === brand && s.configurable !== false);

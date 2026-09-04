@@ -85,4 +85,9 @@ describe("configurator reducer", () => {
     assert.equal(result.exteriorColorId, "ral-9016");
     assert.equal(result.interiorColorId, "ral-9016");
   });
+
+  test("no ofrece REHAU mientras Synego siga sin ficha técnica", () => {
+    const result = reducer(DEFAULT_CONFIG, { type: "setBrand", brand: "REHAU" });
+    assert.equal(result.systemId, DEFAULT_CONFIG.systemId);
+  });
 });

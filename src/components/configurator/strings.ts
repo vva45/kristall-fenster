@@ -109,6 +109,16 @@ export const S = {
     de: "Rollo im Rollladenkasten",
     pl: "Rolowana siatka w skrzynce rolety",
   },
+  systemAvailability: {
+    en: "Made to measure, not warehouse stock. System, dimensions and delivery time are confirmed in the written quotation.",
+    de: "Maßanfertigung, keine Lagerware. System, Maße und Lieferzeit werden im schriftlichen Angebot bestätigt.",
+    pl: "Produkcja na wymiar, nie towar magazynowy. System, wymiary i termin dostawy potwierdzamy w pisemnej ofercie.",
+  },
+  colourAvailability: {
+    en: "The chart is a request selection. Availability of this finish on the chosen profile is confirmed in the written quotation.",
+    de: "Die Farbkarte dient zur Anfrage. Die Verfügbarkeit dieses Dekors für das gewählte Profil wird im schriftlichen Angebot bestätigt.",
+    pl: "Paleta służy do zapytania. Dostępność tego wykończenia dla wybranego profilu potwierdzamy w pisemnej ofercie.",
+  },
   shutterUnavailable: {
     en: "No roller shutter is offered for these dimensions.",
     de: "Für diese Maße wird kein Rollladen angeboten.",
