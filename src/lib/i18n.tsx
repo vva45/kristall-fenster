@@ -16,6 +16,7 @@
  * sin tocar los datos.
  */
 import { createContext, useContext, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 export type Locale = "de" | "en" | "pl";
 
@@ -50,6 +51,21 @@ export function LocaleProvider({ children }: { children: React.ReactNode }) {
   // cliente pinten lo mismo (sin desajuste de hidratación); el idioma
   // recordado se aplica en un efecto, ya hidratados.
   const [locale, setLocaleState] = useState<Locale>(DEFAULT_LOCALE);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+    const frame = window.requestAnimationFrame(() => {
+      const marker = document.querySelector<HTMLElement>("[data-localized-title]");
+      const pageTitle = marker?.dataset.localizedTitle;
+      const pageDescription = marker?.dataset.localizedDescription;
+      if (pageTitle) document.title = pageTitle;
+      if (pageDescription) {
+        document.querySelector('meta[name="description"]')?.setAttribute("content", pageDescription);
+      }
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [locale, pathname]);
 
   useEffect(() => {
     try {

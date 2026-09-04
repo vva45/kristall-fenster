@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { L } from "../../components/L";
+import { LocalizedMetadata } from "../../components/LocalizedMetadata";
 import {
   cataloguesOrdered,
   categoriesOrdered,
@@ -15,6 +16,7 @@ import {
   modelCountFor,
 } from "../../lib/catalog";
 import { CS } from "../../lib/catalog-strings";
+import { SITE } from "../../lib/site-strings";
 
 export const metadata: Metadata = {
   title: "Katalog — Kamika Bauelemente",
@@ -26,6 +28,7 @@ export default function CatalogPage() {
   const catalogues = cataloguesOrdered();
   return (
     <main className="flex-1">
+      <LocalizedMetadata title={SITE.catalogueTitle} description={SITE.catalogueDescription} />
       <div className="mx-auto max-w-[1440px] px-5 pb-20 md:px-8">
         <header className="max-w-2xl pt-10 pb-8 md:pt-14">
           <p className="kamika-eyebrow"><L t={CS.sortiment} /></p>

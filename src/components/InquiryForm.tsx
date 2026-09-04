@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
+import Link from "next/link";
 import type { QuoteItem } from "../data/configurator/types";
 import { validateAttachments, type InquiryErrorCode } from "../lib/inquiry";
 import { pick, useLocale } from "../lib/i18n";
@@ -18,8 +19,12 @@ const T = {
   date: { en: "Preferred date", de: "Wunschtermin", pl: "Preferowany termin" },
   message: { en: "Message", de: "Nachricht", pl: "Wiadomość" },
   files: { en: "Plans or photos", de: "Pläne oder Fotos", pl: "Plany lub zdjęcia" },
+  chooseFiles: { en: "Choose files", de: "Dateien auswählen", pl: "Wybierz pliki" },
+  noFilesSelected: { en: "No files selected", de: "Keine Dateien ausgewählt", pl: "Nie wybrano plików" },
+  selectedFiles: { en: "Selected files", de: "Ausgewählte Dateien", pl: "Wybrane pliki" },
   fileHint: { en: "Up to 5 PDF, JPG, PNG or WebP files; 5 MB each, 15 MB total.", de: "Bis zu 5 PDF-, JPG-, PNG- oder WebP-Dateien; je 5 MB, insgesamt 15 MB.", pl: "Do 5 plików PDF, JPG, PNG lub WebP; 5 MB każdy, łącznie 15 MB." },
   privacy: { en: "I have read the privacy policy and agree to the processing of my data for this enquiry.", de: "Ich habe die Datenschutzerklärung gelesen und stimme der Verarbeitung meiner Daten für diese Anfrage zu.", pl: "Zapoznałem(-am) się z polityką prywatności i zgadzam się na przetwarzanie danych w celu obsługi zapytania." },
+  privacyLink: { en: "Privacy policy", de: "Datenschutz", pl: "Polityka prywatności" },
   send: { en: "Send request", de: "Anfrage senden", pl: "Wyślij zapytanie" },
   sending: { en: "Sending…", de: "Wird gesendet…", pl: "Wysyłanie…" },
   success: { en: "Thank you. Your reference is", de: "Vielen Dank. Ihre Referenz lautet", pl: "Dziękujemy. Numer zapytania:" },
@@ -44,6 +49,8 @@ const FALLBACK_ERROR: InquiryErrorCode = "email_failed";
 export function InquiryForm({ initialMessage, quote, onSuccess }: { initialMessage?: string; quote?: QuoteItem[]; onSuccess?: () => void }) {
   const { locale } = useLocale();
   const t = <K extends keyof typeof T>(key: K) => pick(T[key], locale);
+  const attachmentsId = useId();
+  const [selectedFileCount, setSelectedFileCount] = useState(0);
   const [state, setState] = useState<{ status: "idle" | "sending" | "success" | "error"; reference?: string; error?: InquiryErrorCode }>({ status: "idle" });
 
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -74,6 +81,7 @@ export function InquiryForm({ initialMessage, quote, onSuccess }: { initialMessa
         return;
       }
       formElement.reset();
+      setSelectedFileCount(0);
       setState({ status: "success", reference: result.requestId });
       onSuccess?.();
     } catch {
@@ -97,8 +105,28 @@ export function InquiryForm({ initialMessage, quote, onSuccess }: { initialMessa
         <label className="block text-sm font-medium sm:col-span-2">{t("address")}<input name="address" className="mt-1 w-full rounded-kamika border border-kamika-mist bg-white px-3 py-2" /></label>
         <label className="block text-sm font-medium">{t("date")}<input name="requestedDate" type="date" className="mt-1 w-full rounded-kamika border border-kamika-mist bg-white px-3 py-2" /></label>
         <label className="block text-sm font-medium sm:col-span-2">{t("message")}<textarea name="message" rows={4} defaultValue={initialMessage} className="mt-1 w-full rounded-kamika border border-kamika-mist bg-white px-3 py-2" /></label>
-        <label className="block text-sm font-medium sm:col-span-2">{t("files")}<input name="attachments" type="file" multiple accept=".pdf,image/jpeg,image/png,image/webp" className="mt-1 block w-full text-sm" /><span className="mt-1 block text-xs font-normal text-kamika-ink/55">{t("fileHint")}</span></label>
-        <label className="flex items-start gap-3 text-sm sm:col-span-2"><input name="privacy" type="checkbox" required className="mt-1" /><span>{t("privacy")} <a href="/datenschutz" className="underline">Datenschutz</a></span></label>
+        <div className="block text-sm font-medium sm:col-span-2">
+          <p>{t("files")}</p>
+          <div className="mt-1 flex flex-wrap items-center gap-3">
+            <label htmlFor={attachmentsId} className="cursor-pointer rounded-kamika border border-kamika-ink/25 bg-white px-3 py-2 text-sm font-medium hover:bg-kamika-mist/30">
+              {t("chooseFiles")}
+            </label>
+            <input
+              id={attachmentsId}
+              name="attachments"
+              type="file"
+              multiple
+              accept=".pdf,image/jpeg,image/png,image/webp"
+              className="sr-only"
+              onChange={(event) => setSelectedFileCount(event.currentTarget.files?.length ?? 0)}
+            />
+            <span className="font-normal text-kamika-ink/65" aria-live="polite">
+              {selectedFileCount === 0 ? t("noFilesSelected") : `${t("selectedFiles")}: ${selectedFileCount}`}
+            </span>
+          </div>
+          <span className="mt-1 block text-xs font-normal text-kamika-ink/55">{t("fileHint")}</span>
+        </div>
+        <label className="flex items-start gap-3 text-sm sm:col-span-2"><input name="privacy" type="checkbox" required className="mt-1" /><span>{t("privacy")} <Link href="/datenschutz" className="underline">{t("privacyLink")}</Link></span></label>
         <div className="sm:col-span-2">
           <button disabled={state.status === "sending"} className="rounded-kamika bg-kamika-ink px-5 py-3 font-medium text-white disabled:opacity-50">{state.status === "sending" ? t("sending") : t("send")}</button>
           <p className={`mt-3 text-sm ${state.status === "error" ? "text-red-700" : "text-kamika-steel"}`} aria-live="polite">

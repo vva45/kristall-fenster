@@ -46,6 +46,15 @@ export const CS = {
   pages: { en: "pages", de: "Seiten", pl: "stron" },
   documented: { en: "documented", de: "dokumentiert", pl: "udokumentowany" },
   pdfUnavailable: { en: "PDF in preparation", de: "PDF in Vorbereitung", pl: "PDF w przygotowaniu" },
+  brandsAndCollections: { en: "Brands and collections", de: "Marken und Kollektionen", pl: "Marki i kolekcje" },
+  feature: { en: "Feature", de: "Merkmal", pl: "Cecha" },
+  originalCatalogue: { en: "Original catalogue", de: "Original-Katalog", pl: "Oryginalny katalog" },
+  page: { en: "Page", de: "Seite", pl: "Strona" },
+  technicalDataPending: {
+    en: "Technical data has been requested from the supplier.",
+    de: "Technische Daten sind beim Lieferanten angefragt.",
+    pl: "Dane techniczne zostały zamówione u dostawcy.",
+  },
 
   // Home
   heroEyebrow: {

@@ -7,6 +7,8 @@
  */
 import type { Metadata } from "next";
 import { ConfiguratorApp } from "../../components/configurator/ConfiguratorApp";
+import { LocalizedMetadata } from "../../components/LocalizedMetadata";
+import { SITE } from "../../lib/site-strings";
 
 export const metadata: Metadata = {
   title: "Fenster-Konfigurator — Kamika Bauelemente",
@@ -20,6 +22,7 @@ export default async function ConfiguratorPage({ searchParams }: { searchParams:
   // los botoncitos del navbar y vale para todo el laboratorio.
   return (
     <main className="flex-1">
+      <LocalizedMetadata title={SITE.configuratorTitle} description={SITE.configuratorDescription} />
       <ConfiguratorApp initialSystemId={typeof requested === "string" ? requested : undefined} />
     </main>
   );

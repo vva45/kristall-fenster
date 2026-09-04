@@ -54,6 +54,7 @@ import { S } from "./strings";
 import { WindowPreview } from "./WindowPreview";
 import { ConfiguratorInquiry } from "./ConfiguratorInquiry";
 import { QuotePdfButton } from "./QuotePdfButton";
+import { AdvancedTools } from "./AdvancedTools";
 
 type StepKey =
   | "system"
@@ -375,6 +376,20 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
       },
     ]);
     announce(t(S.itemDuplicated));
+  };
+
+  const duplicateIntoRooms = (rooms: string[]) => {
+    const now = Date.now();
+    setQuote((previous) => [
+      ...previous,
+      ...rooms.map((name, index) => ({
+        id: typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `${now}-${index}`,
+        roomName: name.slice(0, 80),
+        config: { ...config },
+        addedAt: now + index,
+      })),
+    ]);
+    announce(t(S.roomsDuplicated).replace("{count}", String(rooms.length)));
   };
 
   return (
@@ -1114,6 +1129,12 @@ export function ConfiguratorApp({ initialSystemId }: { initialSystemId?: string 
           </>
         )}
       </section>
+      <AdvancedTools
+        config={config}
+        onApply={(nextConfig) => dispatch({ type: "replace", config: nextConfig })}
+        onDuplicateRooms={duplicateIntoRooms}
+        onAnnounce={announce}
+      />
       <ConfiguratorInquiry quote={quote} onSuccess={() => { setQuote([]); setEditingId(null); dispatch({ type: "reset" }); }} />
     </div>
   );

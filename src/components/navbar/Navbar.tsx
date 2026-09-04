@@ -13,6 +13,7 @@ import { pick, useLocale } from "../../lib/i18n";
 import { CS } from "../../lib/catalog-strings";
 import { LocaleSwitch } from "../LocaleSwitch";
 import { COMPANY } from "../../lib/company";
+import { SITE } from "../../lib/site-strings";
 
 /* Contacto REAL de Kamika (src/data/company.ts de la web principal) —
    el laboratorio no inventa teléfonos como hacía el prototipo. */
@@ -78,7 +79,7 @@ export default function Navbar() {
                 Kamika Bauelemente
               </strong>
               <span className="mt-1 block whitespace-nowrap font-mono text-[7px] uppercase tracking-[0.13em] text-kamika-steel md:text-[10px] md:tracking-[0.16em]">
-                Fenster · Türen · Systeme
+                {pick(SITE.brandTagline, locale)}
               </span>
             </div>
           </Link>

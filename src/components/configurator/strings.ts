@@ -169,6 +169,7 @@ export const S = {
   itemAdded: { en: "Window added to the quote list.", de: "Fenster zur Angebotsliste hinzugefügt.", pl: "Okno dodano do listy wyceny." },
   itemUpdated: { en: "Window updated.", de: "Fenster aktualisiert.", pl: "Okno zaktualizowano." },
   itemDuplicated: { en: "Window duplicated.", de: "Fenster dupliziert.", pl: "Okno zduplikowano." },
+  roomsDuplicated: { en: "Configuration added to {count} rooms.", de: "Konfiguration zu {count} Räumen hinzugefügt.", pl: "Dodano konfigurację do {count} pomieszczeń." },
   itemRemoved: { en: "Window removed.", de: "Fenster entfernt.", pl: "Okno usunięto." },
   listCleared: { en: "Quote list cleared.", de: "Angebotsliste geleert.", pl: "Lista wyceny została wyczyszczona." },
   clearConfirm: { en: "Clear every item from the quote list?", de: "Alle Positionen aus der Angebotsliste entfernen?", pl: "Usunąć wszystkie pozycje z listy wyceny?" },
