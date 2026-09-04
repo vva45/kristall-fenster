@@ -5,10 +5,14 @@ import { L } from "../../components/L";
 
 export const metadata: Metadata = { title: "Kontakt — Kristall Fenster", description: "Kontakt und Anfrage an Kamika Bauelemente." };
 
-export default function ContactPage() {
+export default async function ContactPage({ searchParams }: { searchParams: Promise<{ product?: string | string[] }> }) {
+  const product = (await searchParams).product;
   return <main className="mx-auto w-full max-w-[1100px] flex-1 px-5 py-12 md:px-8 md:py-20">
     <p className="kamika-eyebrow"><L t={{ en: "Contact", de: "Kontakt", pl: "Kontakt" }} /></p><h1 className="mt-2 text-4xl"><L t={{ en: "Let’s talk about your project.", de: "Sprechen wir über Ihr Projekt.", pl: "Porozmawiajmy o Twoim projekcie." }} /></h1>
     <div className="mt-8 grid gap-4 sm:grid-cols-2"><a href={COMPANY.phoneHref} className="rounded-kamika border border-kamika-mist p-5"><span className="block text-sm text-kamika-ink/55"><L t={{ en: "Phone", de: "Telefon", pl: "Telefon" }} /></span><strong>{COMPANY.phone}</strong></a><a href={COMPANY.emailHref} className="rounded-kamika border border-kamika-mist p-5"><span className="block text-sm text-kamika-ink/55"><L t={{ en: "Email", de: "E-Mail", pl: "E-mail" }} /></span><strong>{COMPANY.email}</strong></a></div>
     <div className="mt-10"><InquiryForm /></div>
+    <p className="kamika-eyebrow">Kontakt</p><h1 className="mt-2 text-4xl">Sprechen wir über Ihr Projekt.</h1>
+    <div className="mt-8 grid gap-4 sm:grid-cols-2"><a href={COMPANY.phoneHref} className="rounded-kamika border border-kamika-mist p-5"><span className="block text-sm text-kamika-ink/55">Telefon</span><strong>{COMPANY.phone}</strong></a><a href={COMPANY.emailHref} className="rounded-kamika border border-kamika-mist p-5"><span className="block text-sm text-kamika-ink/55">E-Mail</span><strong>{COMPANY.email}</strong></a></div>
+    <div className="mt-10"><InquiryForm initialMessage={typeof product === "string" ? `Ich interessiere mich für: ${product}` : undefined} /></div>
   </main>;
 }

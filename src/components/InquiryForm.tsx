@@ -41,7 +41,7 @@ const ERROR_MESSAGES = {
 
 const FALLBACK_ERROR: InquiryErrorCode = "email_failed";
 
-export function InquiryForm({ quote, onSuccess }: { quote?: QuoteItem[]; onSuccess?: () => void }) {
+export function InquiryForm({ initialMessage, quote, onSuccess }: { initialMessage?: string; quote?: QuoteItem[]; onSuccess?: () => void }) {
   const { locale } = useLocale();
   const t = <K extends keyof typeof T>(key: K) => pick(T[key], locale);
   const [state, setState] = useState<{ status: "idle" | "sending" | "success" | "error"; reference?: string; error?: InquiryErrorCode }>({ status: "idle" });
@@ -96,7 +96,7 @@ export function InquiryForm({ quote, onSuccess }: { quote?: QuoteItem[]; onSucce
         ))}
         <label className="block text-sm font-medium sm:col-span-2">{t("address")}<input name="address" className="mt-1 w-full rounded-kamika border border-kamika-mist bg-white px-3 py-2" /></label>
         <label className="block text-sm font-medium">{t("date")}<input name="requestedDate" type="date" className="mt-1 w-full rounded-kamika border border-kamika-mist bg-white px-3 py-2" /></label>
-        <label className="block text-sm font-medium sm:col-span-2">{t("message")}<textarea name="message" rows={4} className="mt-1 w-full rounded-kamika border border-kamika-mist bg-white px-3 py-2" /></label>
+        <label className="block text-sm font-medium sm:col-span-2">{t("message")}<textarea name="message" rows={4} defaultValue={initialMessage} className="mt-1 w-full rounded-kamika border border-kamika-mist bg-white px-3 py-2" /></label>
         <label className="block text-sm font-medium sm:col-span-2">{t("files")}<input name="attachments" type="file" multiple accept=".pdf,image/jpeg,image/png,image/webp" className="mt-1 block w-full text-sm" /><span className="mt-1 block text-xs font-normal text-kamika-ink/55">{t("fileHint")}</span></label>
         <label className="flex items-start gap-3 text-sm sm:col-span-2"><input name="privacy" type="checkbox" required className="mt-1" /><span>{t("privacy")} <a href="/datenschutz" className="underline">Datenschutz</a></span></label>
         <div className="sm:col-span-2">
