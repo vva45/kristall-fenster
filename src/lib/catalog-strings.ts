@@ -70,9 +70,9 @@ export const CS = {
     pl: "Z oryginalnych katalogów",
   },
   stat1: {
-    en: "40 Systems from real manufacturers",
-    de: "40 Systeme von echten Herstellern",
-    pl: "40 Systemów prawdziwych producentów",
+    en: "42 Systems from real manufacturers",
+    de: "42 Systeme von echten Herstellern",
+    pl: "42 Systemy prawdziwych producentów",
   },
   stat2: { en: "168 Colours and finishes", de: "168 Farben und Oberflächen", pl: "168 Kolorów i wykończeń" },
   stat3: { en: "584 Catalogue models", de: "584 Katalogmodelle", pl: "584 Modele katalogowe" },
