@@ -13,7 +13,7 @@ export const dynamicParams = false;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const category = categoryBySlug((await params).slug);
-  return { title: `${category ? de(category.name) : "Katalog"} — Kristall Fenster Labor` };
+  return { title: `${category ? de(category.name) : "Katalog"} — Kamika Bauelemente` };
 }
 
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {

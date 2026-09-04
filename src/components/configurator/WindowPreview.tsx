@@ -105,10 +105,14 @@ export function WindowPreview({
       className="h-auto w-full"
     >
       <defs>
+        <filter id="cfg-shadow" x="-20%" y="-20%" width="140%" height="150%">
+          <feDropShadow dx="0" dy="14" stdDeviation="12" floodColor="#17242b" floodOpacity=".2" />
+        </filter>
         <linearGradient id="cfg-glass" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0%" stopColor="#eef7fc" />
-          <stop offset="54%" stopColor="#c3d9e6" />
-          <stop offset="100%" stopColor="#f5fafd" />
+          <stop offset="0%" stopColor="#dcecf1" />
+          <stop offset="38%" stopColor="#91adb6" />
+          <stop offset="42%" stopColor="#edf6f6" />
+          <stop offset="100%" stopColor="#a9c0c6" />
         </linearGradient>
         <linearGradient id="cfg-frame" x1="0" x2="1" y1="0" y2="1">
           <stop offset="0%" stopColor={visibleFinish.hex} />
@@ -118,6 +122,8 @@ export function WindowPreview({
           <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#3b5158" strokeWidth="0.9" opacity="0.24" />
         </pattern>
       </defs>
+
+      <rect x="8" y="8" width={canvasW - 16} height={canvasH - 50} rx="8" fill="#eef0ed" />
 
       {/* Cajón de persiana con sus lamas. */}
       {shutterOn && (
@@ -139,7 +145,7 @@ export function WindowPreview({
       )}
 
       {/* Marco exterior y cristal. */}
-      <rect x={x} y={y} width={w} height={h} rx={4} fill="url(#cfg-frame)" />
+      <rect x={x} y={y} width={w} height={h} rx={4} fill="url(#cfg-frame)" filter="url(#cfg-shadow)" />
       <rect
         x={x + frame}
         y={y + frame}
@@ -148,6 +154,7 @@ export function WindowPreview({
         rx={3}
         fill="url(#cfg-glass)"
       />
+      <path d={`M ${x + frame} ${y + frame + h * .18} L ${x + w - frame} ${y + frame + h * .42}`} stroke="white" strokeWidth="5" opacity=".2" />
       {/* Perfil de hoja visto desde dentro: color interior. */}
       <rect
         x={x + frame * 0.62}

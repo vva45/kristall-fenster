@@ -10,7 +10,7 @@ const ascii = (value: string) =>
 /** PDF mínimo y deliberadamente sin precios: sirve como ficha de solicitud. */
 export function createQuotePdf(items: QuoteItem[], reference: string): Uint8Array {
   const lines = [
-    "KRISTALL FENSTER - KONFIGURATIONSANFRAGE",
+    "KAMIKA BAUELEMENTE - KONFIGURATIONSANFRAGE",
     `Referenz: ${reference}`,
     `Erstellt: ${new Date().toISOString().slice(0, 10)}`,
     "Preise auf Anfrage - kein verbindliches Angebot.",

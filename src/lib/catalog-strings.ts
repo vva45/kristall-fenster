@@ -49,14 +49,14 @@ export const CS = {
 
   // Home
   heroEyebrow: {
-    en: "Configurator lab · Real systems",
-    de: "Konfigurator-Labor · Echte Systeme",
-    pl: "Laboratorium konfiguratora · Prawdziwe systemy",
+    en: "Windows · doors · building elements",
+    de: "Fenster · Türen · Bauelemente",
+    pl: "Okna · drzwi · elementy budowlane",
   },
   heroIntro: {
-    en: "The development lab of the Kamika window configurator: real profile systems, the real colour chart and the real catalogue — binding prices on request.",
-    de: "Das Entwicklungslabor des Kamika-Fensterkonfigurators: echte Profilsysteme, die echte Farbkarte und der echte Katalog — verbindliche Preise auf Anfrage.",
-    pl: "Laboratorium konfiguratora okien Kamika: prawdziwe systemy profili, prawdziwa paleta kolorów i prawdziwy katalog — wiążące ceny na zapytanie.",
+    en: "Architectural openings, carefully planned: windows, doors and facade systems with honest materials, precise details and advice from a single source.",
+    de: "Architektonische Öffnungen, sorgfältig geplant: Fenster, Türen und Fassadensysteme mit ehrlichen Materialien, präzisen Details und Beratung aus einer Hand.",
+    pl: "Starannie zaplanowane otwory architektoniczne: okna, drzwi i systemy fasadowe z autentycznych materiałów, dopracowane w detalu i z kompleksowym doradztwem.",
   },
   openConfigurator: {
     en: "Open the configurator",
@@ -84,4 +84,12 @@ export const CS = {
     de: "Sieben dokumentierte Produktbereiche, übernommen aus den Katalogdaten von Kamika — mit echten Systemen, Modellen und Datenblättern.",
     pl: "Siedem udokumentowanych grup produktów przeniesionych z danych katalogowych Kamika — z prawdziwymi systemami, modelami i kartami technicznymi.",
   },
+  materials: { en: "Materials and finishes", de: "Materialien und Oberflächen", pl: "Materiały i wykończenia" },
+  materialsTitle: { en: "Made to belong.", de: "Gemacht, um zu bleiben.", pl: "Stworzone, by pasować." },
+  materialPvc: { en: "PVC systems", de: "Kunststoffsysteme", pl: "Systemy PVC" },
+  materialPvcText: { en: "Efficient profiles with calm proportions and excellent thermal values.", de: "Effiziente Profile mit ruhigen Proportionen und hervorragenden Wärmewerten.", pl: "Wydajne profile o spokojnych proporcjach i doskonałej izolacyjności." },
+  materialAlu: { en: "Aluminium", de: "Aluminium", pl: "Aluminium" },
+  materialAluText: { en: "Slender sightlines, durable surfaces and freedom for large formats.", de: "Schlanke Ansichten, langlebige Oberflächen und Freiheit für große Formate.", pl: "Smukłe profile, trwałe powierzchnie i swoboda dużych formatów." },
+  materialGlass: { en: "Glass and light", de: "Glas und Licht", pl: "Szkło i światło" },
+  materialGlassText: { en: "Glazing selected for comfort, acoustics and quality daylight.", de: "Verglasungen, gewählt für Komfort, Akustik und gutes Tageslicht.", pl: "Szklenie dobrane pod kątem komfortu, akustyki i światła dziennego." },
 } satisfies Record<string, Localized<string>>;

@@ -92,10 +92,19 @@ img { display: block; max-width: 100%; }
   background-size: 42px 42px;
 }
 .kamika-card-shadow { box-shadow: 4px 4px 0 var(--kamika-mist); }
+.editorial-grid { display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:1rem; }
+.editorial-card { grid-column:span 4; min-height:390px; border-radius:2px; }
+.editorial-card-wide { grid-column:span 8; min-height:480px; }
+.soft-button { border-radius:999px; transition:transform .3s ease, background-color .3s ease, color .3s ease; }
+.soft-button:hover { transform:translateY(-3px); }
+.hero-reveal { animation:heroReveal .9s cubic-bezier(.2,.75,.2,1) both; }
+@keyframes heroReveal { from { opacity:0; transform:translateY(32px); } to { opacity:1; transform:none; } }
 
 @media (max-width: 767px) {
   .kamika-grid-bg { background-size: 34px 34px; }
   .kamika-eyebrow { font-size: .62rem; letter-spacing: .145em; }
+  .editorial-grid { display:grid; grid-template-columns:1fr; }
+  .editorial-card, .editorial-card-wide { grid-column:auto; min-height:360px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

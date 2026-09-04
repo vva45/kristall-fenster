@@ -75,10 +75,10 @@ export default function Navbar() {
             </div>
             <div className="min-w-0 leading-tight">
               <strong className="block whitespace-nowrap text-[15px] font-semibold tracking-[-0.02em] text-kamika-ink md:text-[22px]">
-                KRISTALL FENSTER
+                Kamika Bauelemente
               </strong>
               <span className="mt-1 block whitespace-nowrap font-mono text-[7px] uppercase tracking-[0.13em] text-kamika-steel md:text-[10px] md:tracking-[0.16em]">
-                Konfigurator-Labor
+                Fenster · Türen · Systeme
               </span>
             </div>
           </Link>
