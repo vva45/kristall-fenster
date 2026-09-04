@@ -97,21 +97,15 @@ export const CATEGORIES: Category[] = [
     order: 6,
   },
   {
-    /**
-     * Nueva gama pedida por el dueño (2026-08), todavía sin catálogo ni
-     * fichas: entra en estado "en preparación" a propósito. La intro no
-     * afirma materiales ni sistemas — no hay documento del que copiarlos.
-     */
     slug: "pergolas",
     name: { en: "Pergolas", de: "Pergolen", pl: "Pergole" },
     intro: {
-      en: "Pergolas for terraces and outdoor seating areas are joining the range. The documentation is on its way — until it arrives, ask us and we will quote directly from the manufacturer's papers.",
-      de: "Pergolen für Terrasse und Sitzplatz kommen neu ins Programm. Die Unterlagen sind unterwegs — bis dahin fragen Sie einfach an, wir bieten direkt aus den Herstellerunterlagen an.",
-      pl: "Pergole na taras i do strefy wypoczynku dołączają do oferty. Dokumentacja jest w drodze — do tego czasu zapytaj, a przygotujemy ofertę wprost z materiałów producenta.",
+      en: "Aluminium pergolas for terraces and outdoor seating areas: bioclimatic roofs with adjustable louvres and glazed roofs for a bright, weather-protected outdoor room. Each structure is configured to the measured site.",
+      de: "Aluminium-Pergolen für Terrasse und Sitzplatz: bioklimatische Dächer mit verstellbaren Lamellen und Glasdächer für einen hellen, wettergeschützten Außenraum. Jede Konstruktion wird passend zum Aufmaß konfiguriert.",
+      pl: "Aluminiowe pergole na taras i do strefy wypoczynku: dachy bioklimatyczne z regulowanymi lamelami oraz dachy szklane tworzące jasną przestrzeń chronioną przed pogodą. Każda konstrukcja jest konfigurowana na podstawie pomiaru.",
     },
     heroImage: "/images/categories/pergolas-hero.jpg",
     order: 7,
-    comingSoon: true,
   },
   {
     slug: "accessories",

@@ -53,6 +53,18 @@ describe("integridad del catálogo", () => {
     }
   });
 
+  test("Pergolas está publicada con sus dos sistemas Kamika", () => {
+    const pergolas = CATEGORIES.find((category) => category.slug === "pergolas");
+    const kamika = MANUFACTURERS.find(
+      (manufacturer) => manufacturer.category === "pergolas" && manufacturer.id === "kamika",
+    );
+
+    assert.ok(pergolas);
+    assert.equal(pergolas.comingSoon, undefined);
+    assert.ok(kamika);
+    assert.deepEqual(kamika.systems.map((system) => system.id), ["bioclimatic", "glass-roof"]);
+  });
+
   test("todas las imágenes publicadas existen", async () => {
     const images = [
       ...CATEGORIES.map((category) => category.heroImage),

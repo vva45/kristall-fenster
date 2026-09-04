@@ -1371,6 +1371,44 @@ export const MANUFACTURERS: Manufacturer[] = [
       },
     ],
   },
+  {
+    id: "kamika",
+    category: "pergolas",
+    name: "Kamika",
+    tagline: {
+      en: "Two aluminium roof systems for made-to-measure terraces.",
+      de: "Zwei Aluminium-Dachsysteme für Terrassen nach Maß.",
+      pl: "Dwa aluminiowe systemy dachowe na tarasy wykonywane na wymiar.",
+    },
+    intro: {
+      en: "The pergola range covers two distinct projects: an open-air bioclimatic roof with adjustable louvres, and a transparent glazed roof that can form a sheltered garden room. Final dimensions, drainage, sides and accessories are selected after a site survey.",
+      de: "Das Pergola-Sortiment umfasst zwei unterschiedliche Projekte: ein bioklimatisches Freiluftdach mit verstellbaren Lamellen und ein transparentes Glasdach, das ein geschütztes Gartenzimmer bilden kann. Endmaße, Entwässerung, Seitenelemente und Zubehör werden nach dem Aufmaß festgelegt.",
+      pl: "Oferta pergoli obejmuje dwa różne rozwiązania: bioklimatyczny dach z regulowanymi lamelami oraz przezroczysty dach szklany, z którego można utworzyć osłonięty ogród zimowy. Wymiary, odwodnienie, zabudowy boczne i akcesoria dobiera się po pomiarze.",
+    },
+    image: "/images/categories/pergolas-hero.jpg",
+    systems: [
+      {
+        id: "bioclimatic",
+        name: "Bioclimatic",
+        tagline: {
+          en: "Adjustable louvres for shade, ventilation and rain protection.",
+          de: "Verstellbare Lamellen für Schatten, Lüftung und Regenschutz.",
+          pl: "Regulowane lamele zapewniają cień, wentylację i ochronę przed deszczem.",
+        },
+        image: "/images/categories/pergolas-brand-1.jpg",
+      },
+      {
+        id: "glass-roof",
+        name: "Glass roof",
+        tagline: {
+          en: "A transparent roof for a bright, sheltered terrace.",
+          de: "Ein transparentes Dach für eine helle, geschützte Terrasse.",
+          pl: "Przezroczysty dach tworzący jasny, osłonięty taras.",
+        },
+        image: "/images/categories/pergolas-brand-2.jpg",
+      },
+    ],
+  },
 ];
 
 export const getManufacturersByCategory = (category: string): Manufacturer[] =>

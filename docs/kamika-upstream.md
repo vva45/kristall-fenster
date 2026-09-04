@@ -24,8 +24,8 @@ La copia local actual incluye:
 | --- | --- | ---: |
 | Gamas | `src/data/catalog/categories.ts` | 8 |
 | Catálogos documentados | `src/data/catalog/catalogues.ts` | 15 |
-| Fabricantes | `src/data/catalog/manufacturers.ts` | 11 |
-| Sistemas | `src/data/catalog/manufacturers.ts` | 40 |
+| Fabricantes | `src/data/catalog/manufacturers.ts` | 12 |
+| Sistemas | `src/data/catalog/manufacturers.ts` | 42 |
 | Modelos extraídos de catálogos | `src/data/catalog/catalogue-models.ts` | 584 |
 | Imágenes de gamas, portadas, sistemas y modelos | `public/images/` | 660 |
 
